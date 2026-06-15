@@ -56,7 +56,11 @@ Pin this engine version: **`reveal.js@5.1.0`**.
        Per-slide background variants (e.g. a dark closing) MUST match the base
        selector's specificity or they lose to it. Use `.reveal .slides section.ink`,
        NOT a bare `section.ink`. Section backgrounds print correctly in PDF export. */
-    .reveal .slides section { height: 1080px; background: var(--bg); }
+    .reveal .slides section { height: 1080px; overflow: hidden; background: var(--bg); }
+    /* overflow:hidden is a print guard: in ?print-pdf the engine paginates any content
+       taller than the 1080 canvas onto EXTRA pages, so one overflowing slide silently
+       becomes two or three in the PDF. Clipping at the slide bound stops phantom pages —
+       but it's a backstop, not a license to overflow: fix the slide so nothing is cut. */
     /* .reveal .slides section.ink { background: var(--text); }  <- example variant */
 
     /* .frame = the layout box for every slide. Fills the slide (inset:0) and owns
@@ -154,6 +158,7 @@ Pin this engine version: **`reveal.js@5.1.0`**.
 - **Text aligns left by default.** The engine globally sets `.reveal .slides { text-align:center }`. The `.frame` box resets it to `left`. For a centered layout (title slide, full-bleed quote), put `text-align:center` back on that layout's `.frame` variant — don't rely on the engine default.
 - **Canvas is 1920×1080.** Author slide content at that size; the engine scales the whole slide uniformly to the viewport (handles phones too). Do not write responsive breakpoints to reflow slide content.
 - **Fragments for staged reveals.** Use `class="fragment"` on items that should appear on click. Use `data-transition` per `<section>` for slide-change effects. See `motion-recipes.md`. Don't hand-roll a `.visible` system — the engine drives it.
+- **Keep `pdfSeparateFragments: false` in `Reveal.initialize`.** Without it, every fragment step becomes its own page in `?print-pdf` export — a 3-slide deck with fragments balloons to many pages. This collapses each slide to one page.
 - **Speaker notes** go in `<aside class="notes">` inside each slide. Press **S** for the presenter view. Keep them out of the visible slide.
 - **Fonts** come from a Fontshare or Google `<link>`, not the system stack. Fill the Fontshare `f[]` param with the chosen display and body families.
 - **Comments.** Every CSS section and every non-obvious slide gets a clear comment.
