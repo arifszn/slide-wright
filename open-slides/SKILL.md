@@ -87,8 +87,8 @@ Once the deck is built, look at it in a real browser render: no overflow, no ove
 
 1. Open the finished deck.
 2. Say where it lives, the theme name, and the slide count.
-3. Tell the user how to drive it: arrow keys, space, or swipe to move; **F** for fullscreen, **Esc** or **O** for the slide overview, **S** for the speaker view with notes, **?** for the full key list; add `?print-pdf` to the URL and print to save a PDF (`scripts/export-pdf.md` has the steps); theme colors live in the `:root` variables, fonts in the `<link>`.
-4. Offer the obvious next moves: revise the content, change the theme, or export a PDF.
+3. Tell the user how to drive it: arrow keys, space, or swipe to move; **F** for fullscreen, **Esc** or **O** for the slide overview, **S** for the speaker view with notes, **?** for the full key list; add `?print-pdf` to the URL and print to save a PDF (`reference/export-pdf.md` has the steps); theme colors live in the `:root` variables, fonts in the `<link>`.
+4. Offer the obvious next moves: revise the content, change the theme, export a PDF, or **deploy to a live URL** to share it. If they want to deploy, read `reference/deploy.md` and let them pick the host (Surge, Vercel, or Netlify) — don't assume one.
 
 ## Reference files
 
@@ -98,4 +98,5 @@ Read these as you reach them, not all at once:
 - `reference/theme-generation.md` — the procedure for inventing a theme (Step 2)
 - `reference/deck-template.md` — the HTML skeleton and engine setup (Steps 2 and 4)
 - `reference/motion-recipes.md` — transitions and reveals (Step 4)
-- `scripts/export-pdf.md` — saving a deck as a PDF (Step 5)
+- `reference/export-pdf.md` — saving a deck as a PDF (Step 5)
+- `reference/deploy.md` — publishing the deck to a live URL (Step 5)

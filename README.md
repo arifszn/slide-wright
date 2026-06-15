@@ -17,11 +17,13 @@ Generate animated slide decks with AI agent skill.
 - **One self-contained file** — share it, host it anywhere, no dependencies to install.
 - **Present like a pro** — keyboard/touch navigation and a speaker view with private notes (press **S**).
 - **Export to PDF** — a static handout straight from the browser.
+- **Deploy to a live URL** — publish to a free static host (Surge, Vercel, or Netlify) and share a link that works on any device.
 
 ## Using the deck
 
 - **Navigate:** arrow keys, space, or swipe.
-- **Export PDF:** open the deck with `?print-pdf` at the end of the URL, then Print → Save as PDF. See [`open-slides/scripts/export-pdf.md`](open-slides/scripts/export-pdf.md).
+- **Export PDF:** ask the agent to export it, or do it yourself — open the deck with `?print-pdf` at the end of the URL, then Print → Save as PDF.
+- **Share online:** ask the agent to deploy it — pick Surge, Vercel, or Netlify and get a live link.
 - **Customize:** the theme colors live in the `:root` CSS variables at the top of the file; fonts are in the `<link>` tag.
 
 ## Keyboard shortcuts
