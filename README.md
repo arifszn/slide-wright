@@ -2,6 +2,10 @@
 
 Generate animated slide decks with AI agent skill.
 
+**[View Example →](https://open-slides.surge.sh)**
+
+https://github.com/user-attachments/assets/2c7f77f3-06bf-4ae2-8142-5977588964fd
+
 ## How it works
 
 1. **Tell it what you want.** A topic, rough notes, or a full outline — whatever you have.
