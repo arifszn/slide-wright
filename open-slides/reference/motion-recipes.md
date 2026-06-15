@@ -1,4 +1,4 @@
-# Animation patterns
+# Motion recipes
 
 Motion recipes for decks. Two layers: the **engine's** built-in slide transitions + fragments, and **custom CSS** for entrances and emphasis. Prefer engine features for navigation motion; add CSS for signature flourishes.
 

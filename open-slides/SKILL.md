@@ -50,10 +50,10 @@ Most decks lean one way. Pick the nearer extreme instead of splitting the differ
 Read `reference/theme-generation.md` and `reference/design-aesthetics.md`, then:
 
 1. Invent a theme: a palette, a display/body type pairing from Fontshare or Google Fonts, a layout grammar, and one recurring visual device. Give it a name for your own use.
-2. Build a two-slide preview with `reference/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one content slide in the layout the deck will lean on. Save it somewhere temporary like `.open-slides/demo.html`.
+2. Build a two-slide preview with `reference/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one content slide in the layout the deck will lean on. Write it as the real deck file in the working directory, named for the deck: `./<deck-slug>.html` (e.g. `./clickhouse.html`). This is the one file the whole deck grows into — there is no separate demo or scratch file.
 3. Open it in the browser.
 
-The preview has to read as two real slides from the finished deck, not a sample card. Keep all process language off the slide: no "demo," "preview," theme name, "option A," or file names. The theme's name goes in your message to the user, never on a slide.
+The preview has to read as two real slides from the finished deck, not a sample card. Keep all process language off the slide and out of the filename: no "demo," "preview," theme name, or "option A." The theme's name goes in your message to the user, never on a slide.
 
 ## Step 3 — Get a yes
 
@@ -65,20 +65,21 @@ Stop and ask (use a structured prompt if the environment has one):
 > - **Try a different direction** → start over with a new theme.
 > - **Adjust this one** (different accent / font / lighter / bolder) → tweak and show it again.
 
-If they want a different direction, optionally ask one steering question ("warmer or cooler, bolder or calmer?"), then build a genuinely new theme — different palette, type, and device — and a fresh two-slide preview. Don't just recolor the rejected one. Repeat until they approve.
+If they want a different direction, optionally ask one steering question ("warmer or cooler, bolder or calmer?"), then build a genuinely new theme — different palette, type, and device — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
 
 Do not build the full deck before you have a yes.
 
 ## Step 4 — Build the deck
 
-Carry the approved theme across every slide. Read `reference/motion-recipes.md` for the transition and reveal patterns.
+Keep building in the **same** `./<deck-slug>.html` the user just approved. The two approved slides stay as they are — append the rest around them; never regenerate them from scratch (that reintroduces drift the user already signed off against). Read `reference/motion-recipes.md` for the transition and reveal patterns.
 
 - Use the exact approved palette, fonts, spacing, and device throughout. Don't let the style drift partway through.
 - Vary the *layouts* — title, section break, two-column, quote, comparison, closing — while keeping the one visual system.
 - Match the density you settled on: spoken-over decks get more slides with less on each; read-alone decks get structured, self-contained slides. If a slide overflows, split it.
 - Put speaker notes in `<aside class="notes">` wherever the content implies something to say out loud.
 - Keep it one self-contained HTML file: theme CSS inline, engine from the CDN, a clear comment on each section.
-- Delete the temporary preview file when you're done.
+
+If the user only wants part of the deck for now, that's fine — the file is already a working deck. Adding more slides later is just editing it (see "Editing a deck that already exists").
 
 Once the deck is built, look at it in a real browser render: no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing.
 

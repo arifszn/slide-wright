@@ -1,6 +1,6 @@
 # Deck template
 
-The HTML skeleton for every deck — demo and final. One self-contained file. The presentation engine loads from a CDN; **its name appears only in these tags, never in user-facing copy.** All visual identity comes from the inline `:root` variables and the custom slide CSS you generate — never from a stock engine theme.
+The HTML skeleton for every deck — preview and final are the same file. One self-contained file. The presentation engine loads from a CDN; **its name appears only in these tags, never in user-facing copy.** All visual identity comes from the inline `:root` variables and the custom slide CSS you generate — never from a stock engine theme.
 
 Pin this engine version: **`reveal.js@5.1.0`**.
 
@@ -157,4 +157,4 @@ Pin this engine version: **`reveal.js@5.1.0`**.
 - **Speaker notes** go in `<aside class="notes">` inside each slide. Press **S** for the presenter view. Keep them out of the visible slide.
 - **Fonts** come from a Fontshare or Google `<link>`, not the system stack. Fill the Fontshare `f[]` param with the chosen display and body families.
 - **Comments.** Every CSS section and every non-obvious slide gets a clear comment.
-- **Demo vs final:** the 2-slide demo uses this exact skeleton with only two `<section>`s. The final deck is the same file with all slides filled in. No structural difference.
+- **Preview vs final:** the same file is both. The preview is this skeleton with two `<section>`s; once approved, the rest of the slides are appended into that same `./<deck-slug>.html`. No separate demo file, no rebuild — the two approved slides stay byte-for-byte.
