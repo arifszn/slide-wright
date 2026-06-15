@@ -1,6 +1,6 @@
 {
   "name": "open-slides",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Presentation generator that creates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
   "license": "MIT",
   "author": {

@@ -19,6 +19,25 @@ Set globally in `Reveal.initialize({ transition: '...' })`, override per slide w
 <section data-transition-speed="fast">…</section>
 ```
 
+## Auto-animate (morph between two slides)
+
+The strongest "designed, not stepped-through" move. Put `data-auto-animate` on two consecutive `<section>`s and the engine tweens matching elements — position, size, color, font-size — from one to the next. Unmatched elements fade. No plugin; it's core.
+
+```html
+<section data-auto-animate>
+  <h1 data-id="stat" style="font-size: 3rem;">1</h1>
+</section>
+<section data-auto-animate>
+  <h1 data-id="stat" style="font-size: 12rem;">1,000,000</h1>   <!-- grows in place -->
+  <p class="fragment">rows/sec</p>
+</section>
+```
+
+- Matching is automatic by content/order; pin it with a shared `data-id` when elements differ (text changing, as above) or when several could match.
+- Tune per slide: `data-auto-animate-easing`, `data-auto-animate-duration`, `data-auto-animate-delay`.
+- Best for: a title settling into a header, a number growing, code gaining lines, a layout reflowing. Use it on a few key beats — not every slide, or the effect goes cheap.
+- In PDF export each state prints as its own page (it's two real slides), which is correct.
+
 ## Fragments (staged reveal within a slide)
 
 Items appear one click at a time. Core of speaker-led pacing.
@@ -75,6 +94,17 @@ for r in rows:
 - **Counter / stat reveal:** scale + fade a large numeral with `grow` fragment or a CSS keyframe; pair with the accent color.
 - **Underline/marker draw:** animate a pseudo-element `width` or `transform: scaleX()` on the accent under a heading.
 - **Background drift:** slow, subtle `background-position` or gradient-angle animation on the signature device. Keep it low-amplitude — atmosphere, not distraction.
+
+## Big type that fills the slide (r-fit-text)
+
+For hero numbers and one-word statement slides, `r-fit-text` auto-scales text to the slide width — no hand-tuned `font-size`, and it stays huge on any viewport. Core class, no plugin.
+
+```html
+<h1 class="r-fit-text">10×</h1>
+<h2 class="r-fit-text">FASTER</h2>
+```
+
+One word or a short number per line. Don't wrap a sentence in it — it'll size to the longest line and look accidental.
 
 ## Rules
 
