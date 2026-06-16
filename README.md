@@ -61,4 +61,4 @@ https://github.com/arifszn/slide-wright-skill
 
 ## License
 
-See [LICENSE](LICENSE).
+[MIT](LICENSE)

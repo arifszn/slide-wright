@@ -88,6 +88,8 @@ for r in rows:
 - `data-ln-start-from="42"` offsets the first line number; `data-trim` strips outer whitespace; for code containing `<`, `&`, or markup, wrap the body in `<script type="text/template">…</script>`.
 - The line steps are fragments, so `pdfSeparateFragments: false` already collapses them to one page in PDF export.
 - Restyle the `<pre>` to the deck's palette and a real monospace face — don't leave it looking like a stock code widget.
+- **Put the panel background on `code.hljs`, not only on `<pre>`.** Multi-step line numbers (`"1-3|5-6|8-10"`) make the plugin stack one `<code>` clone per step, and every stepped-past clone keeps `.visible`. If the clones are transparent (background only on `<pre>`) they bleed through each other and the code renders doubled/ghosted. An opaque `code.hljs` background lets the current clone hide the rest. The syntax theme sets `.hljs { background }`, so override it specifically: `.reveal pre code.hljs { background: var(--bg-alt) !important; }`.
+- Don't set `white-space` (`pre-wrap`), `display`, `word-break`, or `width` on `pre code`/`td` — the line-number layout is a `<table>` and those overrides collapse the number column onto the code. Keep `white-space: pre`.
 
 ## Emphasis recipes
 
