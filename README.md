@@ -43,20 +43,15 @@ https://github.com/user-attachments/assets/2c7186ea-44dd-4271-9530-2b581782abde
 /plugin install slide-wright-skill
 ```
 
-### Claude Code (Manual)
+### Other agents (Codex, OpenCode, Antigravity, Gemini, Cursor, …)
 
-```bash
-git clone https://github.com/arifszn/slide-wright-skill /tmp/slide-wright-skill-repo
-cp -r /tmp/slide-wright-skill-repo/slide-wright-skill ~/.claude/skills/slide-wright-skill
-rm -rf /tmp/slide-wright-skill-repo
-```
+slide-wright is a standalone skill that works in any agent supporting the `SKILL.md` format. See **[INSTALL.md](INSTALL.md)** for per-agent skills paths and copy-paste commands.
 
-### Other coding agents
-
-Claude Code, Codex, Kimi Code, OpenCode, Gemini CLI, and similar agents all work. Send your agent this link and ask it to install the skill:
+Or just tell your agent to install it — paste:
 
 ```
-https://github.com/arifszn/slide-wright-skill
+Fetch and follow the install instructions from
+https://github.com/arifszn/slide-wright-skill/blob/main/INSTALL.md
 ```
 
 ## License
