@@ -53,4 +53,4 @@ After copying, restart or reload your agent so it rescans its skills directory.
 
 ## Verify
 
-Ask your agent to make a deck ("create a 3-slide presentation about …"). If the skill loaded, it generates a custom theme and a short preview before building the full deck.
+Ask your agent **"what skills do you have?"** — `slide-wright-skill` should appear in the list. If it does, it's loaded and ready.
