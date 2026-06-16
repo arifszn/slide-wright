@@ -1,8 +1,8 @@
-# Installing slide-wright-skill
+# Installing slide-wright
 
-slide-wright is a single **standalone skill**: one folder, `slide-wright-skill/`, with a `SKILL.md` at its root (its `name` matches the folder, as the spec requires). Every agent loads that exact folder — only the parent *skills directory* changes from tool to tool.
+slide-wright is a single **standalone skill**: one folder, `slide-wright/`, with a `SKILL.md` at its root (its `name` matches the folder, as the spec requires). Every agent loads that exact folder — only the parent *skills directory* changes from tool to tool.
 
-So installation is always the same three steps: **clone → copy the `slide-wright-skill/` folder into your agent's skills directory → clean up.**
+So installation is always the same three steps: **clone → copy the `slide-wright/` folder into your agent's skills directory → clean up.**
 
 ---
 
@@ -13,13 +13,13 @@ So installation is always the same three steps: **clone → copy the `slide-wrig
 1. Register the marketplace:
 
    ```bash
-   /plugin marketplace add arifszn/slide-wright-skill
+   /plugin marketplace add arifszn/slide-wright
    ```
 
 2. Install the plugin from this marketplace:
 
    ```bash
-   /plugin install slide-wright-skill
+   /plugin install slide-wright
    ```
 
 ### Standalone skill
@@ -34,10 +34,10 @@ Pick your agent's skills directory from the table, set it as `DEST`, and run:
 
 ```bash
 DEST=~/.claude/skills   # ← change this line per the table below
-git clone --depth 1 https://github.com/arifszn/slide-wright-skill /tmp/slide-wright-skill-repo
+git clone --depth 1 https://github.com/arifszn/slide-wright /tmp/slide-wright-repo
 mkdir -p "$DEST"
-cp -r /tmp/slide-wright-skill-repo/slide-wright-skill "$DEST/slide-wright-skill"
-rm -rf /tmp/slide-wright-skill-repo
+cp -r /tmp/slide-wright-repo/slide-wright "$DEST/slide-wright"
+rm -rf /tmp/slide-wright-repo
 ```
 
 | Agent | Global / user `DEST` | Project / workspace `DEST` |
@@ -60,4 +60,4 @@ After copying, restart or reload your agent so it rescans its skills directory.
 
 ## Verify
 
-Ask your agent **"what skills do you have?"** — `slide-wright-skill` should appear in the list. If it does, it's loaded and ready.
+Ask your agent **"what skills do you have?"** — `slide-wright` should appear in the list. If it does, it's loaded and ready.

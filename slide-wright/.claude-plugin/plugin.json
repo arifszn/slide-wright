@@ -1,5 +1,5 @@
 {
-  "name": "slide-wright-skill",
+  "name": "slide-wright",
   "version": "1.6.0",
   "description": "Presentation generator that creates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
   "license": "MIT",
@@ -7,7 +7,7 @@
     "name": "arifszn",
     "url": "https://github.com/arifszn"
   },
-  "homepage": "https://github.com/arifszn/slide-wright-skill",
-  "repository": "https://github.com/arifszn/slide-wright-skill",
+  "homepage": "https://github.com/arifszn/slide-wright",
+  "repository": "https://github.com/arifszn/slide-wright",
   "keywords": ["presentations", "slides", "html", "design", "deck", "pitch", "animations"]
 }

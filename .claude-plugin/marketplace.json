@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "slide-wright-skill",
+  "name": "slide-wright",
   "description": "Create beautiful, animated web presentations — generate a custom theme and preview, then build the full deck once you confirm the direction.",
   "owner": {
     "name": "arifszn",
@@ -8,9 +8,9 @@
   },
   "plugins": [
     {
-      "name": "slide-wright-skill",
+      "name": "slide-wright",
       "description": "Presentation generator that creates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
-      "source": "./slide-wright-skill",
+      "source": "./slide-wright",
       "category": "productivity",
       "tags": ["presentations", "slides", "html", "design", "deck", "pitch"]
     }

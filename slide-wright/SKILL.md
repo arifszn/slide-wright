@@ -1,9 +1,9 @@
 ---
-name: slide-wright-skill
+name: slide-wright
 description: Create beautiful, animated web presentations from a topic, rough notes, or an outline. Generates a custom theme and a short two-slide preview, then builds the full deck only once the user confirms the direction. Use when the user wants to make slides, a presentation, a talk deck, or a pitch deck.
 ---
 
-# slide-wright-skill
+# slide-wright
 
 Turn a topic or rough notes into a polished, animated web presentation — a single self-contained HTML file that runs in any browser.
 

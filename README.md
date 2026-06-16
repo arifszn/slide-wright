@@ -1,8 +1,8 @@
-# slide-wright-skill
+# slide-wright
 
 Generate beautiful, unique slide decks with AI agent skill.
 
-**[View Example →](https://slide-wright-skill.surge.sh)**
+**[View Example →](https://slidewright.surge.sh)**
 
 https://github.com/user-attachments/assets/2c7186ea-44dd-4271-9530-2b581782abde
 
@@ -41,13 +41,13 @@ https://github.com/user-attachments/assets/2c7186ea-44dd-4271-9530-2b581782abde
 1. Register the marketplace:
 
    ```bash
-   /plugin marketplace add arifszn/slide-wright-skill
+   /plugin marketplace add arifszn/slide-wright
    ```
 
 2. Install the plugin from this marketplace:
 
    ```bash
-   /plugin install slide-wright-skill
+   /plugin install slide-wright
    ```
 
 ### Other agents (Codex, OpenCode, Antigravity, Gemini, Cursor, …)
@@ -58,7 +58,7 @@ Or just tell your agent to install it — paste:
 
 ```
 Fetch and follow the install instructions from
-https://raw.githubusercontent.com/arifszn/slide-wright-skill/refs/heads/main/INSTALL.md
+https://raw.githubusercontent.com/arifszn/slide-wright/refs/heads/main/INSTALL.md
 ```
 
 ## License
