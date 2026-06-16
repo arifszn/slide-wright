@@ -71,10 +71,10 @@ The engine adds `.present` to the active slide. Drive entrance animation off it:
 
 ## Code slides (highlight plugin)
 
-For technical decks. Load the highlight plugin + a syntax theme (see `deck-template.md`), then step the highlighted lines like fragments:
+For technical decks. Load the highlight plugin + a syntax theme (see `deck-template.md`). Keep it **static** — one highlighted block, no fragment line-stepping:
 
 ```html
-<pre><code data-trim data-line-numbers="1-2|4|6-9" class="language-python">
+<pre><code data-trim data-noescape class="language-python">
 def query(client, sql):
     return client.execute(sql)
 
@@ -84,13 +84,12 @@ for r in rows:
 </code></pre>
 ```
 
-- Each pipe-separated range (`"1-2|4|6-9"`) is one click step — the focused lines stay lit, the rest dim. Walk a snippet a few lines at a time instead of dumping it all at once.
-- `data-ln-start-from="42"` offsets the first line number; `data-trim` strips outer whitespace; for code containing `<`, `&`, or markup, wrap the body in `<script type="text/template">…</script>`.
-- The line steps are fragments, so `pdfSeparateFragments: false` already collapses them to one page in PDF export.
-- Restyle the `<pre>` to the deck's palette and a real monospace face — don't leave it looking like a stock code widget.
-- **Put the panel background on `code.hljs`, not only on `<pre>`.** Multi-step line numbers (`"1-3|5-6|8-10"`) make the plugin stack one `<code>` clone per step, and every stepped-past clone keeps `.visible`. If the clones are transparent (background only on `<pre>`) they bleed through each other and the code renders doubled/ghosted. An opaque `code.hljs` background lets the current clone hide the rest. The syntax theme sets `.hljs { background }`, so override it specifically: `.reveal pre code.hljs { background: var(--bg-alt) !important; }`.
-- **Give `<pre>` `position: relative`.** The engine positions the stepped clones `absolute; top:0`, anchored to the nearest positioned ancestor. The slide `.frame` is `position: absolute`, so if `<pre>` is static the clone anchors to the frame and stretches to `top:0; height:100%`, covering the heading with a full-slide opaque code panel. `position: relative` on `<pre>` keeps the clones inside the code block. (Same reason any `pre::before` accent line needs it.)
-- Don't set `white-space` (`pre-wrap`), `display`, `word-break`, or `width` on `pre code`/`td` — the line-number layout is a `<table>` and those overrides collapse the number column onto the code. Keep `white-space: pre`.
+- **Do not use the pipe-step form** (`data-line-numbers="1-2|4|6-9"`). Stepping clones the code block once per step and stacks the clones absolutely; in a custom layout they ghost, escape the panel, or scroll out of alignment. Show the whole snippet at once instead.
+- `data-trim` strips outer whitespace; `data-noescape` lets you keep raw `<`, `&` in the source (or wrap the body in `<script type="text/template">…</script>`).
+- Want line numbers? Add a bare `data-line-numbers` (no pipes) — static numbers, no stepping. Optional.
+- To draw the eye to specific lines, mark them in the source and style them, e.g. `<mark>…</mark>` with a tinted background — no fragments.
+- Restyle the `<pre>` to the deck's palette and a real monospace face so it doesn't look like a stock code widget. Put the background on `code.hljs` (override the syntax theme): `.reveal pre code.hljs { background: var(--bg-alt) !important; }`.
+- Keep the snippet short enough to fit the frame — roughly ≤ 12 lines at a comfortable size. If it doesn't fit, trim the code, don't shrink the slide.
 
 ## Emphasis recipes
 

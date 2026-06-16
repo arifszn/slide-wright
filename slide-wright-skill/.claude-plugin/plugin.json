@@ -1,6 +1,6 @@
 {
   "name": "slide-wright-skill",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Presentation generator that creates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
   "license": "MIT",
   "author": {
