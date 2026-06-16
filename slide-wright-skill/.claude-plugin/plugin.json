@@ -1,13 +1,13 @@
 {
-  "name": "open-slides",
-  "version": "1.3.2",
+  "name": "slide-wright-skill",
+  "version": "1.4.0",
   "description": "Presentation generator that creates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
   "license": "MIT",
   "author": {
     "name": "arifszn",
     "url": "https://github.com/arifszn"
   },
-  "homepage": "https://github.com/arifszn/open-slides",
-  "repository": "https://github.com/arifszn/open-slides",
+  "homepage": "https://github.com/arifszn/slide-wright-skill",
+  "repository": "https://github.com/arifszn/slide-wright-skill",
   "keywords": ["presentations", "slides", "html", "design", "deck", "pitch", "animations"]
 }

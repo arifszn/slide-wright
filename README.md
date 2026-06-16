@@ -1,8 +1,8 @@
-# open-slides
+# slide-wright-skill
 
 Generate animated slide decks with AI agent skill.
 
-**[View Example →](https://open-slides.surge.sh)**
+**[View Example →](https://slide-wright-skill.surge.sh)**
 
 https://github.com/user-attachments/assets/8d5629cb-e8e7-440c-abf0-728e619ded46
 
@@ -46,16 +46,16 @@ https://github.com/user-attachments/assets/8d5629cb-e8e7-440c-abf0-728e619ded46
 ### Claude Code (Plugin Marketplace)
 
 ```bash
-/plugin marketplace add arifszn/open-slides
-/plugin install open-slides
+/plugin marketplace add arifszn/slide-wright-skill
+/plugin install slide-wright-skill
 ```
 
 ### Claude Code (Manual)
 
 ```bash
-git clone https://github.com/arifszn/open-slides /tmp/open-slides-repo
-cp -r /tmp/open-slides-repo/open-slides ~/.claude/skills/open-slides
-rm -rf /tmp/open-slides-repo
+git clone https://github.com/arifszn/slide-wright-skill /tmp/slide-wright-skill-repo
+cp -r /tmp/slide-wright-skill-repo/slide-wright-skill ~/.claude/skills/slide-wright-skill
+rm -rf /tmp/slide-wright-skill-repo
 ```
 
 ### Other coding agents
@@ -63,7 +63,7 @@ rm -rf /tmp/open-slides-repo
 Claude Code, Codex, Kimi Code, OpenCode, Gemini CLI, and similar agents all work. Send your agent this link and ask it to install the skill:
 
 ```
-https://github.com/arifszn/open-slides
+https://github.com/arifszn/slide-wright-skill
 ```
 
 ## License
