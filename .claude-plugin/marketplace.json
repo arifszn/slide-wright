@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "slide-wright",
-      "description": "Presentation generator that creates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
+      "description": "Create beautiful, animated web presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
       "source": "./slide-wright",
       "category": "productivity",
       "tags": ["presentations", "slides", "html", "design", "deck", "pitch"]
