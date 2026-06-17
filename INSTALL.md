@@ -24,7 +24,7 @@ So installation is always the same three steps: **clone → copy the `slide-wrig
 
 ### Standalone skill
 
-Use the template below with `DEST=~/.claude/skills` (global) or `DEST=.claude/skills` (this project only).
+Not using the plugin? Use the template below.
 
 ---
 
