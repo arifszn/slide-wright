@@ -1,7 +1,7 @@
 {
   "name": "slide-wright",
   "version": "1.6.0",
-  "description": "Create beautiful, animated web presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
+  "description": "Create beautiful, animated presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
   "license": "MIT",
   "author": {
     "name": "arifszn",

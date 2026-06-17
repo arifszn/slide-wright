@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "slide-wright",
-  "description": "Create beautiful, animated web presentations — generate a custom theme and preview, then build the full deck once you confirm the direction.",
+  "description": "Create beautiful, animated presentations — generate a custom theme and preview, then build the full deck once you confirm the direction.",
   "owner": {
     "name": "arifszn",
     "url": "https://github.com/arifszn"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "slide-wright",
-      "description": "Create beautiful, animated web presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
+      "description": "Create beautiful, animated presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
       "source": "./slide-wright",
       "category": "productivity",
       "tags": ["presentations", "slides", "html", "design", "deck", "pitch"]
