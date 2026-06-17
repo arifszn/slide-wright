@@ -2,7 +2,7 @@
 
 Generate beautiful, unique slide decks with AI agent skill.
 
-**[View Example →](https://slidewright.surge.sh)**
+**[View Example →](https://slidewright.netlify.app)**
 
 https://github.com/user-attachments/assets/90959d0c-6c2e-4a7a-ab88-4a40a5ba06ac
 
