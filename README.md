@@ -25,11 +25,29 @@ https://github.com/user-attachments/assets/90959d0c-6c2e-4a7a-ab88-4a40a5ba06ac
 
 ## Examples
 
-> "Generate a presentation for ClickHouse"
+> "Generate a presentation for ClickHouse, keep theme yellow"
 
 | | |
 | --- | --- |
 | ![ClickHouse example slide 1](https://github.com/user-attachments/assets/15774809-cd91-4829-9520-0e722557f947) | ![ClickHouse example slide 2](https://github.com/user-attachments/assets/6b639629-b690-4e9a-945c-01ae0acdbb7f) |
+
+> "Make me a sales pitch deck for Lumen, a smart home energy monitor"
+
+| | |
+| --- | --- |
+| ![Sales pitch example slide 1](https://github.com/user-attachments/assets/490886dd-35bc-4cff-bad6-8487094b3797) | ![Sales pitch example slide 2](https://github.com/user-attachments/assets/e513e098-8352-43d5-8a98-7ac8a8330c18) |
+
+> "Make me a deck for a conference talk on the history of jazz"
+
+| | |
+| --- | --- |
+| ![Jazz history example slide 1](https://github.com/user-attachments/assets/1b8739e4-c41c-462a-8c31-fcf739ca6de4) | ![Jazz history example slide 2](https://github.com/user-attachments/assets/ed9dff97-b4cb-4ca9-a5af-db8c19ea8248) |
+
+> "Create me a deck for our Q3 revenue review"
+
+| | |
+| --- | --- |
+| ![Q3 revenue review example slide 1](https://github.com/user-attachments/assets/e12f4d4b-f8e0-4028-9b57-dbb638a6aa3a) | ![Q3 revenue review example slide 2](https://github.com/user-attachments/assets/8c984fb8-10ed-478e-b66b-dd1880c97a0e) |
 
 ## Installation
 
