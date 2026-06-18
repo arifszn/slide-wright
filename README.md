@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/90959d0c-6c2e-4a7a-ab88-4a40a5ba06ac
 <table>
 <tr><th colspan="2"><i>"Generate a presentation for ClickHouse, keep theme yellow"</i></th></tr>
 <tr>
-<td><img src="https://github.com/user-attachments/assets/6237c2c2-fdbf-49bb-a9fa-5f5b10154664" alt="ClickHouse example slide 1" /></td>
+<td><img src="https://github.com/user-attachments/assets/6839eba2-a228-4324-8dc0-983e235991f7" alt="ClickHouse example slide 1" /></td>
 <td><img src="https://github.com/user-attachments/assets/e9208b1f-c813-4a0f-b4ef-b760c011981d" alt="ClickHouse example slide 2" /></td>
 </tr>
 </table>
