@@ -1,6 +1,6 @@
 ---
 name: slide-wright
-description: Create beautiful, animated web presentations from a topic, rough notes, or an outline. Generates a custom theme and a short two-slide preview, then builds the full deck only once the user confirms the direction. Use when the user wants to make slides, a presentation, a talk deck, or a pitch deck.
+description: Create beautiful, animated web presentations from a topic, rough notes, or an outline, and edit decks afterward — adding, removing, or revising slides. Generates a custom theme and a short two-slide preview, then builds the full deck only once the user confirms the direction; edits to an existing deck skip that flow and apply in place. Use when the user wants to make slides, a presentation, a talk deck, a pitch deck, or to add/remove/change a slide in one that already exists.
 ---
 
 # slide-wright
@@ -24,7 +24,9 @@ Decks render with reveal.js loaded from a CDN, but that is an implementation det
 
 ## Editing a deck that already exists
 
-If the user points at a deck this skill already made, don't start over. Read it, keep its theme, and make the change in place. The look is already approved, so skip the proposal and the gate. After editing, check that nothing overflows or overlaps. Everything else on this page is for building a new deck.
+If the user points at an existing HTML deck, check whether it's built on reveal.js (look for the reveal.js `<link>`/`<script>` tags from a CDN). If it is — whether or not this skill built it — don't start over: read it, keep its theme, and make the change in place. The look is already approved, so skip the proposal and the gate. After editing, check that nothing overflows or overlaps.
+
+If the deck is HTML but not on reveal.js (different engine, plain slides, etc.), it's outside this skill's edit path — say so rather than forcing a rewrite onto a different engine. Everything else on this page is for building a new deck.
 
 ## Step 1 — Work out the deck from the request
 
