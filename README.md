@@ -81,13 +81,19 @@ https://github.com/user-attachments/assets/90959d0c-6c2e-4a7a-ab88-4a40a5ba06ac
 
 ### Other agents (Codex, OpenCode, Antigravity, Gemini, Cursor, …)
 
-slide-wright is a standalone skill that works in any agent supporting the `SKILL.md` format. See **[INSTALL.md](INSTALL.md)** for per-agent skills paths and copy-paste commands.
+slide-wright is a standalone skill that works in any agent supporting the `SKILL.md` format. See **[INSTALL.md](INSTALL.md)** for per-agent skills paths.
 
-Or just tell your agent to install it — paste:
+Just tell your agent to install it — paste:
 
 ```
 Fetch and follow the install instructions from
 https://raw.githubusercontent.com/arifszn/slide-wright/refs/heads/main/INSTALL.md
+```
+
+Or install it via npx:
+
+```bash
+npx skills add arifszn/slide-wright
 ```
 
 ## Usage
