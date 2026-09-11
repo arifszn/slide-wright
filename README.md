@@ -108,6 +108,12 @@ Make me a slide deck about <your topic>
 
 It builds a theme and a short preview first. Approve it and it generates the full deck. You can hand it rough notes or an outline instead of a topic, and ask it to revise the design or content anytime.
 
+Or invoke the skill by name:
+
+```
+/slide-wright:slide-wright
+```
+
 ## Keyboard shortcuts
 
 | Key | Action |
