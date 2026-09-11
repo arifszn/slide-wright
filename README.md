@@ -13,8 +13,6 @@ https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
 
 **[View Example →](https://slidewright.netlify.app)**
 
-https://github.com/user-attachments/assets/90959d0c-6c2e-4a7a-ab88-4a40a5ba06ac
-
 ## More Examples
 
 <table>
