@@ -109,7 +109,7 @@ It builds a theme and a short preview first. Approve it and it generates the ful
 Or invoke the skill by name:
 
 ```
-/slide-wright:slide-wright
+/slide-wright
 ```
 
 ## Keyboard shortcuts
