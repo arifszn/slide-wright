@@ -1,6 +1,6 @@
 # slide-wright
 
-<img src="https://github.com/user-attachments/assets/76e1fb84-7ab5-4996-bc47-e976b70fff64" alt="slide-wright: every prompt, a deck ready for the room" />
+<img src="https://github.com/user-attachments/assets/c8731bd1-81aa-4a91-8453-77add2c4c24a" alt="slide-wright: every prompt, a deck ready for the room" />
 
 ## How it works
 
@@ -9,9 +9,9 @@
 3. **You decide.** Love it? It builds the whole deck. Want a different vibe? It generates a fresh direction and shows a new preview. Repeat until it's right.
 4. **You get your deck.** A polished, self-contained presentation. Export it to PDF, or deploy it to a live URL for a link that works on any device.
 
-**[View Example →](https://slidewright.netlify.app)**
+https://github.com/user-attachments/assets/1a5e5d9d-f52c-49a8-b9af-efa55c8d6cb6
 
-## More Examples
+## Examples
 
 <table>
 <tr><th colspan="2"><i>"/slide-wright Create a Q3 board update for Corvid Labs, a B2B observability SaaS"</i></th></tr>
