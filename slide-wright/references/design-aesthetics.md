@@ -6,13 +6,12 @@ Every deck still gets its own theme. What stays constant is the craft below.
 
 ## Every content slide is composed
 
-A content slide has three parts, and together they fill the canvas:
+A content slide pairs two things, and together they fill the canvas:
 
 1. **Action title**: the slide's point as a short claim, one or two lines. "Churn fell 18% after the pricing change." Avoid topic labels like "Overview" or "Why it's fast".
 2. **Exhibit**: one visual that proves or explains the claim (see `exhibits.md`).
-3. **Takeaway**: one sentence at the bottom that says what it means for the audience, or a source line for data.
 
-The slide sits inside the theme's **slide chrome** (header and footer, defined in `theme-generation.md`). Top-anchored, gridded, edge to edge within the margins. Big words alone in the middle of an empty canvas belong only to the title slide, section breaks, and the closing slide.
+A takeaway sentence or a source line for data can sit below when it adds something. Every slide follows the theme's **layout system** (`theme-generation.md`): top-anchored, gridded, edge to edge within the margins. Big words alone in the middle of an empty canvas belong only to the title slide, section breaks, and the closing slide.
 
 ## Exhibits carry the slide
 
@@ -35,4 +34,4 @@ A board update, a QBR, or a security review is quiet and dense with evidence. A 
 
 ## The honest check
 
-Before you show a preview, picture it projected in a boardroom, in a deck sent by a respected company. Would the slide pass without anyone wondering how it was made? Does every content slide have a claim, an exhibit, and a takeaway? If any slide looks like a web page or a poster, fix the composition before showing it.
+Before you show a preview, picture it projected in a boardroom, in a deck sent by a respected company. Would the slide pass without anyone wondering how it was made? Does every content slide have a claim and an exhibit? If any slide looks like a web page or a poster, fix the composition before showing it.

@@ -60,6 +60,10 @@ Pin this engine version: **`reveal.js@5.1.0`**.
     .reveal { font-family: var(--font-body); color: var(--text); }
     .reveal h1, .reveal h2, .reveal h3 { font-family: var(--font-display); color: var(--text); text-transform: none; }
     .reveal-viewport, html, body { background: var(--bg); }
+    /* Progress bar and (if enabled) arrows take the theme's colors: the engine
+       defaults are a white bar and black arrows, which vanish on some backgrounds */
+    .reveal .progress { color: var(--accent); }
+    .reveal .controls { color: var(--accent); }
 
     /* Slides are authored on a 1920x1080 canvas (init uses center:false).
        The <section> carries ONLY the background. All layout lives in an inner
@@ -86,15 +90,15 @@ Pin this engine version: **`reveal.js@5.1.0`**.
       padding: 72px 120px 64px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;  /* top-anchored: content slides fill down from the chrome */
+      justify-content: flex-start;  /* top-anchored: content fills down from the title */
       gap: 40px;
       box-sizing: border-box;
       text-align: left;     /* undo the engine's global center; see Rules */
     }
 
     /* ===========================================
-       SLIDE CHROME: header + footer inside .frame, so they survive PDF export.
-       Restyle per theme (accent square, rule, mono labels...), keep the structure.
+       RECURRING ELEMENTS (optional, per theme): a header and/or footer inside
+       .frame, so they survive PDF export. Keep, restyle, or delete them.
        =========================================== */
     .chrome-head { display: flex; align-items: center; gap: 24px; font-size: var(--fs-label); color: var(--text-muted); }
     .chrome-head .rule { flex: 1; border-top: 1px solid var(--line); }
@@ -148,21 +152,20 @@ Pin this engine version: **`reveal.js@5.1.0`**.
         <aside class="notes"><!-- speaker notes for this slide --></aside>
       </section>
 
-      <!-- CONTENT SLIDE: chrome header, action title, one exhibit, chrome footer.
-           Everything is visible at once. -->
+      <!-- CONTENT SLIDE: action title and one exhibit, visible at once.
+           The header and footer are optional; keep only what the theme uses. -->
       <section>
         <div class="frame">
           <header class="chrome-head">
             <span class="section-label">02 · Section name</span>
             <span class="rule"></span>
-            <span class="page" data-page></span>
           </header>
           <h2 class="action-title">The slide's point, stated as a short claim.</h2>
           <div class="body">
             <!-- one exhibit from exhibits.md -->
           </div>
           <footer class="chrome-foot">
-            <p class="takeaway">What this means for the audience, in one sentence.</p>
+            <p class="takeaway"><!-- optional takeaway or source line --></p>
             <span class="source"><!-- Source: ... (data slides) --></span>
           </footer>
         </div>
@@ -203,8 +206,8 @@ SELECT count() FROM events WHERE ts > now() - INTERVAL 1 DAY
       height: 1080,
       margin: 0,            // theme controls padding; no engine letterbox margin
       center: false,        // we author full-bleed at 1920x1080; do NOT vertically auto-center
-      controls: false,      // no on-slide arrows: navigation is keys, clicks, swipe
-      progress: false,      // no progress bar: the chrome carries the page number
+      controls: false,      // arrows off by default; turn on if the user asks
+      progress: true,
       hash: true,
       transition: 'fade',
       transitionSpeed: 'fast',
@@ -212,8 +215,8 @@ SELECT count() FROM events WHERE ts > now() - INTERVAL 1 DAY
       plugins: [ RevealNotes ],    // add RevealHighlight here when the deck has code
     });
 
-    // Page numbers in the chrome ("02 / 09"), filled from slide order so they
-    // stay correct when slides are added or removed.
+    // Optional page numbers: any element with data-page gets "02 / 09", filled
+    // from slide order so it stays correct when slides change.
     Reveal.on('ready', () => {
       const slides = Reveal.getSlides();
       const pad = n => String(n).padStart(2, '0');
@@ -232,7 +235,7 @@ SELECT count() FROM events WHERE ts > now() - INTERVAL 1 DAY
 - **Linear deck only — no vertical/nested slides.** Keep every slide as a direct child `<section>` of `.slides`. Don't nest `<section>`s (the engine's vertical stacks) and don't use the Markdown plugin — both fight the hand-built HTML/CSS and break the straight-line narration the deck is designed around.
 - **Canvas is 1920×1080.** Author slide content at that size; the engine scales the whole slide uniformly to the viewport (handles phones too). Do not write responsive breakpoints to reflow slide content.
 - **Slides appear complete.** Every element is visible as the slide lands. Click-by-click builds (`class="fragment"`) happen only when the user asks for them; `motion-recipes.md` covers that case.
-- **Chrome lives inside `.frame`.** Header first, footer last, `.body` between them with `flex: 1`. Title, section, and closing slides may drop or lighten the chrome. Page numbers come from `data-page`, never hand-typed.
+- **Recurring elements live inside `.frame`.** If the theme uses a header or footer, put the header first, the footer last, and `.body` between them with `flex: 1`. If it shows page numbers, mark the element with `data-page` and let the script fill it.
 - **Keep `pdfSeparateFragments: false` in `Reveal.initialize`.** Without it, every fragment step becomes its own page in `?print-pdf` export — a 3-slide deck with fragments balloons to many pages. This collapses each slide to one page.
 - **Code slides** (only when the deck shows code): uncomment the highlight theme `<link>`, the `highlight.js` `<script>`, and add `RevealHighlight` to `plugins`. Mark up as `<pre><code data-trim data-noescape data-line-numbers="3-5|8-10" class="language-x">` — pipe-separated ranges step the highlight on each click (omit `data-line-numbers` for a plain block). Restyle so it belongs to the theme (never ship raw stock-widget code), but the **code-block CSS contract is mandatory**: `position: relative` + `flex-shrink: 0` on `<pre>`, and `display: block` + opaque `background` + `max-height: none` on `code.hljs`. Skipping any one causes the step clones to ghost, stair-step, or cover the heading. Keep snippets short enough to fit the frame (≈ ≤ 12 lines); trim the code rather than shrink the slide. Full recipe in `motion-recipes.md`.
 - **Speaker notes** go in `<aside class="notes">` inside each slide. Press **S** for the presenter view. Keep them out of the visible slide.

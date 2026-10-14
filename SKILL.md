@@ -15,7 +15,7 @@ A few things follow from it:
 
 - One proposal at a time, not a menu. If the user says no, throw the direction out and try a clearly different one.
 - Every theme is invented for the deck in front of you. There is no library of presets to pick from.
-- Every deck meets the **boardroom** standard: each content slide has an action title, one exhibit, and a takeaway inside consistent slide chrome, and it appears complete when it lands (stepped code highlights are the one exception). See `slide-wright/references/design-aesthetics.md`.
+- Every deck meets the **boardroom** standard: each content slide has an action title and one exhibit, and it appears complete when it lands (stepped code highlights are the one exception). See `slide-wright/references/design-aesthetics.md`.
 - The output is one HTML file with the theme CSS inline and the engine pulled from a CDN. No build step, no npm.
 
 ## The engine (keep this internal)
@@ -40,14 +40,14 @@ Only ask something if the request is too thin to design from at all — a single
 
 ### Composed slides
 
-Every content slide is self-contained: someone reading the PDF without the presenter gets the point. A short action title states the claim, one exhibit proves it, and a takeaway line says what it means. One claim per slide; when a slide carries two claims or its exhibit won't fit, split it. Never let a slide scroll, overflow, overlap, or shrink text below the sizes in the theme.
+Every content slide is self-contained: someone reading the PDF without the presenter gets the point. A short action title states the claim and one exhibit proves it; add a takeaway or source line where it helps. One claim per slide; when a slide carries two claims or its exhibit won't fit, split it. Never let a slide scroll, overflow, overlap, or shrink text below the sizes in the theme.
 
 ## Step 2 — Propose a look
 
 Read `slide-wright/references/theme-generation.md` and `slide-wright/references/design-aesthetics.md`, then:
 
-1. Invent a theme: a palette, a type system from Fontshare or Google Fonts, the slide chrome, and the exhibit style. Give it a name for your own use.
-2. Build a two-slide preview with `slide-wright/references/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one real content slide with its chrome, action title, a full exhibit from `slide-wright/references/exhibits.md`, and takeaway. Write it as the real deck file in the working directory, named for the deck: `./<deck-slug>.html` (e.g. `./clickhouse.html`). This is the one file the whole deck grows into — there is no separate demo or scratch file.
+1. Invent a theme: a palette, a type system from Fontshare or Google Fonts, the layout system, and the exhibit style. Give it a name for your own use.
+2. Build a two-slide preview with `slide-wright/references/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one real content slide with its action title and a full exhibit from `slide-wright/references/exhibits.md`. Write it as the real deck file in the working directory, named for the deck: `./<deck-slug>.html` (e.g. `./clickhouse.html`). This is the one file the whole deck grows into — there is no separate demo or scratch file.
 3. Open it in the browser.
 
 The preview has to read as two real slides from the finished deck, not a sample card. Keep all process language off the slide and out of the filename: no "demo," "preview," theme name, or "option A." The theme's name goes in your message to the user, never on a slide.
@@ -62,7 +62,7 @@ Stop and ask (use a structured prompt if the environment has one):
 > - **Try a different direction** → start over with a new theme.
 > - **Adjust this one** (different accent / font / lighter / bolder) → tweak and show it again.
 
-If they want a different direction, optionally ask one steering question ("lighter or darker, more corporate or more product-like?"), then build a genuinely new theme — different palette, type, chrome, and exhibit style — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
+If they want a different direction, optionally ask one steering question ("lighter or darker, more corporate or more product-like?"), then build a genuinely new theme — different palette, type, layout, and exhibit style — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
 
 Do not build the full deck before you have a yes.
 
@@ -70,16 +70,16 @@ Do not build the full deck before you have a yes.
 
 Keep building in the **same** `./<deck-slug>.html` the user just approved. The two approved slides stay as they are — append the rest around them; never regenerate them from scratch (that reintroduces drift the user already signed off against). Read `slide-wright/references/exhibits.md` for exhibit patterns; read `slide-wright/references/motion-recipes.md` only for code slides or when the user asks for animation.
 
-- Use the exact approved palette, type system, chrome, and exhibit style throughout.
+- Use the exact approved palette, type system, layout system, and exhibit style throughout.
 - Structure the story answer-first: the title slide, then the main point or recommendation, then the supporting slides, then the ask or next steps.
 - Vary the *exhibits* (flow, mockup, chart, comparison, timeline, metric panel) and layouts (full-width, split) while keeping the one visual system. Section breaks and the closing slide may drop the exhibit.
-- Every content slide has its action title, one exhibit, and takeaway. If a slide overflows, split it.
+- Every content slide has its action title and one exhibit. If a slide overflows, split it.
 - Put speaker notes in `<aside class="notes">` wherever the content implies something to say out loud.
 - Keep it one self-contained HTML file: theme CSS inline, engine from the CDN, a clear comment on each section.
 
 If the user only wants part of the deck for now, that's fine — the file is already a working deck. Adding more slides later is just editing it (see "Editing a deck that already exists").
 
-Once the deck is built, look at it in a real browser render: every slide complete on arrival, chrome on every content slide, the canvas filled, no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing.
+Once the deck is built, look at it in a real browser render: every slide complete on arrival, the canvas filled, no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing.
 
 ## Step 5 — Hand it off
 
@@ -94,7 +94,7 @@ Read these as you reach them, not all at once:
 
 - `slide-wright/references/design-aesthetics.md` — what makes a deck look designed (Step 2)
 - `slide-wright/references/theme-generation.md` — the procedure for inventing a theme (Step 2)
-- `slide-wright/references/deck-template.md` — the HTML skeleton, slide chrome, and engine setup (Steps 2 and 4)
+- `slide-wright/references/deck-template.md` — the HTML skeleton, layout, and engine setup (Steps 2 and 4)
 - `slide-wright/references/exhibits.md`: choosing and building the visual on each content slide (Steps 2 and 4)
 - `slide-wright/references/motion-recipes.md` — code slides, and animation when the user asks for it (Step 4)
 - `slide-wright/references/export-pdf.md` — saving a deck as a PDF (Step 5)

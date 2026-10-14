@@ -2,7 +2,7 @@
 
 ## Default: static slides
 
-A boardroom deck moves like a well-run PowerPoint: the slide changes with a short fade and arrives complete. The template's `Reveal.initialize` already sets `transition: 'fade'`, `transitionSpeed: 'fast'`, `controls: false`, `progress: false`. Build every slide this way.
+A boardroom deck moves like a well-run PowerPoint: the slide changes with a short fade and arrives complete. The template's `Reveal.initialize` already sets `transition: 'fade'` and `transitionSpeed: 'fast'`. Build every slide this way.
 
 The one built-in exception is **code slides**: stepped line highlights walk the audience through a snippet (see "Code slides" below).
 
