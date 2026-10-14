@@ -61,10 +61,19 @@ Stop and ask (use a structured prompt if the environment has one):
 > "Here's the design direction — *[theme name]*. Does this look right, or want a different direction?"
 >
 > - **Looks great — build it** → go to Step 4.
-> - **Try a different direction** → start over with a new theme.
+> - **Try a different direction** → choose a new direction.
 > - **Adjust this one** (different accent / font / lighter / bolder) → tweak and show it again.
 
-If they want a different direction, optionally ask one steering question ("lighter or darker, more corporate or more product-like?"), then build a genuinely new theme — different palette, type, layout, and exhibit style — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
+If they choose **Try a different direction**, ask one steering question with a short, topic-specific set of directions. Invent the choices from the subject, audience, and rejected preview; do not reuse a fixed list from this skill. Put **Surprise me** first, followed by the contextual directions, and allow a custom answer.
+
+> What should the next direction feel like?
+>
+> - Surprise me
+> - [A subject-specific direction]
+> - [Another subject-specific direction]
+> - [Optional custom direction]
+
+If they choose **Surprise me**, make a radically different, subject-led departure yourself. Then build a genuinely new theme — different palette, type, layout, composition, and exhibit style — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
 
 Do not build the full deck before you have a yes.
 
