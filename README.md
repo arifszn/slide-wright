@@ -18,8 +18,8 @@ https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
 <table>
 <tr><th colspan="2"><i>"/slide-wright Create a Q3 board update for Corvid Labs, a B2B observability SaaS"</i></th></tr>
 <tr>
-<td><img src="UPLOAD_URL_1" alt="Q3 board update example slide 1" /></td>
-<td><img src="UPLOAD_URL_2" alt="Q3 board update example slide 2" /></td>
+<td><img src="https://github.com/user-attachments/assets/f414f240-8cb1-4a91-b9a7-1366e8fc0c31" alt="Q3 board update example slide 1" /></td>
+<td><img src="https://github.com/user-attachments/assets/fbc65739-ca60-42e7-98d2-1f0d6b34f6bf" alt="Q3 board update example slide 2" /></td>
 </tr>
 </table>
 
@@ -34,8 +34,8 @@ https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
 <table>
 <tr><th colspan="2"><i>"/slide-wright Create a presentation on MCP with this outline: [outline]"</i></th></tr>
 <tr>
-<td><img src="UPLOAD_URL_3" alt="MCP example slide 1" /></td>
-<td><img src="UPLOAD_URL_4" alt="MCP example slide 2" /></td>
+<td><img src="https://github.com/user-attachments/assets/645ec97e-e528-4299-a194-00dc18805f8f" alt="MCP example slide 1" /></td>
+<td><img src="https://github.com/user-attachments/assets/4c640b94-3e09-4bb0-b766-639f07b01d84" alt="MCP example slide 2" /></td>
 </tr>
 </table>
 
