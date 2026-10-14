@@ -15,7 +15,7 @@ node <skill-dir>/scripts/export-pptx.mjs ./deck.html              # writes ./dec
 node <skill-dir>/scripts/export-pptx.mjs ./deck.html -o out.pptx
 ```
 
-`<skill-dir>` is the installed `slide-wright/` folder, the one holding `references/` and `scripts/`. Needs Node 18+ and network access (the deck engine and fonts load from a CDN). The first run installs `pptxgenjs` and `playwright-core` into `~/.cache/slide-wright/export-pptx` (override with `SLIDE_WRIGHT_CACHE`) and uses the installed Chrome, downloading Chromium only when there is none. Nothing is added to the user's project.
+`<skill-dir>` is the installed `slide-wright/` folder, the one holding `references/` and `scripts/`. Needs Node 18+. The first run installs `pptxgenjs` and `playwright-core` into `~/.cache/slide-wright/export-pptx` (override with `SLIDE_WRIGHT_CACHE`) and uses the installed Chrome, downloading Chromium only when there is none. Nothing is added to the user's project.
 
 Options: `--scale 2` renders the background pictures at 2x (sharper when projected, larger file); `--debug-dir <dir>` also writes each slide as PNG, with and without text hidden.
 
