@@ -26,6 +26,11 @@ export function extractSlide(idx) {
   const SKIP_TAGS = new Set(['SVG', 'CANVAS', 'IMG', 'VIDEO', 'AUDIO', 'IFRAME', 'PICTURE', 'SCRIPT', 'STYLE', 'ASIDE', 'NOSCRIPT', 'OBJECT']);
   const isInline = (cs) => cs.display === 'inline' || cs.display === 'contents';
   const hasText = (s) => /\S/.test(s);
+  const paintsBox = (cs) =>
+    color(cs.backgroundColor).a > 0 ||
+    cs.backgroundImage !== 'none' ||
+    ['Top', 'Right', 'Bottom', 'Left'].some((s) => parseFloat(cs[`border${s}Width`]) > 0 && cs[`border${s}Style`] !== 'none') ||
+    ['Top', 'Right', 'Bottom', 'Left'].some((s) => parseFloat(cs[`padding${s}`]) > 0);
   const inlineHasText = (el) => {
     for (const n of el.childNodes) {
       if (n.nodeType === 3 && hasText(n.nodeValue)) return true;
@@ -126,7 +131,12 @@ export function extractSlide(idx) {
           if (SKIP_TAGS.has(n.tagName.toUpperCase())) continue;
           const c = getComputedStyle(n);
           if (c.display === 'none') continue;
-          if (isInline(c)) { consumedEls.add(n); collect(n, c); }
+          if (isInline(c)) {
+            // a painted inline box (code pill, badge) keeps its background in the raster; text
+            // moved to a native box would drift off it whenever the wrap points differ
+            if (c.display === 'inline' && paintsBox(c) && hasText(n.textContent)) complex = true;
+            else { consumedEls.add(n); collect(n, c); }
+          }
           else if (/^inline-/.test(c.display) && hasText(n.textContent)) complex = true; // pill/badge inside a text flow
         }
       }
