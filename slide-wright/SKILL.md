@@ -111,5 +111,5 @@ Read these as you reach them, not all at once:
 - `references/exhibits.md`: choosing and building the visual on each content slide (Steps 2 and 4)
 - `references/motion-recipes.md` — code slides, and animation when the user asks for it (Step 4)
 - `references/export-pdf.md` — saving a deck as a PDF (Step 5)
-- `references/export-pptx.md` — exporting a deck to PowerPoint with editable text (Step 5)
+- `references/export-pptx.md`: exporting a deck to PowerPoint with editable text (Step 5)
 - `references/deploy.md` — publishing the deck to a live URL (Step 5)

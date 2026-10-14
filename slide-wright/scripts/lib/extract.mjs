@@ -33,6 +33,9 @@ export function extractSlide(idx) {
     }
     return false;
   };
+  // A pure translate is already reflected in getBoundingClientRect, so such text can be placed
+  // exactly; rotation, scale and skew cannot be reproduced in a text box and stay in the raster.
+  const pureTranslate = (t) => t === 'none' || /^matrix\(1, 0, 0, 1, [-\d.e]+, [-\d.e]+\)$/.test(t);
   const clipsContent = (cs) => ['hidden', 'clip', 'scroll', 'auto'].some((v) => cs.overflowX === v || cs.overflowY === v);
 
   const blocks = [];
@@ -48,7 +51,7 @@ export function extractSlide(idx) {
     if (opacity <= 0.01) return;
     const leaveReason =
       ctx.leave ||
-      (cs.transform !== 'none' && el !== sec && 'transform') ||
+      (!pureTranslate(cs.transform) && el !== sec && 'transform') ||
       (cs.webkitBackgroundClip === 'text' || cs.backgroundClip === 'text' ? 'gradient-text' : '') ||
       (cs.filter !== 'none' && 'filter') ||
       (cs.mixBlendMode !== 'normal' && 'blend') ||
@@ -68,7 +71,7 @@ export function extractSlide(idx) {
         const cs = getComputedStyle(c);
         if (cs.display === 'none') continue;
         const op = ctx.opacity * parseFloat(cs.opacity);
-        const leave = ctx.leave || (cs.transform !== 'none' && 'transform') || '';
+        const leave = ctx.leave || (!pureTranslate(cs.transform) && 'transform') || '';
         visitChildren(c, true, { opacity: op, leave, clips: ctx.clips });
       } else walk(c, ctx);
     }
@@ -155,6 +158,15 @@ export function extractSlide(idx) {
       skippedText.push(`clipped: ${ownText[0].text.trim().slice(0, 40)}`);
       return;
     }
+
+    // Covered by something opaque on top (e.g. the stacked step clones of a stepped code
+    // block, where only the last clone is visible)? Then it is not on screen: skip it.
+    // A false positive only leaves the text in the raster, which is the safe failure.
+    const covered = [rects[0], rects[rects.length - 1]].some((r) => {
+      const hit = document.elementFromPoint(sr.left + ((r.l + r.r) / 2) * k, sr.top + ((r.t + r.b) / 2) * k);
+      return hit && !el.contains(hit);
+    });
+    if (covered) { skippedText.push(`covered: ${ownText[0].text.trim().slice(0, 40)}`); return; }
 
     const tops = [...new Set(rects.map((r) => Math.round(r.t)))].sort((a, b) => a - b);
     const lineTops = tops.filter((t, i) => i === 0 || t - tops[i - 1] > 3);

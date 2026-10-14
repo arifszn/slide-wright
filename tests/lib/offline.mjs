@@ -5,7 +5,8 @@ import { ensureDeps, CACHE_DIR } from '../../slide-wright/scripts/lib/deps.mjs';
 
 export const TEST_DEPS = { 'reveal.js': '5.1.0', pngjs: '7.0.0' };
 
-export function offlineRoute() {
+// allowFonts: let Fontshare/Google font requests through (for the web-font test)
+export function offlineRoute({ allowFonts = false } = {}) {
   ensureDeps(TEST_DEPS);
   const root = join(CACHE_DIR, 'node_modules', 'reveal.js');
   const types = { '.js': 'text/javascript', '.css': 'text/css' };
@@ -17,7 +18,8 @@ export function offlineRoute() {
       const ext = file.slice(file.lastIndexOf('.'));
       return route.fulfill({ status: 200, contentType: types[ext] || 'application/octet-stream', body: readFileSync(file) });
     });
-    // any other network (fonts) is blocked: fixtures use system fonts only
-    await page.route(/^https?:\/\/(?!cdn\.jsdelivr\.net)/, (route) => route.abort());
+    // everything else is blocked unless fonts are allowed: most fixtures use system fonts only
+    const allowed = allowFonts ? /^https?:\/\/(cdn\.jsdelivr\.net|api\.fontshare\.com|cdn\.fontshare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)/ : /^https?:\/\/cdn\.jsdelivr\.net/;
+    await page.route(/^https?:\/\//, (route) => (allowed.test(route.request().url()) ? route.fallback() : route.abort()));
   };
 }

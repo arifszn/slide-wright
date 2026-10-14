@@ -27,7 +27,7 @@ export function ensureDeps(extra = {}) {
     const pkg = join(CACHE_DIR, 'package.json');
     if (!existsSync(pkg)) writeFileSync(pkg, '{"name":"slide-wright-export-cache","private":true}\n');
     console.error(`Installing ${missing.map(([n, v]) => `${n}@${v}`).join(', ')} into ${CACHE_DIR} (first run only)...`);
-    execFileSync('npm', ['install', '--no-audit', '--no-fund', '--silent', '--prefix', CACHE_DIR, ...missing.map(([n, v]) => `${n}@${v}`)], { stdio: ['ignore', 'inherit', 'inherit'] });
+    execFileSync('npm', ['install', '--no-audit', '--no-fund', '--silent', '--prefix', CACHE_DIR, ...missing.map(([n, v]) => `${n}@${v}`)], { stdio: ['ignore', 'inherit', 'inherit'], shell: process.platform === 'win32' }); // npm is npm.cmd on Windows
   }
   return req;
 }

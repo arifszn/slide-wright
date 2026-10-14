@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Web Font Deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@600,400&f[]=satoshi@400,500&display=swap" />
+<style>
+  /* Modeled on references/deck-template.md and the card-and-arrow flow in references/exhibits.md */
+  :root {
+    --bg:#F6F4EF; --bg-alt:#ECE8DF; --text:#16202B; --text-muted:#5D6670; --line:#CBC6BA; --accent:#0F766E; --on-accent:#FFFFFF;
+    --font-display:'General Sans', sans-serif; --font-body:'Satoshi', sans-serif;
+    --fs-title:76px; --fs-body:28px; --fs-label:20px; --radius:14px;
+  }
+  .reveal { font-family: var(--font-body); color: var(--text); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: var(--font-display); color: var(--text); text-transform:none; }
+  .reveal-viewport, html, body { background: var(--bg); }
+  .reveal .slides section { height: 1080px; overflow: hidden; background: var(--bg); }
+  .frame { position:absolute; inset:0; padding:72px 120px 64px; display:flex; flex-direction:column; gap:40px; box-sizing:border-box; text-align:left; }
+  .chrome-head { display:flex; align-items:center; gap:24px; font-size:var(--fs-label); color:var(--text-muted); }
+  .chrome-head .rule { flex:1; border-top:1px solid var(--line); }
+  .chrome-foot { display:flex; justify-content:space-between; align-items:baseline; gap:40px; font-size:var(--fs-label); color:var(--text-muted); }
+  .chrome-foot > * { min-width:0; }
+  .chrome-foot .takeaway { flex:1 1 auto; font-size:var(--fs-body); color:var(--text); overflow-wrap:break-word; }
+  .chrome-foot .source { flex:0 1 30%; overflow-wrap:anywhere; }
+  .chrome-foot [data-page] { flex:0 0 auto; white-space:nowrap; }
+  .body { flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center; }
+  .action-title { font-size:var(--fs-title); line-height:1.08; max-width:1500px; margin:0; font-weight:600; }
+  .lab { font-size:var(--fs-label); letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); }
+  .flow { display:flex; align-items:stretch; gap:0; }
+  .step { flex:1; min-width:0; padding:40px; border:1px solid var(--line); border-radius:var(--radius); background:var(--bg-alt); }
+  .step h3 { font-size:40px; margin:14px 0; font-weight:600; }
+  .step p { font-size:var(--fs-body); line-height:1.4; margin:0; }
+  .step.is-key { background:var(--accent); border-color:var(--accent); }
+  .step.is-key h3, .step.is-key p, .step.is-key .lab { color:var(--on-accent); }
+  .arrow { flex:0 0 120px; min-width:0; position:relative; display:grid; place-items:center; }
+  .arrow::before { content:''; position:absolute; left:12px; right:12px; top:50%; border-top:2px solid var(--text-muted); }
+  .arrow::after  { content:''; position:absolute; right:12px; top:calc(50% - 6px); border:6px solid transparent; border-left-color:var(--text-muted); border-right:0; }
+  .arrow .lab { position:relative; z-index:1; width:100%; max-width:100%; box-sizing:border-box; padding:0 4px; transform:translateY(28px); text-align:center; white-space:normal; overflow-wrap:anywhere; background:var(--bg); }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+  <section><div class="frame">
+    <header class="chrome-head"><span class="section-label">02 · Customer journey</span><span class="rule"></span></header>
+    <h2 class="action-title">Activation happens inside the first day</h2>
+    <div class="body"><div class="flow">
+      <div class="step"><span class="lab">01 · Trial</span><h3>Connect a repo</h3><p>Under two minutes from sign-up to live data.</p></div>
+      <div class="arrow"><span class="lab">Handoff</span></div>
+      <div class="step is-key"><span class="lab">02 · Activate</span><h3>First alert fires</h3><p>The account becomes sticky once an alert lands in Slack.</p></div>
+      <div class="arrow"><span class="lab">Invite</span></div>
+      <div class="step"><span class="lab">03 · Expand</span><h3>Add seats</h3><p>Teams invite colleagues and the plan upgrades itself.</p></div>
+    </div></div>
+    <footer class="chrome-foot"><p class="takeaway">Day-one activation predicts expansion.</p><span class="source">Source: product analytics, Q3</span><span data-page></span></footer>
+  </div><aside class="notes">Walk the three stages left to right.</aside></section>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({ width:1920, height:1080, margin:0, center:false, controls:false, progress:true, hash:true, transition:'fade', pdfSeparateFragments:false, plugins:[RevealNotes] });
+  Reveal.on('ready', () => {
+    const slides = Reveal.getSlides();
+    const pad = n => String(n).padStart(2, '0');
+    slides.forEach((s, i) => s.querySelectorAll('[data-page]').forEach(el => { el.textContent = `${pad(i + 1)} / ${pad(slides.length)}`; }));
+  });
+</script>
+</body>
+</html>

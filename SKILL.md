@@ -111,5 +111,5 @@ Read these as you reach them, not all at once:
 - `slide-wright/references/exhibits.md`: choosing and building the visual on each content slide (Steps 2 and 4)
 - `slide-wright/references/motion-recipes.md` — code slides, and animation when the user asks for it (Step 4)
 - `slide-wright/references/export-pdf.md` — saving a deck as a PDF (Step 5)
-- `slide-wright/references/export-pptx.md` — exporting a deck to PowerPoint with editable text (Step 5)
+- `slide-wright/references/export-pptx.md`: exporting a deck to PowerPoint with editable text (Step 5)
 - `slide-wright/references/deploy.md` — publishing the deck to a live URL (Step 5)

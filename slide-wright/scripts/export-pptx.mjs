@@ -13,6 +13,8 @@ import { extractSlide } from './lib/extract.mjs';
 
 const SLIDE_IN = 13.333; // slide width in inches; height follows the deck's aspect ratio
 const HIDE_CSS = `
+/* hit-testing (covered-text check) must see every element, including pointer-events:none ones */
+.reveal *{pointer-events:auto!important}
 .reveal .controls,.reveal .progress,.reveal .slide-number,.reveal .playback,.reveal .pause-overlay,.reveal .speaker-notes,.reveal .overview-controls{display:none!important}
 /* transition:none matters: fragments use transition-all, which would fade the text out over 200ms and leave it in the screenshot */
 [data-sw-x]{-webkit-text-fill-color:transparent!important;text-shadow:none!important;text-decoration-color:transparent!important;transition:none!important}
@@ -141,6 +143,7 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
     await pptx.writeFile({ fileName: output });
     manifest.output = output;
     manifest.fonts = [...fonts];
+    manifest.loadedFonts = await page.evaluate(() => [...new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/^["']|["']$/g, '')))]);
     return manifest;
   } finally {
     await browser.close();

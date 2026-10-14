@@ -50,6 +50,34 @@ async function openPptx(file) {
   return { zip, slides };
 }
 
+
+// Converts the pptx with LibreOffice and checks that, for every extracted box, the rendered
+// text sits where the HTML put it (ink centroid) and is neither missing nor duplicated (ink amount).
+function renderCheck(m, dbg, name) {
+  const out = join(tmp, `lo-${name}`);
+  execFileSync(SOFFICE, ['--headless', '--convert-to', 'pdf', '--outdir', out, m.output], { stdio: 'ignore', timeout: 120000 });
+  execFileSync('pdftoppm', ['-r', '144', '-png', join(out, `${name}.pdf`), join(out, 'p')]);
+  const pages = readdirSync(out).filter((f) => f.endsWith('.png')).sort();
+  assert.equal(pages.length, m.slides.length);
+  let worst = 0;
+  for (const [i, s] of m.slides.entries()) {
+    const lo = decode(join(out, pages[i]));
+    assert.deepEqual([lo.width, lo.height], [1920, 1080]);
+    const ref = decode(join(dbg, `slide-${i + 1}.ref.png`));
+    for (const b of s.blocks) {
+      const rect = { x: b.x, y: b.y - 12, w: b.w - 12, h: b.h + 24 }; // right edge trimmed: boxes carry width slack
+      const a = ink(ref, rect), c = ink(lo, rect);
+      const label = `slide ${i + 1} "${b.runs.find((r) => r.text).text.slice(0, 30)}"`;
+      const dx = Math.abs(a.cx - c.cx), dy = Math.abs(a.cy - c.cy), ratio = c.count / a.count;
+      worst = Math.max(worst, dx, dy);
+      assert.ok(dx <= 14, `${label}: horizontal drift ${dx.toFixed(1)}px`);
+      assert.ok(dy <= 14, `${label}: vertical drift ${dy.toFixed(1)}px`);
+      assert.ok(ratio > 0.6 && ratio < 1.6, `${label}: ink ratio ${ratio.toFixed(2)} (missing or duplicated text?)`);
+    }
+  }
+  console.log(`    ${name}: worst drift ${worst.toFixed(1)}px`);
+}
+
 // ---- basic deck ----------------------------------------------------------------------
 describe('basic deck', () => {
   let m, pptx, dbg;
@@ -91,7 +119,7 @@ describe('basic deck', () => {
     for (const s of ['Approve the hiring plan', 'Endorse the pricing change', 'Intro two enterprise buyers']) assert.ok(pptx.slides[7].text.includes(s), s);
   });
 
-  test('code slide: only the final line-step is exported, no stacked duplicates', () => {
+  test('plain code block: exported once', () => {
     const n = (pptx.slides[6].text.match(/SELECT account/g) || []).length;
     assert.equal(n, 1);
   });
@@ -156,28 +184,82 @@ describe('basic deck', () => {
   });
 
   test('renders in LibreOffice and text lands where the HTML put it', { skip: !canRender && 'soffice/pdftoppm not available' }, () => {
-    const out = join(tmp, 'lo');
-    execFileSync(SOFFICE, ['--headless', '--convert-to', 'pdf', '--outdir', out, m.output], { stdio: 'ignore', timeout: 120000 });
-    execFileSync('pdftoppm', ['-r', '144', '-png', join(out, 'basic.pdf'), join(out, 'p')]);
-    const pages = readdirSync(out).filter((f) => f.endsWith('.png')).sort();
-    assert.equal(pages.length, 8);
-    const worst = [];
-    for (const [i, s] of m.slides.entries()) {
-      const lo = decode(join(out, pages[i]));
-      assert.deepEqual([lo.width, lo.height], [1920, 1080]);
-      const ref = decode(join(dbg, `slide-${i + 1}.ref.png`));
-      for (const b of s.blocks) {
-        const rect = { x: b.x, y: b.y - 12, w: b.w - 12, h: b.h + 24 }; // right edge trimmed: boxes carry width slack
-        const a = ink(ref, rect), c = ink(lo, rect);
-        const label = `slide ${i + 1} "${b.runs.find((r) => r.text).text.slice(0, 30)}"`;
-        const dx = Math.abs(a.cx - c.cx), dy = Math.abs(a.cy - c.cy), ratio = c.count / a.count;
-        worst.push({ label, dx, dy, ratio });
-        assert.ok(dx <= 14, `${label}: horizontal drift ${dx.toFixed(1)}px`);
-        assert.ok(dy <= 14, `${label}: vertical drift ${dy.toFixed(1)}px`);
-        assert.ok(ratio > 0.6 && ratio < 1.6, `${label}: ink ratio ${ratio.toFixed(2)} (missing or duplicated text?)`);
-      }
+    renderCheck(m, dbg, 'basic');
+  });
+});
+
+
+// ---- stepped code ----------------------------------------------------------------------
+describe('stepped code slide', () => {
+  let m, pptx, dbg;
+  before(async () => {
+    dbg = join(tmp, 'dbg-code');
+    m = await exportDeck({ input: join(here, 'fixtures/code.html'), output: join(tmp, 'code.pptx'), debugDir: dbg, route: offlineRoute() });
+    pptx = await openPptx(m.output);
+  });
+
+  test('each code line is exported once: the stacked step clones are skipped as covered', () => {
+    for (const line of ['SELECT', 'FROM', 'WHERE', 'GROUP']) {
+      const n = pptx.slides[0].runs.filter((r) => r.startsWith(line)).length;
+      assert.equal(n, 1, `${line} appears ${n} times`);
     }
-    console.log('    worst drift px:', Math.max(...worst.map((w) => Math.max(w.dx, w.dy))).toFixed(1));
+    assert.ok(m.slides[0].skippedText.some((t) => t.startsWith('covered:')), 'test is vacuous if no clones were covered');
+  });
+
+  test('final step: the highlighted lines are opaque, the dimmed lines carry transparency', () => {
+    const alphas = [...pptx.slides[0].xml.matchAll(/<a:alpha val="(\d+)"\/>/g)].map((x) => +x[1]);
+    assert.ok(alphas.length >= 2 && alphas.every((a) => a === 40000), `alphas: ${alphas}`);
+  });
+
+  test('no ghost text', () => {
+    const bg = decode(join(dbg, 'slide-1.png'));
+    for (const b of m.slides[0].blocks) {
+      const r = ink(bg, { x: b.x + 10, y: b.y + 10, w: b.w - 20, h: b.h - 20 });
+      assert.ok(r.count / r.total < 0.002, `"${b.runs[0].text}" has ${r.count} ink pixels left`);
+    }
+  });
+
+  test('renders in LibreOffice with text in place', { skip: !canRender && 'soffice/pdftoppm not available' }, () => {
+    renderCheck(m, dbg, 'code');
+  });
+});
+
+
+// ---- real web fonts (needs network; skipped offline) -------------------------------------
+const online = await fetch('https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap', { signal: AbortSignal.timeout(8000) }).then((r) => r.ok, () => false);
+
+describe('web fonts and template chrome', { skip: !online && 'Fontshare not reachable' }, () => {
+  let m, pptx, dbg;
+  before(async () => {
+    dbg = join(tmp, 'dbg-fonts');
+    m = await exportDeck({ input: join(here, 'fixtures/webfonts.html'), output: join(tmp, 'webfonts.pptx'), debugDir: dbg, route: offlineRoute({ allowFonts: true }) });
+    pptx = await openPptx(m.output);
+  });
+
+  test('web fonts were loaded before the screenshot, and the text boxes name them', () => {
+    assert.ok(m.loadedFonts.includes('General Sans') && m.loadedFonts.includes('Satoshi'), `loaded: ${m.loadedFonts}`);
+    assert.ok(m.fonts.includes('General Sans') && m.fonts.includes('Satoshi'), `used: ${m.fonts}`);
+    assert.match(pptx.slides[0].xml, /typeface="General Sans"/);
+    assert.match(pptx.slides[0].xml, /typeface="Satoshi"/);
+  });
+
+  test('title, labels, footer, and the data-page counter are extracted', () => {
+    const t = pptx.slides[0].runs;
+    for (const s of ['02 · Customer journey', 'Activation happens inside the first day', 'First alert fires', 'Day-one activation predicts expansion.', '01 / 01']) assert.ok(t.includes(s), `missing "${s}"; have ${JSON.stringify(t)}`);
+  });
+
+  test('arrow labels (pure translateY) are extracted; the CSS arrow itself stays in the raster', () => {
+    assert.ok(pptx.slides[0].runs.includes('HANDOFF') && pptx.slides[0].runs.includes('INVITE'));
+    const bg = decode(pptx.slides[0].bgPng);
+    assert.ok(ink(bg, { x: 700, y: 540, w: 100, h: 30 }, 40).count > 50, 'arrow line missing from the raster');
+  });
+
+  test('no ghost text with web fonts', () => {
+    const bg = decode(join(dbg, 'slide-1.png'));
+    for (const b of m.slides[0].blocks) {
+      const r = ink(bg, { x: b.x + 10, y: b.y + 10, w: b.w - 20, h: b.h - 20 });
+      assert.ok(r.count / r.total < 0.002, `"${b.runs[0].text}" has ${r.count} ink pixels left`);
+    }
   });
 });
 

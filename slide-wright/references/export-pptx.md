@@ -28,6 +28,7 @@ The script prints the `.pptx` path on stdout; progress and the list of fonts use
 - Animations and click-by-click builds are flattened: each slide is exported in its final state.
 - Text the exporter cannot place faithfully stays in the picture instead of becoming a text box: SVG text, gradient or outlined text, rotated or scaled text, clipped or ellipsised text, and lines that mix inline badges or pills with text. The per-slide log counts these.
 - Slides marked `data-visibility="hidden"` are skipped, as in the PDF.
+- Text placement was checked against LibreOffice renders, not PowerPoint itself. Ask the user to open the file in PowerPoint once and report any text that sits visibly off.
 
 ## If it fails
 
