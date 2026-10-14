@@ -2,7 +2,7 @@
 
 AI agent skill to generate beautiful, unique slide decks with reveal.js - new design for every prompt.
 
-https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
+<img src="UPLOAD_URL_HEADER" alt="slide-wright: every prompt, a deck ready for the room" />
 
 ## How it works
 
@@ -38,6 +38,8 @@ https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
 <td><img src="https://github.com/user-attachments/assets/4c640b94-3e09-4bb0-b766-639f07b01d84" alt="MCP example slide 2" /></td>
 </tr>
 </table>
+
+<img src="UPLOAD_URL_SHOWCASE" alt="A wall of slides in different themes" />
 
 ## Installation
 
