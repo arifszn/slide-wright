@@ -36,6 +36,7 @@ Don't open with a questionnaire. Take whatever the user gave — a one-line topi
 - **Length** from how much material there is. A bare topic becomes a short deck; a long outline becomes more slides. Don't fix a number up front.
 - **How much evidence** the deck needs: numbers, comparisons, and diagrams available or implied by the material.
 - **The topic's native visual language**: identify the object or mechanism the audience already understands, then make the exhibit resemble that object. Do not use a generic four-card flow just because the source material has steps.
+- **The composition decision**: choose or invent the exhibit family and its geometry from the claim. A process can be a card flow, timeline rail, vertical ladder, ledger/state rail, swimlane, decision tree, radial cycle, state machine, architecture, map, or annotated mockup. The list is not closed. Do not default slide 2 to the first flow snippet in the references.
 
 Only ask something if the request is too thin to design from at all — a single word with no angle — and even then ask one question, not five. If the user has more to give, they usually paste it.
 
@@ -73,6 +74,7 @@ Keep building in the **same** `./<deck-slug>.html` the user just approved. The t
 
 - Use the exact approved palette, type system, layout system, and exhibit style throughout.
 - Do not reuse the same composition for unrelated topics. Before finalizing the preview, deliberately vary at least three of: light/dark surface, font pairing, title placement, outer geometry, exhibit family, card treatment, and recurring chrome. A sequence may use a flow, but it may also need a timeline, state rail, architecture, map, ledger, or annotated mockup.
+- Apply the guard to structure, not just styling: vary at least three of step count, horizontal versus vertical direction, flow rendering, accent position, and the slide position where the exhibit first appears. If another deck is available in the working area, inspect its first content slide before choosing this one. If no listed exhibit fits, invent a topic-native composition with its own geometry and visual grammar; do not fall back to the canonical four-card flow.
 - Structure the story answer-first: the title slide, then the main point or recommendation, then the supporting slides, then the ask or next steps.
 - Vary the *exhibits* (flow, mockup, chart, comparison, timeline, metric panel) and layouts (full-width, split) while keeping the one visual system. Section breaks and the closing slide may drop the exhibit.
 - Every content slide has its action title and one exhibit. If a slide overflows, split it.

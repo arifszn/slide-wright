@@ -19,6 +19,20 @@ A slide with a split layout (text on the left, exhibit on the right, roughly 5/7
 
 ## Flow
 
+Flow is a family of compositions, not one canonical four-card template. Choose the rendering that matches the subject:
+
+- **Card-and-arrow**: discrete stages with handoffs. Use when ownership or a decision changes between stages.
+- **Timeline rail**: numbered nodes on a line with short state labels. Use when elapsed time or order is the claim.
+- **Vertical ladder**: stacked stages joined by a spine. Use when the sequence needs room for uneven text or supporting evidence.
+- **Ledger/state rail**: rows or columns showing an object changing state, owner, or balance. Use for payments, requests, inventory, and other stateful systems.
+- **Swimlane**: stages run across lanes for different actors, systems, or owners. Use when handoffs are the mechanism.
+- **Decision tree**: branches split on explicit decisions and converge on outcomes. Use when the path, not the list of steps, is the claim.
+- **Radial cycle**: a loop around a central object with a clear entry and exit. Use for recurring rounds, feedback loops, and operating cycles.
+- **Chevron chain**: connected wedges with one short phrase per state. Use for compact executive summaries, not for paragraphs.
+- **State machine**: named states connected by transitions and trigger labels. Use when retries, failure paths, or reversals matter.
+
+The card-and-arrow example below is only one rendering. Rebuild the markup and geometry for the selected variant; do not copy the example and only change colors. Do not use the same flow rendering for unrelated decks in succession when another variant proves the claim equally well. If none of these variants fits the subject, invent a new composition from the subject's own artifact or mechanism. The invented variant must have a clear visual grammar, a distinct geometry, and a short explanation in the slide code.
+
 ```html
 <div class="flow">
   <div class="step">

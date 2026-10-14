@@ -84,7 +84,7 @@ Pin this engine version: **`reveal.js@5.1.0`**.
        slide into the top/left edge and overlap fixed labels. A child wrapper is immune
        to that reset, so the same layout holds on screen AND in the exported PDF.
        The top padding also leaves room for any fixed labels/rules near the edges. */
-    .frame {
+     .frame {
       position: absolute;
       inset: 0;
       padding: 72px 120px 64px;
@@ -93,8 +93,11 @@ Pin this engine version: **`reveal.js@5.1.0`**.
       justify-content: flex-start;  /* top-anchored: content fills down from the title */
       gap: 40px;
       box-sizing: border-box;
-      text-align: left;     /* undo the engine's global center; see Rules */
-    }
+       text-align: left;     /* undo the engine's global center; see Rules */
+     }
+     /* These padding and gap values are one working example, not a required
+        deck-wide coordinate system. Choose frame metrics for the subject and
+        theme; copying them unchanged is a composition reuse. */
 
     /* ===========================================
        RECURRING ELEMENTS (optional, per theme): a header and/or footer inside

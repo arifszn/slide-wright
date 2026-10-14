@@ -18,7 +18,7 @@ From Google Fonts or Fontshare, loaded in the `<link>`, set as `--font-display`,
 
 ## Layout system
 
-What makes the slides read as one designed file. Fix the outer margins and a 12-column grid that every layout snaps to, and decide where titles and exhibits sit.
+What makes the slides read as one designed file. Fix the outer margins and a 12-column grid that every layout snaps to, and decide where titles and exhibits sit. Record the frame metrics, title placement, content density, and whether the exhibit is full-width, split, inset, or edge-to-edge. The values in `deck-template.md` are a worked example, not defaults to copy.
 
 Recurring elements are a choice per theme, not a requirement. A deck might carry a section label, a footer with the source or company name, a page number, a rule, or nothing at all beyond the margins. Pick what suits the subject and the room, keep it consistent once chosen, and let title, section, and closing slides drop it.
 
@@ -29,6 +29,8 @@ How the theme draws exhibits: card radius (0, 8, or 16px), border vs. fill, shad
 ## Similarity guard
 
 For each new deck, make at least three of these choices deliberately different from the last unrelated deck: light or dark surface, display/body font pairing, outer geometry, title placement, exhibit family, card treatment, and recurring chrome. The one constant is the boardroom standard, not a repeated template. If the first preview could be mistaken for another recent deck after removing its words, reject it and choose a different composition before showing it.
+
+The guard must operate at composition level, not only theme level. Also vary at least three of these when the subject changes: step count derived from the content, horizontal versus vertical direction, card-and-arrow versus rail versus ledger rendering, accent position based on the claim, and which slide first introduces the exhibit. If another deck is available in the same working area, inspect its first content slide before choosing the new composition. Do not assume a fresh session means a fresh visual pattern. The listed variants are prompts, not a closed library: invent a new subject-specific composition when they do not fit, rather than falling back to the canonical flow.
 
 ## Motion
 
