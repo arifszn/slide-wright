@@ -1,6 +1,6 @@
 # slide-wright
 
-<img src="https://github.com/user-attachments/assets/c8731bd1-81aa-4a91-8453-77add2c4c24a" alt="slide-wright: every prompt, a deck ready for the room" />
+<img src="https://github.com/user-attachments/assets/3499fb20-8b35-4469-9aed-e228f8482029" alt="slide-wright" />
 
 ## How it works
 
@@ -9,7 +9,7 @@
 3. **You decide.** Love it? It builds the whole deck. Want a different vibe? It generates a fresh direction and shows a new preview. Repeat until it's right.
 4. **You get your deck.** A polished, self-contained presentation. Export it to PDF or PowerPoint, or deploy it to a live URL for a link that works on any device.
 
-https://github.com/user-attachments/assets/aab7a727-120c-4ae8-926e-df98e1735d81
+https://github.com/user-attachments/assets/8e3b91b6-8b25-4d2f-b665-c6df96487f83
 
 ## Examples
 
