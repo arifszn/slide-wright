@@ -315,13 +315,17 @@ describe('edge cases', () => {
     assert.ok(spcs.every((v) => v >= 1500), `implausibly small line spacing in XML: ${spcs}`);
   });
 
+  test('a paragraph with a painted inline chip stays in the raster, so the chip keeps its text', () => {
+    assert.ok(!m.slides[0].blocks.some((b) => b.runs.some((r) => r.text && r.text.includes('pill-chip'))));
+    assert.ok(m.slides[0].skippedText.some((t) => t.startsWith('inline-box: A padded')));
+  });
+
   test('one <a:pPr> per paragraph', () => {
     for (const para of pptx.slides[0].xml.match(/<a:p>[\s\S]*?<\/a:p>/g)) assert.ok((para.match(/<a:pPr[\s>\/]/g) || []).length <= 1);
   });
 
   test('renders in LibreOffice with all text visible and in place', { skip: !canRender && 'soffice/pdftoppm not available' }, () => {
-    // 24px: inline code chips carry horizontal padding that a text run cannot reproduce, so text after a chip shifts left
-    renderCheck(m, dbg, 'edge', 24);
+    renderCheck(m, dbg, 'edge');
   });
 
   test('data-notes attribute becomes speaker notes', () => {
