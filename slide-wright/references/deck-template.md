@@ -36,16 +36,22 @@ Pin this engine version: **`reveal.js@5.1.0`**.
       --bg-alt:        /* #... (gradient stop / section bg) */;
       --text:          /* #... primary text */;
       --text-muted:    /* #... secondary text */;
+      --line:          /* #... rules, borders, dividers */;
       --accent:        /* #... */;
-      --accent-2:      /* #... optional second accent */;
+      --accent-2:      /* #... optional second data series */;
+      --on-accent:     /* #... text on accent fills, meets AA */;
 
       /* Typography */
-      --font-display:  /* 'Display Font', sans-serif */;
+      --font-display:  /* 'Title Font', serif */;
       --font-body:     /* 'Body Font', sans-serif */;
+      --font-mono:     /* 'Mono Font', monospace (optional, labels and numbers) */;
+      --fs-title:      80px;
+      --fs-sub:        40px;
+      --fs-body:       28px;
+      --fs-label:      20px;
 
-      /* Motion */
-      --ease:          cubic-bezier(0.16, 1, 0.3, 1);
-      --dur:           0.6s;
+      /* Exhibit style */
+      --radius:        /* 0 | 8px | 16px */;
     }
 
     /* ===========================================
@@ -77,22 +83,36 @@ Pin this engine version: **`reveal.js@5.1.0`**.
     .frame {
       position: absolute;
       inset: 0;
-      padding: 230px 140px 150px;
+      padding: 72px 120px 64px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;  /* top-anchored: content slides fill down from the chrome */
+      gap: 40px;
       box-sizing: border-box;
       text-align: left;     /* undo the engine's global center; see Rules */
     }
 
     /* ===========================================
-       SIGNATURE DEVICE — the one visual idea of this theme
-       (gradient field / grid / hard color plane / texture). Define here.
+       SLIDE CHROME: header + footer inside .frame, so they survive PDF export.
+       Restyle per theme (accent square, rule, mono labels...), keep the structure.
        =========================================== */
+    .chrome-head { display: flex; align-items: center; gap: 24px; font-size: var(--fs-label); color: var(--text-muted); }
+    .chrome-head .rule { flex: 1; border-top: 1px solid var(--line); }
+    .chrome-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 40px;
+                   font-size: var(--fs-label); color: var(--text-muted); }
+    .chrome-foot .takeaway { font-size: var(--fs-body); color: var(--text); }
+    .body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+    .action-title { font-size: var(--fs-title); line-height: 1.08; max-width: 1500px; margin: 0; }
+
+    /* ===========================================
+       SLIDE LAYOUTS — title, section, content (full-width exhibit),
+       split (text + exhibit), comparison, closing
+       =========================================== */
+    .title-slide { justify-content: space-between; }  /* label top, title middle, meta bottom */
     /* ... */
 
     /* ===========================================
-       SLIDE LAYOUTS — title, section, two-column, quote, comparison, closing
+       EXHIBITS: flow, mockup, chart, table... (see exhibits.md)
        =========================================== */
     /* ... */
 
@@ -110,11 +130,6 @@ Pin this engine version: **`reveal.js@5.1.0`**.
          max-height: none;                      (drop reveal's 400px cap = no scroll misalign)
          padding: 2rem 2.4rem; font-family: var(--font-mono);
        } */
-
-    /* ===========================================
-       MOTION — entrance + emphasis
-       =========================================== */
-    /* ... */
   </style>
 </head>
 <body>
@@ -125,22 +140,31 @@ Pin this engine version: **`reveal.js@5.1.0`**.
            Put layout variant classes (title-slide, two-col, etc.) on .frame. -->
 
       <!-- TITLE SLIDE -->
-      <section data-transition="fade">
+      <section>
         <div class="frame title-slide">
           <h1><!-- Real deck title --></h1>
-          <p class="subtitle"><!-- subtitle / author / date --></p>
+          <p class="subtitle"><!-- subtitle / presenter / date --></p>
         </div>
         <aside class="notes"><!-- speaker notes for this slide --></aside>
       </section>
 
-      <!-- CONTENT SLIDE -->
+      <!-- CONTENT SLIDE: chrome header, action title, one exhibit, chrome footer.
+           Everything is visible at once. -->
       <section>
         <div class="frame">
-          <h2>Slide title</h2>
-          <ul>
-            <li class="fragment">Point one</li>
-            <li class="fragment">Point two</li>
-          </ul>
+          <header class="chrome-head">
+            <span class="section-label">02 · Section name</span>
+            <span class="rule"></span>
+            <span class="page" data-page></span>
+          </header>
+          <h2 class="action-title">The slide's point, stated as a short claim.</h2>
+          <div class="body">
+            <!-- one exhibit from exhibits.md -->
+          </div>
+          <footer class="chrome-foot">
+            <p class="takeaway">What this means for the audience, in one sentence.</p>
+            <span class="source"><!-- Source: ... (data slides) --></span>
+          </footer>
         </div>
         <aside class="notes"><!-- talking points --></aside>
       </section>
@@ -179,12 +203,22 @@ SELECT count() FROM events WHERE ts > now() - INTERVAL 1 DAY
       height: 1080,
       margin: 0,            // theme controls padding; no engine letterbox margin
       center: false,        // we author full-bleed at 1920x1080; do NOT vertically auto-center
-      controls: true,
-      progress: true,
+      controls: false,      // no on-slide arrows: navigation is keys, clicks, swipe
+      progress: false,      // no progress bar: the chrome carries the page number
       hash: true,
-      transition: 'slide',  // per-slide override via data-transition
+      transition: 'fade',
+      transitionSpeed: 'fast',
       pdfSeparateFragments: false, // collapse fragments to one page per slide on ?print-pdf
       plugins: [ RevealNotes ],    // add RevealHighlight here when the deck has code
+    });
+
+    // Page numbers in the chrome ("02 / 09"), filled from slide order so they
+    // stay correct when slides are added or removed.
+    Reveal.on('ready', () => {
+      const slides = Reveal.getSlides();
+      const pad = n => String(n).padStart(2, '0');
+      slides.forEach((s, i) => s.querySelectorAll('[data-page]')
+        .forEach(el => { el.textContent = `${pad(i + 1)} / ${pad(slides.length)}`; }));
     });
   </script>
 </body>
@@ -197,7 +231,8 @@ SELECT count() FROM events WHERE ts > now() - INTERVAL 1 DAY
 - **Text aligns left by default.** The engine globally sets `.reveal .slides { text-align:center }`. The `.frame` box resets it to `left`. For a centered layout (title slide, full-bleed quote), put `text-align:center` back on that layout's `.frame` variant — don't rely on the engine default.
 - **Linear deck only — no vertical/nested slides.** Keep every slide as a direct child `<section>` of `.slides`. Don't nest `<section>`s (the engine's vertical stacks) and don't use the Markdown plugin — both fight the hand-built HTML/CSS and break the straight-line narration the deck is designed around.
 - **Canvas is 1920×1080.** Author slide content at that size; the engine scales the whole slide uniformly to the viewport (handles phones too). Do not write responsive breakpoints to reflow slide content.
-- **Fragments for staged reveals.** Use `class="fragment"` on items that should appear on click. Use `data-transition` per `<section>` for slide-change effects. See `motion-recipes.md`. Don't hand-roll a `.visible` system — the engine drives it.
+- **Slides appear complete.** Every element is visible as the slide lands. Click-by-click builds (`class="fragment"`) happen only when the user asks for them; `motion-recipes.md` covers that case.
+- **Chrome lives inside `.frame`.** Header first, footer last, `.body` between them with `flex: 1`. Title, section, and closing slides may drop or lighten the chrome. Page numbers come from `data-page`, never hand-typed.
 - **Keep `pdfSeparateFragments: false` in `Reveal.initialize`.** Without it, every fragment step becomes its own page in `?print-pdf` export — a 3-slide deck with fragments balloons to many pages. This collapses each slide to one page.
 - **Code slides** (only when the deck shows code): uncomment the highlight theme `<link>`, the `highlight.js` `<script>`, and add `RevealHighlight` to `plugins`. Mark up as `<pre><code data-trim data-noescape data-line-numbers="3-5|8-10" class="language-x">` — pipe-separated ranges step the highlight on each click (omit `data-line-numbers` for a plain block). Restyle so it belongs to the theme (never ship raw stock-widget code), but the **code-block CSS contract is mandatory**: `position: relative` + `flex-shrink: 0` on `<pre>`, and `display: block` + opaque `background` + `max-height: none` on `code.hljs`. Skipping any one causes the step clones to ghost, stair-step, or cover the heading. Keep snippets short enough to fit the frame (≈ ≤ 12 lines); trim the code rather than shrink the slide. Full recipe in `motion-recipes.md`.
 - **Speaker notes** go in `<aside class="notes">` inside each slide. Press **S** for the presenter view. Keep them out of the visible slide.
@@ -207,7 +242,7 @@ SELECT count() FROM events WHERE ts > now() - INTERVAL 1 DAY
 
 ## Media — images, video, backgrounds
 
-Identity is CSS by default (see `design-aesthetics.md`); use media only when the content needs it. Reference a remote URL (small file, needs network) or inline base64 (offline, bloats file).
+Exhibits are CSS/SVG by default (see `exhibits.md`); use media only when the content needs the real thing. Reference a remote URL (small file, needs network) or inline base64 (offline, bloats file).
 
 - **Inline image:** `<img src="…">`. Fit with `class="r-stretch"` (one per slide, direct child of `<section>`) or cap with `max-width:100%; max-height:70vh; object-fit:contain`.
 - **Video:** `<video data-autoplay muted data-src="…">` — `data-src` lazy-loads, engine auto-pauses off-slide.

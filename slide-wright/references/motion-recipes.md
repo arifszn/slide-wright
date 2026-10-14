@@ -1,27 +1,20 @@
 # Motion recipes
 
-Motion recipes for decks. Two layers: the **engine's** built-in slide transitions + fragments, and **custom CSS** for entrances and emphasis. Prefer engine features for navigation motion; add CSS for signature flourishes.
+## Default: static slides
+
+A boardroom deck moves like a well-run PowerPoint: the slide changes with a short fade and arrives complete. The template's `Reveal.initialize` already sets `transition: 'fade'`, `transitionSpeed: 'fast'`, `controls: false`, `progress: false`. Build every slide this way.
+
+The one built-in exception is **code slides**: stepped line highlights walk the audience through a snippet (see "Code slides" below).
+
+Everything else in this file (fragments, auto-animate, entrance animations, emphasis effects) is used only when the user asks for builds or animation. When they do, the final state of each slide is still a complete, composed slide.
 
 ## Slide transitions (engine)
 
-Set globally in `Reveal.initialize({ transition: '...' })`, override per slide with `data-transition` on a `<section>`:
-
-| Value | Feel |
-| --- | --- |
-| `none` | Instant. Good for dense reading decks. |
-| `fade` | Calm, editorial, professional. |
-| `slide` | Default, neutral, energetic. |
-| `convex` / `concave` | 3D depth, playful. Use sparingly. |
-| `zoom` | High-impact, dramatic. Title/section beats only. |
-
-```html
-<section data-transition="zoom">…</section>
-<section data-transition-speed="fast">…</section>
-```
+Set globally in `Reveal.initialize({ transition: '...' })`, override per slide with `data-transition` on a `<section>`. Values: `none`, `fade`, `slide`, `convex`, `concave`, `zoom`. Keep `fade` unless the user asks otherwise.
 
 ## Auto-animate (morph between two slides)
 
-The strongest "designed, not stepped-through" move. Put `data-auto-animate` on two consecutive `<section>`s and the engine tweens matching elements — position, size, color, font-size — from one to the next. Unmatched elements fade. No plugin; it's core.
+On request only. Put `data-auto-animate` on two consecutive `<section>`s and the engine tweens matching elements — position, size, color, font-size — from one to the next. Unmatched elements fade. No plugin; it's core.
 
 ```html
 <section data-auto-animate>
@@ -127,7 +120,7 @@ One word or a short number per line. Don't wrap a sentence in it — it'll size 
 
 ## Rules
 
-- One high-impact moment per slide beats many small ones.
+- When the user asks for animation, one moment per slide beats many small ones.
 - Never negate CSS functions directly (`-clamp()` is ignored) — use `calc(-1 * clamp(...))`.
 - Always include reduced-motion handling:
 

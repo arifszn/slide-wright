@@ -1,31 +1,38 @@
-# Looking designed, not generated
+# Boardroom-grade, not web-generated
 
-The failure mode of any generative tool is the average: the safe, middle-of-the-road look that could belong to any deck about anything. Everything in this skill exists to dodge that average. A good deck looks like one person made a few deliberate, slightly risky choices and stuck to them.
+The target is a **boardroom** deck: it reads like a finished slide from a strong strategy or product team, calm and confident. It should never look like a landing page, a web demo, or a generated page.
 
-## Commit instead of hedging
+Every deck still gets its own theme. What stays constant is the craft below.
 
-A timid deck spreads five mid-saturation colors evenly, picks a neutral sans, centers everything, and calls it clean. It reads as nobody's decision. Do the opposite: one dominant surface color, one sharp accent, a typeface with an actual opinion, a layout with some structure or asymmetry to it. Choose fewer things and lean on them harder.
+## Every content slide is composed
 
-## Type carries the tone first
+A content slide has three parts, and together they fill the canvas:
 
-The display face is the loudest thing on a slide, so spend it well. Reach past the default neutral sans that every tool lands on by reflex — the moment a deck opens in the same font as a thousand others, it already feels generic. Pair one face with character for headlines against a quiet, legible one for body text. Fontshare and Google Fonts both go well beyond the obvious choices; go there.
+1. **Action title**: the slide's point as a short claim, one or two lines. "Churn fell 18% after the pricing change." Avoid topic labels like "Overview" or "Why it's fast".
+2. **Exhibit**: one visual that proves or explains the claim (see `exhibits.md`).
+3. **Takeaway**: one sentence at the bottom that says what it means for the audience, or a source line for data.
 
-## Color should come from somewhere
+The slide sits inside the theme's **slide chrome** (header and footer, defined in `theme-generation.md`). Top-anchored, gridded, edge to edge within the margins. Big words alone in the middle of an empty canvas belong only to the title slide, section breaks, and the closing slide.
 
-Pull a palette from a source with a point of view: editorial print, film stills, album art, an IDE theme, the subject itself. A deck about deep-sea life and a fintech pitch have no business sharing a palette. Decide on light or dark deliberately, and don't let every deck drift dark out of habit.
+## Exhibits carry the slide
 
-## Pick one device and repeat it
+Executives scan, they do not read. The exhibit does most of the work: a flow with labeled arrows, a product mockup built from shapes, a chart, a comparison table, a timeline, a metric panel, an architecture diagram. Build exhibits in HTML/CSS/SVG in the theme's colors so they look like they were drawn in the same tool as the rest of the slide. Use a real image only when the content needs the real thing (a product screenshot, a logo, a photo of the actual hardware).
 
-Give the deck a single visual signature that recurs on most slides — a hairline frame, a visible grid, oversized numerals, a recurring color plane, a grain or texture. That repetition is what turns seven separate pages into one designed system.
+## Restraint reads as confidence
 
-## Images earn their place
+- **Color:** one dominant surface, one accent, and the neutrals for text and lines. Use the accent to point at the one thing that matters on the slide. Light or dark is a per-deck decision based on the subject and the room.
+- **Type:** one family or one tight pair, set in a strict scale: title, subhead, body, label. A refined serif or a clean grotesque for titles, a highly legible sans for body, and optionally a mono for small labels and numbers. Body text stays at 26px or larger on the 1920x1080 canvas.
+- **Depth:** flat surfaces, hairline rules, and at most a soft shadow on cards or a subtle gradient on the background. Keep every effect quiet enough that nobody would comment on it.
+- **Alignment:** left-aligned text on a visible grid, with equal gutters and consistent margins on every slide.
 
-Identity is type, color, and one CSS device — not stock photography, which drags a deck back to the average. Use an image only when the content needs the real thing (a product shot, a chart, a logo), and commit to it — full-bleed or a framed block, never corner clip-art. Markup in `deck-template.md`.
+## Copy sounds like an operator wrote it
+
+Short declarative sentences. Concrete nouns and numbers. Body text on a slide is one or two sentences, or three to five bullets of under ten words each. Plain words over marketing words: "cuts payout time from 3 days to same-day" over "unlocks seamless velocity".
 
 ## Match the room
 
-Tune the treatment to the stakes. A board update or a safety briefing should look controlled and sure of itself, not decorated. A community talk or a product launch can be loud and a little strange. Identical content earns a different look depending on who's watching and why.
+A board update, a QBR, or a security review is quiet and dense with evidence. A product vision or a partner pitch can carry more color and larger exhibits. Both use the same composed slide structure.
 
 ## The honest check
 
-Before you show a preview, ask one question: could this exact look belong to any other deck on any other topic? If the answer is yes, it's still the average — find the choice that's keeping it safe and push it somewhere specific.
+Before you show a preview, picture it projected in a boardroom, in a deck sent by a respected company. Would the slide pass without anyone wondering how it was made? Does every content slide have a claim, an exhibit, and a takeaway? If any slide looks like a web page or a poster, fix the composition before showing it.

@@ -1,11 +1,11 @@
 ---
 name: slide-wright
-description: Create beautiful, animated web presentations from a topic, rough notes, or an outline, and edit decks afterward — adding, removing, or revising slides. Generates a custom theme and a short two-slide preview, then builds the full deck only once the user confirms the direction; edits to an existing deck skip that flow and apply in place. Use when the user wants to make slides, a presentation, a talk deck, a pitch deck, or to add/remove/change a slide in one that already exists.
+description: Create beautiful web presentations from a topic, rough notes, or an outline, and edit decks afterward — adding, removing, or revising slides. Generates a custom theme and a short two-slide preview, then builds the full deck only once the user confirms the direction; edits to an existing deck skip that flow and apply in place. Use when the user wants to make slides, a presentation, a talk deck, a pitch deck, or to add/remove/change a slide in one that already exists.
 ---
 
 # slide-wright
 
-Turn a topic or rough notes into a polished, animated web presentation — a single self-contained HTML file that runs in any browser.
+Turn a topic or rough notes into a boardroom-grade presentation: slides that read like a deck from a strong strategy or product team, delivered as a single self-contained HTML file that runs in any browser.
 
 ## The rule that defines this skill
 
@@ -15,7 +15,7 @@ A few things follow from it:
 
 - One proposal at a time, not a menu. If the user says no, throw the direction out and try a clearly different one.
 - Every theme is invented for the deck in front of you. There is no library of presets to pick from.
-- Aim for a deck that looks deliberately designed, not averaged. See `references/design-aesthetics.md`.
+- Every deck meets the **boardroom** standard: each content slide has an action title, one exhibit, and a takeaway inside consistent slide chrome, and it appears complete when it lands (stepped code highlights are the one exception). See `references/design-aesthetics.md`.
 - The output is one HTML file with the theme CSS inline and the engine pulled from a CDN. No build step, no npm.
 
 ## The engine (keep this internal)
@@ -34,25 +34,20 @@ Don't open with a questionnaire. Take whatever the user gave — a one-line topi
 
 - **Purpose and audience** from the subject and how it's written. A raise, a lesson, a conference talk, and an internal update each call for a different treatment.
 - **Length** from how much material there is. A bare topic becomes a short deck; a long outline becomes more slides. Don't fix a number up front.
-- **How dense** each slide should be (see below).
+- **How much evidence** the deck needs: numbers, comparisons, and diagrams available or implied by the material.
 
 Only ask something if the request is too thin to design from at all — a single word with no angle — and even then ask one question, not five. If the user has more to give, they usually paste it.
 
-### How dense should the slides be?
+### Composed slides
 
-This is one judgment call that shapes type size, word count, and slide count for the whole deck. Place the deck between two extremes:
-
-- A deck **made to be spoken over** carries one idea per slide, large type, plenty of air, a few words. More slides, each lighter. Talks, keynotes, anything presented live.
-- A deck **made to be read alone** is self-contained: structured grids and tables, captions, more words per slide, tighter but still deliberate spacing. Reports, handouts, async review.
-
-Most decks lean one way. Pick the nearer extreme instead of splitting the difference. Either way, never let a slide scroll, overflow, overlap, or shrink text below comfortable reading — if it won't fit, split it across more slides.
+Every content slide is self-contained: someone reading the PDF without the presenter gets the point. A short action title states the claim, one exhibit proves it, and a takeaway line says what it means. One claim per slide; when a slide carries two claims or its exhibit won't fit, split it. Never let a slide scroll, overflow, overlap, or shrink text below the sizes in the theme.
 
 ## Step 2 — Propose a look
 
 Read `references/theme-generation.md` and `references/design-aesthetics.md`, then:
 
-1. Invent a theme: a palette, a display/body type pairing from Fontshare or Google Fonts, a layout grammar, and one recurring visual device. Give it a name for your own use.
-2. Build a two-slide preview with `references/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one content slide in the layout the deck will lean on. Write it as the real deck file in the working directory, named for the deck: `./<deck-slug>.html` (e.g. `./clickhouse.html`). This is the one file the whole deck grows into — there is no separate demo or scratch file.
+1. Invent a theme: a palette, a type system from Fontshare or Google Fonts, the slide chrome, and the exhibit style. Give it a name for your own use.
+2. Build a two-slide preview with `references/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one real content slide with its chrome, action title, a full exhibit from `references/exhibits.md`, and takeaway. Write it as the real deck file in the working directory, named for the deck: `./<deck-slug>.html` (e.g. `./clickhouse.html`). This is the one file the whole deck grows into — there is no separate demo or scratch file.
 3. Open it in the browser.
 
 The preview has to read as two real slides from the finished deck, not a sample card. Keep all process language off the slide and out of the filename: no "demo," "preview," theme name, or "option A." The theme's name goes in your message to the user, never on a slide.
@@ -67,23 +62,24 @@ Stop and ask (use a structured prompt if the environment has one):
 > - **Try a different direction** → start over with a new theme.
 > - **Adjust this one** (different accent / font / lighter / bolder) → tweak and show it again.
 
-If they want a different direction, optionally ask one steering question ("warmer or cooler, bolder or calmer?"), then build a genuinely new theme — different palette, type, and device — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
+If they want a different direction, optionally ask one steering question ("lighter or darker, more corporate or more product-like?"), then build a genuinely new theme — different palette, type, chrome, and exhibit style — and a fresh two-slide preview, overwriting the same `./<deck-slug>.html`. Don't just recolor the rejected one. Repeat until they approve.
 
 Do not build the full deck before you have a yes.
 
 ## Step 4 — Build the deck
 
-Keep building in the **same** `./<deck-slug>.html` the user just approved. The two approved slides stay as they are — append the rest around them; never regenerate them from scratch (that reintroduces drift the user already signed off against). Read `references/motion-recipes.md` for the transition and reveal patterns.
+Keep building in the **same** `./<deck-slug>.html` the user just approved. The two approved slides stay as they are — append the rest around them; never regenerate them from scratch (that reintroduces drift the user already signed off against). Read `references/exhibits.md` for exhibit patterns; read `references/motion-recipes.md` only for code slides or when the user asks for animation.
 
-- Use the exact approved palette, fonts, spacing, and device throughout. Don't let the style drift partway through.
-- Vary the *layouts* — title, section break, two-column, quote, comparison, closing — while keeping the one visual system.
-- Match the density you settled on: spoken-over decks get more slides with less on each; read-alone decks get structured, self-contained slides. If a slide overflows, split it.
+- Use the exact approved palette, type system, chrome, and exhibit style throughout.
+- Structure the story answer-first: the title slide, then the main point or recommendation, then the supporting slides, then the ask or next steps.
+- Vary the *exhibits* (flow, mockup, chart, comparison, timeline, metric panel) and layouts (full-width, split) while keeping the one visual system. Section breaks and the closing slide may drop the exhibit.
+- Every content slide has its action title, one exhibit, and takeaway. If a slide overflows, split it.
 - Put speaker notes in `<aside class="notes">` wherever the content implies something to say out loud.
 - Keep it one self-contained HTML file: theme CSS inline, engine from the CDN, a clear comment on each section.
 
 If the user only wants part of the deck for now, that's fine — the file is already a working deck. Adding more slides later is just editing it (see "Editing a deck that already exists").
 
-Once the deck is built, look at it in a real browser render: no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing.
+Once the deck is built, look at it in a real browser render: every slide complete on arrival, chrome on every content slide, the canvas filled, no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing.
 
 ## Step 5 — Hand it off
 
@@ -98,7 +94,8 @@ Read these as you reach them, not all at once:
 
 - `references/design-aesthetics.md` — what makes a deck look designed (Step 2)
 - `references/theme-generation.md` — the procedure for inventing a theme (Step 2)
-- `references/deck-template.md` — the HTML skeleton and engine setup (Steps 2 and 4)
-- `references/motion-recipes.md` — transitions and reveals (Step 4)
+- `references/deck-template.md` — the HTML skeleton, slide chrome, and engine setup (Steps 2 and 4)
+- `references/exhibits.md`: choosing and building the visual on each content slide (Steps 2 and 4)
+- `references/motion-recipes.md` — code slides, and animation when the user asks for it (Step 4)
 - `references/export-pdf.md` — saving a deck as a PDF (Step 5)
 - `references/deploy.md` — publishing the deck to a live URL (Step 5)
