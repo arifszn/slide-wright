@@ -9,7 +9,7 @@
 3. **You decide.** Love it? It builds the whole deck. Want a different vibe? It generates a fresh direction and shows a new preview. Repeat until it's right.
 4. **You get your deck.** A polished, self-contained presentation. Export it to PDF or PowerPoint, or deploy it to a live URL for a link that works on any device.
 
-https://github.com/user-attachments/assets/1a5e5d9d-f52c-49a8-b9af-efa55c8d6cb6
+https://github.com/user-attachments/assets/aab7a727-120c-4ae8-926e-df98e1735d81
 
 ## Examples
 
