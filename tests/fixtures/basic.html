@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fixture Deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<style>
+  :root { --bg:#F4EFE6; --text:#1B1B1B; --muted:#6B6558; --line:#CFC7B8; --accent:#C2410C; --on-accent:#FFFFFF; --ink:#12263A; }
+  .reveal { font-family: Arial, sans-serif; color: var(--text); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Times New Roman', serif; color: var(--text); text-transform: none; margin: 0; }
+  .reveal .slides section { height: 1080px; overflow: hidden; background: var(--bg); }
+  .reveal .slides section.ink { background: var(--ink); }
+  .reveal .slides section.ink * { color: #F4EFE6; }
+  .frame { position:absolute; inset:0; padding:72px 120px 64px; display:flex; flex-direction:column; gap:40px; box-sizing:border-box; text-align:left; }
+  .lab { font-size:20px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); }
+  .title-slide { justify-content:center; }
+  .title-slide h1 { font-size:110px; line-height:1.05; max-width:1400px; }
+  .title-slide .sub { font-size:40px; color:var(--muted); margin:0; }
+  .action-title { font-size:68px; line-height:1.1; max-width:1500px; }
+  .body { flex:1; display:flex; flex-direction:column; justify-content:center; }
+  .flow { display:flex; gap:24px; }
+  .step { flex:1; padding:36px; border:2px solid var(--line); border-radius:12px; background:#fff; }
+  .step h3 { font-size:40px; margin:12px 0; }
+  .step p { font-size:28px; line-height:1.4; margin:0; }
+  .step.key { background:var(--accent); border-color:var(--accent); }
+  .step.key h3, .step.key p, .step.key .lab { color:var(--on-accent); }
+  .foot { display:flex; justify-content:space-between; font-size:24px; color:var(--muted); }
+  .center { text-align:center; align-items:center; justify-content:center; }
+  .center h2 { font-size:90px; }
+  .grad { font-size:100px; font-family:Arial; font-weight:700; background:linear-gradient(90deg,#C2410C,#12263A); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin:0; }
+  table { border-collapse:collapse; font-size:30px; width:100%; }
+  td, th { border-bottom:2px solid var(--line); padding:18px 12px; text-align:left; }
+  th { font-size:22px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
+  td.num { text-align:right; font-weight:700; }
+  .bars svg { width:100%; height:420px; }
+  .bars text { font-family:Arial; font-size:26px; fill:#1B1B1B; }
+  ul.points { font-size:36px; line-height:1.5; margin:0; padding-left:48px; }
+  .reveal pre { position:relative; flex-shrink:0; width:100%; margin:0; box-shadow:none; }
+  .reveal pre code { display:block; background:#12263A !important; color:#F4EFE6; max-height:none; padding:32px 40px; font-family:'Courier New', monospace; font-size:34px; line-height:1.5; }
+  .pill { display:inline-block; padding:6px 20px; border-radius:30px; background:var(--accent); color:#fff; font-size:26px; }
+  .ghosty { font-size:44px; text-shadow: 3px 3px 0 #C2410C; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <!-- 1 title (notes) -->
+  <section><div class="frame title-slide">
+    <span class="lab">Q3 Board Update</span>
+    <h1>Revenue grew 42% while burn fell</h1>
+    <p class="sub">Corvid Labs &middot; October 2026</p>
+  </div><aside class="notes"><p>Open with the headline number.</p><p>Pause for questions.</p></aside></section>
+
+  <!-- 2 flow, accent card, multi-line paragraphs, inline runs, footer (no notes) -->
+  <section><div class="frame">
+    <span class="lab">02 · The motion</span>
+    <h2 class="action-title">Self-serve pays for itself in <em>nine</em> weeks</h2>
+    <div class="body"><div class="flow">
+      <div class="step"><span class="lab">01 · Trial</span><h3>Sign up</h3><p>A developer connects a repo in under two minutes and sees <b>real data</b> right away.</p></div>
+      <div class="step key"><span class="lab">02 · Activate</span><h3>First alert</h3><p>The first alert fires inside a day, which is when the account becomes sticky.</p></div>
+      <div class="step"><span class="lab">03 · Expand</span><h3>Add seats</h3><p>Teams invite colleagues and the plan upgrades itself.</p></div>
+    </div></div>
+    <div class="foot"><span>Source: internal billing export</span><span>02 / 08</span></div>
+  </div></section>
+
+  <!-- 3 dark section variant, centered -->
+  <section class="ink"><div class="frame center">
+    <span class="lab">Section</span>
+    <h2>What changes next quarter</h2>
+  </div><aside class="notes">Transition to the plan.</aside></section>
+
+  <!-- 4 table -->
+  <section><div class="frame">
+    <h2 class="action-title">Enterprise carries the margin</h2>
+    <div class="body"><table>
+      <tr><th>Segment</th><th>ARR</th><th>Margin</th></tr>
+      <tr><td>Self-serve</td><td class="num">$4.1M</td><td class="num">61%</td></tr>
+      <tr><td>Enterprise</td><td class="num">$9.8M</td><td class="num">78%</td></tr>
+    </table></div>
+  </div></section>
+
+  <!-- 5 svg chart (text must stay in the image) + list -->
+  <section><div class="frame">
+    <h2 class="action-title">Growth is compounding</h2>
+    <div class="body bars"><svg viewBox="0 0 1200 420">
+      <rect x="60" y="260" width="140" height="120" fill="#CFC7B8"/><rect x="260" y="200" width="140" height="180" fill="#CFC7B8"/><rect x="460" y="120" width="140" height="260" fill="#C2410C"/>
+      <text x="80" y="410">Q1</text><text x="280" y="410">Q2</text><text x="480" y="410">Q3</text>
+    </svg>
+    <ul class="points"><li>Bookings up 42%</li><li>Burn multiple down to 1.1</li></ul></div>
+  </div></section>
+
+  <!-- 6 gradient text, pill, text-shadow, transform: all must be handled without losing or duplicating text -->
+  <section><div class="frame">
+    <p class="grad">Gradient headline</p>
+    <p class="ghosty">Shadowed line with a <span class="pill">pill</span> inside</p>
+    <p style="transform:rotate(-4deg); font-size:48px; width:700px;">Rotated text stays in the image</p>
+    <p style="width:500px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:40px;">This sentence is far too long to fit in its box and is clipped</p>
+  </div></section>
+
+  <!-- 7 code slide with line steps -->
+  <section><div class="frame">
+    <h2 class="action-title">One query answers it</h2>
+    <pre><code data-trim data-noescape class="language-sql">SELECT account, count() AS alerts
+FROM events
+WHERE ts &gt; now() - INTERVAL 1 DAY
+GROUP BY account</code></pre>
+  </div><aside class="notes">Walk through the query.</aside></section>
+
+  <!-- 8 fragments: all must be visible -->
+  <section><div class="frame">
+    <h2 class="action-title">Three asks</h2>
+    <ul class="points"><li class="fragment">Approve the hiring plan</li><li class="fragment">Endorse the pricing change</li><li class="fragment">Intro two enterprise buyers</li></ul>
+  </div><aside class="notes">Close on the ask.</aside></section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({ width:1920, height:1080, margin:0, center:false, controls:false, progress:true, hash:true, transition:'fade', pdfSeparateFragments:false, plugins:[RevealNotes] });
+</script>
+</body>
+</html>

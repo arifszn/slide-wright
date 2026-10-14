@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Edge Deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<style>
+  .reveal { font-family: Arial, sans-serif; color:#111; }
+  .reveal .slides section { height:1080px; overflow:hidden; background:#FFFFFF; }
+  .frame { position:absolute; inset:0; padding:80px 120px; box-sizing:border-box; text-align:left; display:flex; flex-direction:column; gap:30px; }
+  .frame p { margin:0; font-size:44px; }
+  .right { text-align:right; }
+  .cap { text-transform:capitalize; }
+  .faded { opacity:.4; }
+  code { font-family:'Courier New', monospace; font-size:.82em; padding:3px 10px; background:#E8E8E8; border-radius:6px; color:#B00020; }
+  b { font-weight:700; } i { font-style:italic; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+  <section data-notes="Notes from the attribute."><div class="frame">
+    <p>Line one<br>Line two after a break</p>
+    <p class="right">Right aligned text</p>
+    <p class="cap">capitalize every word here</p>
+    <p class="faded">Half transparent text</p>
+    <p style="white-space:pre">  preserved   spacing
+second preserved line</p>
+    <p>Each class does <code>p-4</code> = padding, <code>text-white</code> = color</p>
+    <p style="width:760px">A longer sentence that wraps onto a second line and carries an inline <code>code-chip</code> in the middle of it.</p>
+    <p>Mixed <b>bold</b>, <i>italic</i> and <u>underline</u> runs &amp; an ampersand</p>
+  </div></section>
+  <section data-visibility="hidden"><div class="frame"><p>HIDDEN SLIDE MUST NOT EXPORT</p></div></section>
+  <section><div class="frame"><p>Final slide without notes</p></div></section>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>Reveal.initialize({ width:1920, height:1080, margin:0, center:false, transition:'fade' });</script>
+</body>
+</html>
