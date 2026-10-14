@@ -1,0 +1,32 @@
+name: test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  exporter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The exporter installs its own dependencies (pptxgenjs, playwright-core) into this
+      # directory on first use; the tests add reveal.js, pngjs and xmldom to it.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/slide-wright
+          key: export-deps-${{ hashFiles('slide-wright/scripts/lib/deps.mjs', 'tests/lib/offline.mjs') }}
+
+      # LibreOffice + poppler enable the render-position tests (otherwise they skip).
+      - name: Install render tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libreoffice-impress poppler-utils fonts-liberation
+
+      - run: npm test
