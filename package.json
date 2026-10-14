@@ -1,0 +1,7 @@
+{
+  "name": "slide-wright-dev",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only: tests for the PowerPoint exporter. The skill itself has no build step and no dependencies.",
+  "scripts": { "test": "node --test tests/*.test.mjs" }
+}

@@ -96,6 +96,20 @@ A plain request without the name ("Make me a slide deck about...") also works, b
 
 Just ask the agent to export the deck, and it walks you through it. To do it yourself: add `?print-pdf` to the deck URL, then open the print dialog (Cmd/Ctrl + P) and save as PDF. Choose Landscape, set margins to None, and turn on background graphics.
 
+## Export to PowerPoint
+
+Ask the agent to export the deck as a PowerPoint file. Text comes out as editable text boxes with speaker notes; shapes, charts, and images are baked into each slide's background, so they look the same but are not editable. Fonts are not embedded, so on a machine without the deck's fonts PowerPoint substitutes similar ones. Use the PDF export when exact typography matters.
+
+```
+/slide-wright Export my deck to PowerPoint
+```
+
+Or run it yourself (needs Node 18+, Chrome, and network access; dependencies install on first run):
+
+```bash
+node slide-wright/scripts/export-pptx.mjs deck.html
+```
+
 ## Deploy to a live URL
 
 The deck is a single self-contained HTML file, with the theme inline and the engine and fonts from a CDN, so there's no build step and no assets to bundle. Any static host will serve it.
