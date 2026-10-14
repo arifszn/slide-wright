@@ -10,6 +10,7 @@ import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 import { ensureDeps } from './lib/deps.mjs';
 import { extractSlide } from './lib/extract.mjs';
+import { finalizePackage } from './lib/package.mjs';
 
 const SLIDE_IN = 13.333; // slide width in inches; height follows the deck's aspect ratio
 const HIDE_CSS = `
@@ -140,7 +141,8 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
     }
 
     mkdirSync(dirname(output), { recursive: true });
-    await pptx.writeFile({ fileName: output });
+    const raw = await pptx.write({ outputType: 'nodebuffer' });
+    writeFileSync(output, await finalizePackage(req('jszip'), raw));
     manifest.output = output;
     manifest.fonts = [...fonts];
     manifest.loadedFonts = await page.evaluate(() => [...new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/^["']|["']$/g, '')))]);

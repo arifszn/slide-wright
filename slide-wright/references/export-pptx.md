@@ -38,4 +38,10 @@ The script prints the `.pptx` path on stdout; progress and the list of fonts use
 
 ## Verifying a change to the exporter
 
-`npm test` from the repository root exports two fixture decks and checks slide count, one picture per slide, text, notes, no duplicated text, and, when LibreOffice and `pdftoppm` are installed, that rendered text lands within a few pixels of where the HTML put it.
+`npm test` from the repository root exports four fixture decks (the web-font one needs network and skips offline). It checks:
+
+- slide count, one picture per slide, text, notes, no duplicated text
+- package validity: every part has a content type, relationships resolve, ids are unique, colours are 6-digit hex, no stray whitespace issues (`tests/lib/validate-ooxml.mjs`, itself tested against 17 deliberately broken packages)
+- with LibreOffice and `pdftoppm` installed, that rendered text lands within a few pixels of where the HTML put it
+
+The validator is structural, not a full schema validation. `scripts/lib/package.mjs` fixes two things pptxgenjs gets wrong (dangling content-type overrides, missing `xml:space`) and leaves the child order of `<p:presentation>` alone: PowerPoint needs it as pptxgenjs writes it.

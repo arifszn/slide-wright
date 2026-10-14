@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { ensureDeps, CACHE_DIR } from '../../slide-wright/scripts/lib/deps.mjs';
 
-export const TEST_DEPS = { 'reveal.js': '5.1.0', pngjs: '7.0.0' };
+export const TEST_DEPS = { 'reveal.js': '5.1.0', pngjs: '7.0.0', '@xmldom/xmldom': '0.9.12' };
 
 // allowFonts: let Fontshare/Google font requests through (for the web-font test)
 export function offlineRoute({ allowFonts = false } = {}) {

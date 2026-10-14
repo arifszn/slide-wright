@@ -13,6 +13,7 @@ import { exportDeck } from '../slide-wright/scripts/export-pptx.mjs';
 import { ensureDeps } from '../slide-wright/scripts/lib/deps.mjs';
 import { offlineRoute, TEST_DEPS } from './lib/offline.mjs';
 import { decode, ink } from './lib/pixels.mjs';
+import { validatePptx } from './lib/validate-ooxml.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const JSZip = ensureDeps(TEST_DEPS)('jszip');
@@ -41,9 +42,9 @@ async function openPptx(file) {
       const target = rels.match(new RegExp(`Id="${bg[1]}"[^>]*Target="\\.\\./media/([^"]+)"|Target="\\.\\./media/([^"]+)"[^>]*Id="${bg[1]}"`));
       bgPng = target && (await zip.file(`ppt/media/${target[1] || target[2]}`).async('nodebuffer'));
     }
-    const runs = [...xml.matchAll(/<a:t>([^<]*)<\/a:t>/g)].map((m) => m[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+    const runs = [...xml.matchAll(/<a:t(?: [^>]*)?>([^<]*)<\/a:t>/g)].map((m) => m[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
     // pptxgenjs writes a notes page for every slide (with only a slide-number field when empty), so "has notes" means non-empty text
-    const noteText = notesXml ? [...notesXml.replace(/<a:fld[\s\S]*?<\/a:fld>/g, '').matchAll(/<a:t>([^<]*)<\/a:t>/g)].map((m) => m[1]).join('\n') : '';
+    const noteText = notesXml ? [...notesXml.replace(/<a:fld[\s\S]*?<\/a:fld>/g, '').matchAll(/<a:t(?: [^>]*)?>([^<]*)<\/a:t>/g)].map((m) => m[1]).join('\n') : '';
     const notes = noteText.trim() ? noteText : null;
     slides.push({ xml, runs, text: runs.join(' '), notes, bgPng });
   }
@@ -85,6 +86,10 @@ describe('basic deck', () => {
     dbg = join(tmp, 'dbg');
     m = await exportDeck({ input: join(here, 'fixtures/basic.html'), output: join(tmp, 'basic.pptx'), debugDir: dbg, route: offlineRoute() });
     pptx = await openPptx(m.output);
+  });
+
+  test('package is structurally valid (relationships, content types, colours, ids)', async () => {
+    assert.deepEqual(await validatePptx(readFileSync(m.output)), []);
   });
 
   test('one pptx slide per deck slide, 16:9', async () => {
@@ -198,6 +203,10 @@ describe('stepped code slide', () => {
     pptx = await openPptx(m.output);
   });
 
+  test('package is structurally valid', async () => {
+    assert.deepEqual(await validatePptx(readFileSync(m.output)), []);
+  });
+
   test('each code line is exported once: the stacked step clones are skipped as covered', () => {
     for (const line of ['SELECT', 'FROM', 'WHERE', 'GROUP']) {
       const n = pptx.slides[0].runs.filter((r) => r.startsWith(line)).length;
@@ -236,6 +245,10 @@ describe('web fonts and template chrome', { skip: !online && 'Fontshare not reac
     pptx = await openPptx(m.output);
   });
 
+  test('package is structurally valid', async () => {
+    assert.deepEqual(await validatePptx(readFileSync(m.output)), []);
+  });
+
   test('web fonts were loaded before the screenshot, and the text boxes name them', () => {
     assert.ok(m.loadedFonts.includes('General Sans') && m.loadedFonts.includes('Satoshi'), `loaded: ${m.loadedFonts}`);
     assert.ok(m.fonts.includes('General Sans') && m.fonts.includes('Satoshi'), `used: ${m.fonts}`);
@@ -271,6 +284,11 @@ describe('edge cases', () => {
     pptx = await openPptx(m.output);
   });
 
+  test('package is structurally valid, including runs with leading/trailing spaces', async () => {
+    assert.deepEqual(await validatePptx(readFileSync(m.output)), []);
+    assert.match(pptx.slides[0].xml, /<a:t xml:space="preserve">\s+preserved/);
+  });
+
   test('data-visibility="hidden" slides are skipped, like in the PDF export', () => {
     assert.equal(pptx.slides.length, 2);
     assert.ok(!pptx.slides.some((s) => s.text.includes('HIDDEN SLIDE')));
@@ -296,6 +314,60 @@ describe('edge cases', () => {
     assert.match(x, /b="1"/);
     assert.match(x, /i="1"/);
     assert.match(x, /u="sng"/);
+  });
+});
+
+
+// ---- the validator itself: it must flag each defect it claims to catch ---------------------
+describe('ooxml validator', () => {
+  let good;
+  before(async () => {
+    const m = await exportDeck({ input: join(here, 'fixtures/edge.html'), output: join(tmp, 'val-src.pptx'), route: offlineRoute() });
+    good = readFileSync(m.output);
+  });
+
+  // apply `edit` to the package, return the validator's verdict
+  async function broken(edit) {
+    const zip = await JSZip.loadAsync(good);
+    await edit(zip);
+    return validatePptx(await zip.generateAsync({ type: 'nodebuffer' }));
+  }
+  const patch = (name, fn) => async (zip) => zip.file(name, fn(await zip.file(name).async('string')));
+
+  test('control: the untouched export is valid', async () => {
+    assert.deepEqual(await validatePptx(good), []);
+  });
+
+  const cases = [
+    ['colour with #', patch('ppt/slides/slide1.xml', (x) => x.replace(/srgbClr val="([0-9A-F]{6})"/, 'srgbClr val="#$1"')), /invalid colour/],
+    ['8-digit colour (alpha baked into hex)', patch('ppt/slides/slide1.xml', (x) => x.replace(/srgbClr val="([0-9A-F]{6})"/, 'srgbClr val="$100"')), /invalid colour/],
+    ['alpha out of range', patch('ppt/slides/slide1.xml', (x) => x.replace(/<a:alpha val="\d+"\/>/, '<a:alpha val="250000"/>')), /alpha/],
+    ['font size out of range', patch('ppt/slides/slide1.xml', (x) => x.replace(/ sz="\d+"/, ' sz="5"')), /font size/],
+    ['unknown alignment', patch('ppt/slides/slide1.xml', (x) => x.replace(/algn="l"/, 'algn="left"')), /alignment/],
+    ['duplicate shape ids', patch('ppt/slides/slide1.xml', (x) => x.replace(/<p:cNvPr id="3"/, '<p:cNvPr id="2"')), /duplicate shape ids/],
+    ['dangling relationship id in a slide', patch('ppt/slides/slide1.xml', (x) => x.replace(/r:embed="rId\d+"/, 'r:embed="rId99"')), /not declared/],
+    ['truncated XML', patch('ppt/slides/slide2.xml', (x) => x.slice(0, x.length - 40)), /not well-formed/],
+    ['missing leading-space preserve flag', patch('ppt/slides/slide1.xml', (x) => x.replace('<a:t xml:space="preserve">', '<a:t>')), /xml:space/],
+    ['shape completely off-slide', patch('ppt/slides/slide1.xml', (x) => x.replace(/<a:off x="\d+" y="\d+"\/>(<a:ext cx="[1-9])/, '<a:off x="99999999" y="0"/>$1')), /outside the slide/],
+    ['part without a content type', patch('[Content_Types].xml', (x) => x.replace(/<Override[^>]*PartName="\/ppt\/slides\/slide2.xml"[^>]*\/>/, '')), /no content type/],
+    ['content-type override for a missing part', patch('[Content_Types].xml', (x) => x.replace('</Types>', '<Override PartName="/ppt/slideMasters/slideMaster9.xml" ContentType="x"/></Types>')), /not in the package/],
+    ['relationship to a missing part', async (zip) => { const f = Object.keys(zip.files).find((n) => /ppt\/media\/.*\.png$/.test(n)); zip.remove(f); }, /not in the package/],
+    ['slide not listed in sldIdLst', patch('ppt/presentation.xml', (x) => x.replace(/<p:sldId [^>]*\/>/, '')), /not in <p:sldIdLst>/],
+    ['duplicate slide ids', patch('ppt/presentation.xml', (x) => x.replace(/(<p:sldId id=")257"/, '$1256"')), /duplicate slide ids/],
+    ['notes page without notes master link', patch('ppt/notesSlides/_rels/notesSlide1.xml.rels', (x) => x.replace(/<Relationship [^>]*notesMaster[^>]*\/>/, '')), /notes master/],
+    ['corrupt image', async (zip) => { const f = Object.keys(zip.files).find((n) => /ppt\/media\/.*\.png$/.test(n)); zip.file(f, Buffer.from('not a png at all')); }, /not a PNG/],
+  ];
+  for (const [name, edit, expected] of cases) {
+    test(`flags: ${name}`, async () => {
+      const errs = await broken(edit);
+      assert.ok(errs.some((e) => expected.test(e)), `expected ${expected}, got ${JSON.stringify(errs)}`);
+    });
+  }
+
+  test('does not flag pptxgenjs\'s unusual child order in <p:presentation> (PowerPoint needs it as written)', async () => {
+    const pres = (await JSZip.loadAsync(good)).file('ppt/presentation.xml');
+    const xml = await pres.async('string');
+    assert.ok(xml.indexOf('<p:sldIdLst>') < xml.indexOf('<p:notesMasterIdLst>'), 'premise: pptxgenjs order changed; revisit finalizePackage');
   });
 });
 
