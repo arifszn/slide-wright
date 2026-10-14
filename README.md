@@ -16,7 +16,15 @@ https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
 ## More Examples
 
 <table>
-<tr><th colspan="2"><i>"Generate a presentation for ClickHouse, keep theme yellow"</i></th></tr>
+<tr><th colspan="2"><i>"/slide-wright Create a Q3 board update for Corvid Labs, a B2B observability SaaS"</i></th></tr>
+<tr>
+<td><img src="UPLOAD_URL_1" alt="Q3 board update example slide 1" /></td>
+<td><img src="UPLOAD_URL_2" alt="Q3 board update example slide 2" /></td>
+</tr>
+</table>
+
+<table>
+<tr><th colspan="2"><i>"/slide-wright Generate a presentation for ClickHouse, keep theme yellow"</i></th></tr>
 <tr>
 <td><img src="https://github.com/user-attachments/assets/6839eba2-a228-4324-8dc0-983e235991f7" alt="ClickHouse example slide 1" /></td>
 <td><img src="https://github.com/user-attachments/assets/e9208b1f-c813-4a0f-b4ef-b760c011981d" alt="ClickHouse example slide 2" /></td>
@@ -24,42 +32,10 @@ https://github.com/user-attachments/assets/78d69739-0296-42a6-9c56-eed42108aab3
 </table>
 
 <table>
-<tr><th colspan="2"><i>"Make me a sales pitch deck for Lumen, a smart home energy monitor"</i></th></tr>
+<tr><th colspan="2"><i>"/slide-wright Create a presentation on MCP with this outline: [outline]"</i></th></tr>
 <tr>
-<td><img src="https://github.com/user-attachments/assets/cd2b8874-2f25-4c2a-89f9-6461a1d7f719" alt="Sales pitch example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/59439144-cb8f-4d44-b63d-4047b39b12b9" alt="Sales pitch example slide 2" /></td>
-</tr>
-</table>
-
-<table>
-<tr><th colspan="2"><i>"Create me a deck for our Q3 revenue review"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/469e720a-92bd-4a2a-af1d-1082f8d0909a" alt="Q3 revenue review example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/1581609f-7dc5-4634-858e-51823b737bca" alt="Q3 revenue review example slide 2" /></td>
-</tr>
-</table>
-
-<table>
-<tr><th colspan="2"><i>"Make me a deck announcing our new feature [placeholder], keep the design minimal"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/c7a20136-2325-417e-b2ce-63651b0b1db7" alt="Minimalist example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/6f85a9bb-9e0f-4f55-ae39-97f4ec52fedd" alt="Minimalist example slide 2" /></td>
-</tr>
-</table>
-
-<table>
-<tr><th colspan="2"><i>"Create a presentation on MCP with this outline: [outline]"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/3b22a39f-f3a5-49bd-b48a-e1c0b4e1e244" alt="MCP example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/a02afce3-4abc-4b20-8078-9b93d58f5f48" alt="MCP example slide 2" /></td>
-</tr>
-</table>
-
-<table>
-<tr><th colspan="2"><i>"Make me a deck pitching a Mars colony, keep it futuristic"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/ab8691c2-1216-4b88-b702-9fec97b19a5d" alt="Futuristic example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/2f4275c1-72e1-4cf0-9c34-2e91284e666b" alt="Futuristic example slide 2" /></td>
+<td><img src="UPLOAD_URL_3" alt="MCP example slide 1" /></td>
+<td><img src="UPLOAD_URL_4" alt="MCP example slide 2" /></td>
 </tr>
 </table>
 
@@ -98,19 +74,15 @@ npx skills add arifszn/slide-wright
 
 ## Usage
 
-After installing, tell your agent what you want:
+After installing, invoke the skill by name with what you want:
 
 ```
-Make me a slide deck about <your topic>
+/slide-wright Make me a slide deck about <your topic>
 ```
 
 It builds a theme and a short preview first. Approve it and it generates the full deck. You can hand it rough notes or an outline instead of a topic, and ask it to revise the design or content anytime.
 
-Or invoke the skill by name:
-
-```
-/slide-wright
-```
+A plain request without the name ("Make me a slide deck about...") also works, but apps with their own built-in slide builder may route it there instead. Naming the skill makes sure slide-wright handles it.
 
 ## Keyboard shortcuts
 
