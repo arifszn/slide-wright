@@ -25,6 +25,8 @@ The script prints the `.pptx` path on stdout; progress and the list of fonts use
 
 - Slide count and output path.
 - **Fonts:** the deck's web fonts are not embedded in a `.pptx`. On a machine without them PowerPoint substitutes a similar font, so line breaks can move. Offer to install the fonts (named in the script output), or point to the PDF export when exact typography matters.
+- Display headings with tight negative letter-spacing look cramped when the font is substituted by a narrower one. Installing the deck's fonts fixes it.
+- Padding and backgrounds on inline chips (code pills, highlights) stay in the picture; the text after a chip can sit a few pixels left of where it was.
 - Animations and click-by-click builds are flattened: each slide is exported in its final state.
 - Text the exporter cannot place faithfully stays in the picture instead of becoming a text box: SVG text, gradient or outlined text, rotated or scaled text, clipped or ellipsised text, and lines that mix inline badges or pills with text. The per-slide log counts these.
 - Slides marked `data-visibility="hidden"` are skipped, as in the PDF.
