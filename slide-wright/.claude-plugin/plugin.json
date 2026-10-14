@@ -1,7 +1,7 @@
 {
   "name": "slide-wright",
-  "version": "1.7.3",
-  "description": "Create beautiful, animated presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
+  "version": "1.8.0",
+  "description": "Create beautiful presentations from a topic, rough notes, or an outline. Generates a custom theme and a quick preview, then builds the full deck only once you confirm the direction. Distinctive, custom-designed output as a single self-contained HTML file.",
   "license": "MIT",
   "author": {
     "name": "arifszn",
@@ -9,5 +9,5 @@
   },
   "homepage": "https://github.com/arifszn/slide-wright",
   "repository": "https://github.com/arifszn/slide-wright",
-  "keywords": ["presentations", "slides", "html", "design", "deck", "pitch", "animations"]
+  "keywords": ["presentations", "slides", "html", "design", "deck", "pitch"]
 }
