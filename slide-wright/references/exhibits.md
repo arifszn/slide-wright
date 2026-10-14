@@ -37,13 +37,15 @@ A slide with a split layout (text on the left, exhibit on the right, roughly 5/7
 
 ```css
 .flow  { display: flex; align-items: stretch; gap: 0; }
-.step  { flex: 1; padding: 40px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt); }
+.step  { flex: 1; min-width: 0; padding: 40px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt); }
 .step.is-key { background: var(--accent); border-color: var(--accent); }
 .step.is-key h3, .step.is-key p, .step.is-key .lab { color: var(--on-accent); }  /* base h3 color would win otherwise */
-.arrow { flex: 0 0 120px; position: relative; display: grid; place-items: center; }
+.arrow { flex: 0 0 120px; min-width: 0; position: relative; display: grid; place-items: center; }
 .arrow::before { content: ''; position: absolute; left: 12px; right: 12px; top: 50%; border-top: 2px solid var(--text-muted); }
 .arrow::after  { content: ''; position: absolute; right: 12px; top: calc(50% - 6px); border: 6px solid transparent; border-left-color: var(--text-muted); border-right: 0; }
-.arrow .lab    { transform: translateY(28px); }
+.arrow .lab    { position: relative; z-index: 1; width: 100%; max-width: 100%; box-sizing: border-box;
+                padding: 0 4px; transform: translateY(28px); text-align: center; white-space: normal;
+                overflow-wrap: anywhere; background: var(--bg); }
 ```
 
 ## Chart
@@ -75,3 +77,4 @@ Real `<table>` markup. Header row in the label style, hairline row dividers, num
 - All exhibit colors, radii, and fonts come from `:root` variables.
 - Text inside exhibits stays at 22px or larger, labels at 18px or larger.
 - The exhibit fits inside `.body` with no clipping; shorten the content or split the slide when it does not.
+- Flow labels stay inside their arrow column. Keep them short; allow wrapping rather than letting a label cover a step card.

@@ -104,7 +104,11 @@ Pin this engine version: **`reveal.js@5.1.0`**.
     .chrome-head .rule { flex: 1; border-top: 1px solid var(--line); }
     .chrome-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 40px;
                    font-size: var(--fs-label); color: var(--text-muted); }
-    .chrome-foot .takeaway { font-size: var(--fs-body); color: var(--text); }
+    .chrome-foot > * { min-width: 0; }
+    .chrome-foot .takeaway { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); color: var(--text);
+                             overflow-wrap: break-word; }
+    .chrome-foot .source { flex: 0 1 30%; overflow-wrap: anywhere; }
+    .chrome-foot [data-page] { flex: 0 0 auto; white-space: nowrap; }
     .body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
     .action-title { font-size: var(--fs-title); line-height: 1.08; max-width: 1500px; margin: 0; }
 

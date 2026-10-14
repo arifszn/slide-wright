@@ -40,7 +40,7 @@ Only ask something if the request is too thin to design from at all — a single
 
 ### Composed slides
 
-Every content slide is self-contained: someone reading the PDF without the presenter gets the point. A short action title states the claim and one exhibit proves it; add a takeaway or source line where it helps. One claim per slide; when a slide carries two claims or its exhibit won't fit, split it. Never let a slide scroll, overflow, overlap, or shrink text below the sizes in the theme.
+Every content slide is self-contained: someone reading the PDF without the presenter gets the point. A short action title states the claim and one exhibit proves it; add a takeaway or source line where it helps. One claim per slide; when a slide carries two claims or its exhibit won't fit, split it. Never let a slide scroll, overflow, overlap, or shrink text below the sizes in the theme. Treat narrow layout regions as real constraints: flow labels must wrap inside their arrow columns, and page counters must stay on one line without covering source or takeaway text.
 
 ## Step 2 — Propose a look
 
