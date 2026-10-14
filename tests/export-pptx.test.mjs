@@ -258,7 +258,7 @@ describe('web fonts and template chrome', { skip: !online && 'Fontshare not reac
   });
 
   test('web fonts were loaded before the screenshot, and the text boxes name them', () => {
-    assert.ok(m.loadedFonts.includes('General Sans') && m.loadedFonts.includes('Satoshi'), `loaded: ${m.loadedFonts}`);
+    assert.ok(m.loadedFonts.includes('General Sans') && m.loadedFonts.includes('Satoshi'), `loaded: ${m.loadedFonts}; faces: ${JSON.stringify(m.fontStatus)}`);
     assert.ok(m.fonts.includes('General Sans') && m.fonts.includes('Satoshi'), `used: ${m.fonts}`);
     assert.match(pptx.slides[0].xml, /typeface="General Sans"/);
     assert.match(pptx.slides[0].xml, /typeface="Satoshi"/);

@@ -149,6 +149,7 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
     writeFileSync(output, await finalizePackage(req('jszip'), raw));
     manifest.output = output;
     manifest.fonts = [...fonts];
+    manifest.fontStatus = await page.evaluate(() => [...document.fonts].map((f) => `${f.family} ${f.weight}: ${f.status}`));
     manifest.loadedFonts = await page.evaluate(() => [...new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/^["']|["']$/g, '')))]);
     return manifest;
   } finally {
