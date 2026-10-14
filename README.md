@@ -37,8 +37,6 @@
 </tr>
 </table>
 
-<img src="UPLOAD_URL_SHOWCASE" alt="A wall of slides in different themes" />
-
 ## Installation
 
 ### Claude Code (Plugin Marketplace)
@@ -102,7 +100,13 @@ Just ask the agent to export the deck, and it walks you through it. To do it you
 
 The deck is a single self-contained HTML file, with the theme inline and the engine and fonts from a CDN, so there's no build step and no assets to bundle. Any static host will serve it.
 
-The simplest route is to **ask the agent to deploy it**. It offers Surge, Vercel, and Netlify, walks you through the login for whichever you pick, and hands back the live URL. To do it yourself, put the deck in an empty folder as `index.html` and push that folder to any static host: GitHub Pages, Cloudflare Pages, S3, or anywhere else that serves static files.
+The simplest route is to **ask the agent to deploy it**. It offers Surge, Vercel, and Netlify, walks you through the login for whichever you pick, and hands back the live URL:
+
+```
+/slide-wright Deploy my deck to a live URL
+```
+
+To do it yourself, put the deck in an empty folder as `index.html` and push that folder to any static host: GitHub Pages, Cloudflare Pages, S3, or anywhere else that serves static files.
 
 ## License
 
