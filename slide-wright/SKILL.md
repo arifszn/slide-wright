@@ -35,6 +35,7 @@ Don't open with a questionnaire. Take whatever the user gave — a one-line topi
 - **Purpose and audience** from the subject and how it's written. A raise, a lesson, a conference talk, and an internal update each call for a different treatment.
 - **Length** from how much material there is. A bare topic becomes a short deck; a long outline becomes more slides. Don't fix a number up front.
 - **How much evidence** the deck needs: numbers, comparisons, and diagrams available or implied by the material.
+- **The topic's native visual language**: identify the object or mechanism the audience already understands, then make the exhibit resemble that object. Do not use a generic four-card flow just because the source material has steps.
 
 Only ask something if the request is too thin to design from at all — a single word with no angle — and even then ask one question, not five. If the user has more to give, they usually paste it.
 
@@ -71,6 +72,7 @@ Do not build the full deck before you have a yes.
 Keep building in the **same** `./<deck-slug>.html` the user just approved. The two approved slides stay as they are — append the rest around them; never regenerate them from scratch (that reintroduces drift the user already signed off against). Read `references/exhibits.md` for exhibit patterns; read `references/motion-recipes.md` only for code slides or when the user asks for animation.
 
 - Use the exact approved palette, type system, layout system, and exhibit style throughout.
+- Do not reuse the same composition for unrelated topics. Before finalizing the preview, deliberately vary at least three of: light/dark surface, font pairing, title placement, outer geometry, exhibit family, card treatment, and recurring chrome. A sequence may use a flow, but it may also need a timeline, state rail, architecture, map, ledger, or annotated mockup.
 - Structure the story answer-first: the title slide, then the main point or recommendation, then the supporting slides, then the ask or next steps.
 - Vary the *exhibits* (flow, mockup, chart, comparison, timeline, metric panel) and layouts (full-width, split) while keeping the one visual system. Section breaks and the closing slide may drop the exhibit.
 - Every content slide has its action title and one exhibit. If a slide overflows, split it.

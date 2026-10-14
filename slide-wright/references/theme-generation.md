@@ -2,6 +2,8 @@
 
 There's no library to choose from. You invent the theme for each deck, inside the boardroom standard in `design-aesthetics.md`. Before writing any HTML, decide four things and write them down: the palette, the type system, the layout system, and the exhibit style.
 
+Before choosing a layout, identify the topic's native visual language: a payment lifecycle may want ledger rows, settlement states, or a transaction rail; a game round may want a tactical map, timer, or economy board. Do not translate every sequence into the same four cards joined by arrows. Choose the exhibit that explains the subject's mechanism, not only its chronology.
+
 ## Start from the subject and the room
 
 Let the topic and the audience set the feeling. A payments platform update, a hospital operations review, and a climate fund pitch should look different from each other, yet all three should look like they came from a serious organization. Pull the palette and type from the subject's own world: the company's brand, the product's UI, the industry's conventions.
@@ -23,6 +25,10 @@ Recurring elements are a choice per theme, not a requirement. A deck might carry
 ## Exhibit style
 
 How the theme draws exhibits: card radius (0, 8, or 16px), border vs. fill, shadow or none, arrow style, how data series use the accent and the neutrals. Every exhibit in the deck follows it. `exhibits.md` has the building blocks.
+
+## Similarity guard
+
+For each new deck, make at least three of these choices deliberately different from the last unrelated deck: light or dark surface, display/body font pairing, outer geometry, title placement, exhibit family, card treatment, and recurring chrome. The one constant is the boardroom standard, not a repeated template. If the first preview could be mistaken for another recent deck after removing its words, reject it and choose a different composition before showing it.
 
 ## Motion
 
