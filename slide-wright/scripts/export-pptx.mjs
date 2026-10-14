@@ -116,17 +116,21 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
         const runs = [];
         const align = b.align;
         const lineSpacing = b.lineSpacingPx ? Math.round(b.lineSpacingPx * ptPerPx * 10) / 10 : undefined;
-        b.runs.forEach((r, j) => {
-          if (r.br) { if (runs.length) runs[runs.length - 1].options.breakLine = true; return; }
+        let startsParagraph = true;
+        b.runs.forEach((r) => {
+          if (r.br) { if (runs.length) runs[runs.length - 1].options.breakLine = true; startsParagraph = true; return; }
           const s = r.style;
           fonts.add(s.fontFace);
-          const options = { fontFace: s.fontFace, fontSize: Math.round(s.px * ptPerPx * 100) / 100, color: s.color, bold: s.bold, italic: s.italic, align };
+          const options = { fontFace: s.fontFace, fontSize: Math.round(s.px * ptPerPx * 100) / 100, color: s.color, bold: s.bold, italic: s.italic };
+          // Paragraph options go on the first run of a paragraph only: pptxgenjs writes a new
+          // <a:pPr> for every later run that carries them, which is invalid inside one <a:p>.
+          if (startsParagraph) { options.align = align; if (lineSpacing) options.lineSpacing = lineSpacing; }
+          startsParagraph = false;
           if (s.underline) options.underline = { style: 'sng' };
           if (s.strike) options.strike = 'sngStrike';
           if (s.spacingPx) options.charSpacing = Math.round(s.spacingPx * ptPerPx * 100) / 100;
           const alpha = s.alpha * b.opacity;
           if (alpha < 0.995) options.transparency = Math.round((1 - alpha) * 100);
-          if (lineSpacing) options.lineSpacing = lineSpacing;
           runs.push({ text: r.text, options });
         });
         if (!runs.length) continue;

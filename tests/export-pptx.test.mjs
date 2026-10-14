@@ -54,7 +54,7 @@ async function openPptx(file) {
 
 // Converts the pptx with LibreOffice and checks that, for every extracted box, the rendered
 // text sits where the HTML put it (ink centroid) and is neither missing nor duplicated (ink amount).
-function renderCheck(m, dbg, name) {
+function renderCheck(m, dbg, name, maxDrift = 14) {
   const out = join(tmp, `lo-${name}`);
   execFileSync(SOFFICE, ['--headless', '--convert-to', 'pdf', '--outdir', out, m.output], { stdio: 'ignore', timeout: 120000 });
   execFileSync('pdftoppm', ['-r', '144', '-png', join(out, `${name}.pdf`), join(out, 'p')]);
@@ -71,8 +71,8 @@ function renderCheck(m, dbg, name) {
       const label = `slide ${i + 1} "${b.runs.find((r) => r.text).text.slice(0, 30)}"`;
       const dx = Math.abs(a.cx - c.cx), dy = Math.abs(a.cy - c.cy), ratio = c.count / a.count;
       worst = Math.max(worst, dx, dy);
-      assert.ok(dx <= 14, `${label}: horizontal drift ${dx.toFixed(1)}px`);
-      assert.ok(dy <= 14, `${label}: vertical drift ${dy.toFixed(1)}px`);
+      assert.ok(dx <= maxDrift, `${label}: horizontal drift ${dx.toFixed(1)}px`);
+      assert.ok(dy <= maxDrift, `${label}: vertical drift ${dy.toFixed(1)}px`);
       assert.ok(ratio > 0.6 && ratio < 1.6, `${label}: ink ratio ${ratio.toFixed(2)} (missing or duplicated text?)`);
     }
   }
@@ -215,6 +215,14 @@ describe('stepped code slide', () => {
     assert.ok(m.slides[0].skippedText.some((t) => t.startsWith('covered:')), 'test is vacuous if no clones were covered');
   });
 
+  test('indented code line: the box starts where the indentation starts (no doubled indent)', () => {
+    const joined = (x) => x.runs.map((r) => r.text || '').join('');
+    const b = m.slides[0].blocks.find((x) => joined(x).includes("account != 'internal'"));
+    const plain = m.slides[0].blocks.find((x) => x.runs.some((r) => r.text && r.text.startsWith('GROUP')));
+    assert.ok(Math.abs(b.x - plain.x) < 3, `indented box at ${b.x}, plain line at ${plain.x}`);
+    assert.match(b.runs[0].text, /^ {6}/);
+  });
+
   test('final step: the highlighted lines are opaque, the dimmed lines carry transparency', () => {
     const alphas = [...pptx.slides[0].xml.matchAll(/<a:alpha val="(\d+)"\/>/g)].map((x) => +x[1]);
     assert.ok(alphas.length >= 2 && alphas.every((a) => a === 40000), `alphas: ${alphas}`);
@@ -278,9 +286,10 @@ describe('web fonts and template chrome', { skip: !online && 'Fontshare not reac
 
 // ---- edge cases ----------------------------------------------------------------------
 describe('edge cases', () => {
-  let m, pptx;
+  let m, pptx, dbg;
   before(async () => {
-    m = await exportDeck({ input: join(here, 'fixtures/edge.html'), output: join(tmp, 'edge.pptx'), route: offlineRoute() });
+    dbg = join(tmp, 'dbg-edge');
+    m = await exportDeck({ input: join(here, 'fixtures/edge.html'), output: join(tmp, 'edge.pptx'), debugDir: dbg, route: offlineRoute() });
     pptx = await openPptx(m.output);
   });
 
@@ -292,6 +301,27 @@ describe('edge cases', () => {
   test('data-visibility="hidden" slides are skipped, like in the PDF export', () => {
     assert.equal(pptx.slides.length, 2);
     assert.ok(!pptx.slides.some((s) => s.text.includes('HIDDEN SLIDE')));
+  });
+
+  test('mixed font sizes on one line (inline code) stay one line; wrapped ones get a sane pitch', () => {
+    const blocks = m.slides[0].blocks;
+    const one = blocks.find((b) => b.runs.some((r) => r.text && r.text.startsWith('Each class')));
+    assert.equal(one.wrap, false);
+    assert.equal(one.lineSpacingPx, null, 'a single visual line must not get exact line spacing');
+    const two = blocks.find((b) => b.runs.some((r) => r.text && r.text.startsWith('A longer sentence')));
+    assert.equal(two.wrap, true);
+    assert.ok(two.lineSpacingPx > 44 && two.lineSpacingPx < 100, `pitch ${two.lineSpacingPx}px for 44px text`);
+    const spcs = [...pptx.slides[0].xml.matchAll(/<a:spcPts val="(\d+)"/g)].map((x) => +x[1]);
+    assert.ok(spcs.every((v) => v >= 1500), `implausibly small line spacing in XML: ${spcs}`);
+  });
+
+  test('one <a:pPr> per paragraph', () => {
+    for (const para of pptx.slides[0].xml.match(/<a:p>[\s\S]*?<\/a:p>/g)) assert.ok((para.match(/<a:pPr[\s>\/]/g) || []).length <= 1);
+  });
+
+  test('renders in LibreOffice with all text visible and in place', { skip: !canRender && 'soffice/pdftoppm not available' }, () => {
+    // 24px: inline code chips carry horizontal padding that a text run cannot reproduce, so text after a chip shifts left
+    renderCheck(m, dbg, 'edge', 24);
   });
 
   test('data-notes attribute becomes speaker notes', () => {

@@ -102,7 +102,8 @@ export function extractSlide(idx) {
           let text = n.nodeValue.replace(/\r/g, '');
           text = ncs.whiteSpace === 'pre' || ncs.whiteSpace === 'pre-wrap' || ncs.whiteSpace === 'break-spaces' ? text : pre ? text.replace(/[ \t\f]+/g, ' ') : text.replace(/[ \t\r\n\f]+/g, ' ');
           const fill = color(ncs.webkitTextFillColor || ncs.color);
-          const col = fill.a === 0 && color(ncs.color).a > 0 ? null : fill; // transparent fill = gradient/outline text
+          const outlined = parseFloat(ncs.webkitTextStrokeWidth) > 0; // the stroke cannot be hidden or rebuilt, so the glyphs must stay in the raster
+          const col = fill.a < 0.02 || outlined ? null : fill; // transparent fill = gradient or outlined text: leave it in the raster
           parts.push({
             text: transformText(text, ncs.textTransform),
             preserve: pre,
@@ -144,8 +145,12 @@ export function extractSlide(idx) {
 
     // Geometry from the actual text ranges (not the element box).
     const rects = [];
-    for (const n of textNodes) {
-      if (!hasText(n.nodeValue)) continue;
+    for (const part of parts) {
+      const n = part.node;
+      if (!n) continue;
+      // whitespace-only nodes have a rect only when whitespace is preserved (code indentation);
+      // measuring them keeps the box where the indentation starts, since the runs include it
+      if (!hasText(n.nodeValue) && !part.preserve) continue;
       const rg = document.createRange();
       rg.selectNodeContents(n);
       for (const r of rg.getClientRects()) if (r.width > 0.5 && r.height > 0.5) rects.push(rel(r));
@@ -168,14 +173,24 @@ export function extractSlide(idx) {
     });
     if (covered) { skippedText.push(`covered: ${ownText[0].text.trim().slice(0, 40)}`); return; }
 
-    const tops = [...new Set(rects.map((r) => Math.round(r.t)))].sort((a, b) => a - b);
-    const lineTops = tops.filter((t, i) => i === 0 || t - tops[i - 1] > 3);
-    const lines = lineTops.length;
-    const glyphH = rects.map((r) => r.b - r.t).sort((a, b) => a - b)[Math.floor(rects.length / 2)];
+    // Group the text rects into visual lines by centre line. Grouping by rect top breaks as soon
+    // as one line mixes font sizes (inline code next to body text): the tops differ, one line
+    // reads as several, and the pitch collapses.
+    const lineSets = [];
+    for (const r of rects.slice().sort((x, y) => x.t + x.b - (y.t + y.b))) {
+      const c = (r.t + r.b) / 2, h = r.b - r.t;
+      const cur = lineSets[lineSets.length - 1];
+      if (cur && Math.abs(c - cur.sum / cur.n) <= 0.4 * Math.max(cur.h, h)) { cur.sum += c; cur.n++; cur.h = Math.max(cur.h, h); }
+      else lineSets.push({ sum: c, n: 1, h });
+    }
+    const lines = lineSets.length;
+    const glyphH = Math.max(...rects.map((r) => r.b - r.t)); // tallest inline box on the line sets the line height
     const fs = parseFloat(cs.fontSize);
     const lh = cs.lineHeight === 'normal' ? null : parseFloat(cs.lineHeight);
     const brs = parts.filter((p) => p.br).length;
-    const pitch = lines > 1 ? (lineTops[lines - 1] - lineTops[0]) / (lines - 1) : lh || glyphH;
+    const centre = (l) => l.sum / l.n;
+    let pitch = lines > 1 ? (centre(lineSets[lines - 1]) - centre(lineSets[0])) / (lines - 1) : lh || glyphH;
+    if (lines > 1 && pitch < 0.6 * fs) pitch = lh || 1.2 * fs; // implausibly tight: line detection went wrong, trust the CSS
     const dir = cs.direction === 'rtl';
     const align = { left: 'left', right: 'right', center: 'center', justify: 'justify', start: dir ? 'right' : 'left', end: dir ? 'left' : 'right' }[cs.textAlign] || 'left';
 

@@ -121,6 +121,12 @@ export async function validatePptx(buffer) {
     for (const m of xml.matchAll(/\sspc="(-?\d+)"/g)) if (Math.abs(+m[1]) > 200000) err(`${part}: character spacing ${m[1]} out of range`);
     for (const m of xml.matchAll(/<a:spcPts\s+val="(-?\d+)"/g)) if (+m[1] < 0 || +m[1] > 158400) err(`${part}: spacing ${m[1]} outside 0..158400`);
     for (const m of xml.matchAll(/<a:pPr\b[^>]*?\salgn="([^"]*)"/g)) if (!ENUM_ALGN.has(m[1])) err(`${part}: unknown alignment "${m[1]}"`);
+    // <a:pPr> may appear once per paragraph, as its first child (a repeated one makes PowerPoint repair the file)
+    for (const para of xml.match(/<a:p>[\s\S]*?<\/a:p>/g) || []) {
+      const n = (para.match(/<a:pPr[\s>\/]/g) || []).length;
+      if (n > 1) err(`${part}: a paragraph has ${n} <a:pPr> elements`);
+      if (n === 1 && !/^<a:p><a:pPr[\s>\/]/.test(para)) err(`${part}: <a:pPr> is not the first child of its paragraph`);
+    }
     for (const m of xml.matchAll(/<a:ext\s+cx="(-?\d+)"\s+cy="(-?\d+)"/g)) if (+m[1] < 0 || +m[2] < 0) err(`${part}: negative shape extent`);
     if (/<a:t>[^<]*\u0000/.test(xml)) err(`${part}: NUL character in text`);
     if (slideSize) {

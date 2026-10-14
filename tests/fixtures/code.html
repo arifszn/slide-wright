@@ -23,6 +23,7 @@
     <pre><code data-trim data-noescape data-line-numbers="1|3-4" class="language-sql">SELECT account, count() AS alerts
 FROM events
 WHERE ts &gt; now() - INTERVAL 1 DAY
+      AND account != 'internal'
 GROUP BY account</code></pre>
   </div><aside class="notes">Step through the query.</aside></section>
 </div></div>
