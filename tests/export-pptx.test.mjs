@@ -185,7 +185,7 @@ describe('basic deck', () => {
   });
 
   test('reports the fonts it used', () => {
-    assert.ok(m.fonts.includes('Georgia') && m.fonts.includes('Arial'));
+    assert.ok(m.fonts.includes('Times New Roman') && m.fonts.includes('Arial'));
   });
 
   test('renders in LibreOffice and text lands where the HTML put it', { skip: !canRender && 'soffice/pdftoppm not available' }, () => {
