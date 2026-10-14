@@ -1,8 +1,6 @@
 # slide-wright
 
-AI agent skill to generate beautiful, unique slide decks with reveal.js - new design for every prompt.
-
-<img src="UPLOAD_URL_HEADER" alt="slide-wright: every prompt, a deck ready for the room" />
+<img src="https://github.com/user-attachments/assets/76e1fb84-7ab5-4996-bc47-e976b70fff64" alt="slide-wright: every prompt, a deck ready for the room" />
 
 ## How it works
 
