@@ -46,7 +46,7 @@ Every content slide is self-contained: someone reading the PDF without the prese
 
 ## Step 2 — Propose a look
 
-Read `slide-wright/references/theme-generation.md` and `slide-wright/references/design-aesthetics.md`, then:
+Read `slide-wright/references/theme-generation.md` and `slide-wright/references/design-aesthetics.md`. Apply the similarity guard in `theme-generation.md` before you show the preview, then:
 
 1. Invent a theme: a palette, a type system from Fontshare or Google Fonts, the layout system, and the exhibit style. Give it a name for your own use.
 2. Build a two-slide preview with `slide-wright/references/deck-template.md` — a real title slide for this deck (its actual title, never a placeholder or a label like "demo"), and one real content slide with its action title and a full exhibit from `slide-wright/references/exhibits.md`. Write it as the real deck file in the working directory, named for the deck: `./<deck-slug>.html` (e.g. `./clickhouse.html`). This is the one file the whole deck grows into — there is no separate demo or scratch file.
@@ -82,8 +82,6 @@ Do not build the full deck before you have a yes.
 Keep building in the **same** `./<deck-slug>.html` the user just approved. The two approved slides stay as they are — append the rest around them; never regenerate them from scratch (that reintroduces drift the user already signed off against). Read `slide-wright/references/exhibits.md` for exhibit patterns; read `slide-wright/references/motion-recipes.md` only for code slides or when the user asks for animation.
 
 - Use the exact approved palette, type system, layout system, and exhibit style throughout.
-- Do not reuse the same composition for unrelated topics. Before finalizing the preview, deliberately vary at least three of: light/dark surface, font pairing, title placement, outer geometry, exhibit family, card treatment, and recurring chrome. A sequence may use a flow, but it may also need a timeline, state rail, architecture, map, ledger, or annotated mockup.
-- Apply the guard to structure, not just styling: vary at least three of step count, horizontal versus vertical direction, flow rendering, accent position, and the slide position where the exhibit first appears. If another deck is available in the working area, inspect its first content slide before choosing this one. If no listed exhibit fits, invent a topic-native composition with its own geometry and visual grammar; do not fall back to the canonical four-card flow.
 - Structure the story answer-first: the title slide, then the main point or recommendation, then the supporting slides, then the ask or next steps.
 - Vary the *exhibits* (flow, mockup, chart, comparison, timeline, metric panel) and layouts (full-width, split) while keeping the one visual system. Section breaks and the closing slide may drop the exhibit.
 - Every content slide has its action title and one exhibit. If a slide overflows, split it.
@@ -92,7 +90,7 @@ Keep building in the **same** `./<deck-slug>.html` the user just approved. The t
 
 If the user only wants part of the deck for now, that's fine — the file is already a working deck. Adding more slides later is just editing it (see "Editing a deck that already exists").
 
-Once the deck is built, look at it in a real browser render: every slide complete on arrival, the canvas filled, no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing.
+Once the deck is built, look at it in a real browser render: every slide complete on arrival, the canvas filled, no overflow, no overlapping panels, the 16:9 frame intact, fonts actually loaded. A `scrollHeight` check isn't enough on its own — panels can cover each other without overflowing. If you have no way to render the page, say the visual check was skipped.
 
 ## Step 5 — Hand it off
 
@@ -108,8 +106,8 @@ Read these as you reach them, not all at once:
 - `slide-wright/references/design-aesthetics.md` — what makes a deck look designed (Step 2)
 - `slide-wright/references/theme-generation.md` — the procedure for inventing a theme (Step 2)
 - `slide-wright/references/deck-template.md` — the HTML skeleton, layout, and engine setup (Steps 2 and 4)
-- `slide-wright/references/exhibits.md`: choosing and building the visual on each content slide (Steps 2 and 4)
+- `slide-wright/references/exhibits.md` — choosing and building the visual on each content slide (Steps 2 and 4)
 - `slide-wright/references/motion-recipes.md` — code slides, and animation when the user asks for it (Step 4)
 - `slide-wright/references/export-pdf.md` — saving a deck as a PDF (Step 5)
-- `slide-wright/references/export-pptx.md`: exporting a deck to PowerPoint with editable text (Step 5)
+- `slide-wright/references/export-pptx.md` — exporting a deck to PowerPoint with editable text (Step 5)
 - `slide-wright/references/deploy.md` — publishing the deck to a live URL (Step 5)

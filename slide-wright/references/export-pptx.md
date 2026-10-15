@@ -34,7 +34,7 @@ The script prints the `.pptx` path on stdout; progress and the list of fonts use
 
 ## If it fails
 
-- "does not look like a slide-wright deck": the file is not one of this skill's decks, or the CDN was unreachable.
+- "No ready reveal.js instance": the file is not a reveal.js deck, or the CDN was unreachable.
 - Browser start failure: install Google Chrome, or run `npx playwright-core install chromium`.
 - Text appears twice in PowerPoint: an exporter bug, not a deck problem. Re-run with `--debug-dir`, compare `slide-N.png` with `slide-N.ref.png`, and report it.
 

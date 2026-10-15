@@ -63,7 +63,7 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
     if (route) await route(page);
     await page.goto(pathToFileURL(input).href, { waitUntil: 'load' });
     await page.waitForFunction(() => window.Reveal && Reveal.isReady && Reveal.isReady(), null, { timeout }).catch(() => {
-      throw new Error('This file does not look like a slide-wright deck (no ready reveal.js instance). Is the network blocked? The engine loads from a CDN.');
+      throw new Error('No ready reveal.js instance. The file is not a reveal.js deck, or the engine could not load from its CDN (is the network blocked?).');
     });
 
     const cfg = await page.evaluate(() => { const c = Reveal.getConfig(); return { w: c.width, h: c.height }; });
