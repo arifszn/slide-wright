@@ -410,6 +410,6 @@ describe('failure modes', () => {
   test('a non-deck HTML file fails with a clear message', async () => {
     const f = join(tmp, 'plain.html');
     (await import('node:fs')).writeFileSync(f, '<html><body><h1>hi</h1></body></html>');
-    await assert.rejects(exportDeck({ input: f, output: join(tmp, 'plain.pptx'), timeout: 1500 }), /does not look like a slide-wright deck/);
+    await assert.rejects(exportDeck({ input: f, output: join(tmp, 'plain.pptx'), timeout: 1500 }), /No ready reveal\.js instance/);
   });
 });

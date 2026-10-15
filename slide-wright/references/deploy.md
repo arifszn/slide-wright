@@ -20,7 +20,7 @@ All three need a one-time account login, and that step is **interactive** — su
 
 So the login has to happen in the user's **own terminal window** (the real Terminal/iTerm app, not this session). Tell the user to run the login command there, complete it, and report back. The credential is saved to disk (`~/.netrc` for surge, the CLI's own config for Vercel/Netlify), and from then on the deploy command reads it — so once the user is logged in, **you** run the deploy non-interactively.
 
-Alternative for a fully agent-driven deploy: a token. If the user pastes one, deploy with it and skip the terminal step entirely — surge takes `SURGE_LOGIN` + `SURGE_TOKEN` env vars, Vercel takes `--token`, Netlify takes `--auth`.
+Alternative for a fully agent-driven deploy: a token. If the user pastes one, deploy with it and skip the terminal step entirely — surge takes the `SURGE_TOKEN` env var (the user creates one with `npx surge token` in their own terminal), Vercel takes `--token`, Netlify takes `--auth`.
 
 ## Option A — Surge
 
@@ -40,6 +40,7 @@ npx vercel deploy .deploy --yes --prod
 
 - Check auth with `npx vercel whoami`. If not logged in, have the user run `npx vercel login` in their own terminal (opens a browser), then re-run the deploy.
 - Prints a production `https://…vercel.app` URL. Re-deploying the same project updates the same URL.
+- New projects can have Deployment Protection on, which puts a Vercel login in front of the URL. Check the URL logged out (see below).
 - Take it down later from the Vercel dashboard.
 
 ## Option C — Netlify
@@ -49,11 +50,11 @@ npx netlify deploy --dir=.deploy --prod
 ```
 
 - Check auth with `npx netlify status`. If not logged in, have the user run `npx netlify login` in their own terminal (opens a browser), then re-run.
-- First deploy may ask to create/link a site — accept the create option. Prints a `https://…netlify.app` URL.
+- With no linked site, the first deploy asks to create or link one, and that prompt cannot be answered from a tool call. Either have the user run `npx netlify link` in their own terminal first, or create the site in the deploy with `--site-name <name>` (it implies `--create-site`; `--site <name-or-id>` targets an existing one). Prints a `https://…netlify.app` URL.
 
 ## After deploying
 
-1. Open the live URL once to confirm it renders (right canvas, fonts loaded).
+1. Open the live URL once to confirm it renders (right canvas, fonts loaded). For Vercel, also open it logged out or in a private window. If it asks for a Vercel login, tell the user to set Deployment Protection to none in the project settings, or the link will not work for anyone else.
 2. Give the user the URL and one line: it works on any device, share it anywhere.
 3. Delete the temp folder: `rm -rf .deploy`. Vercel and Netlify also drop a link folder in the working directory — `.vercel` or `.netlify` — that ties it to the created site. It's not junk: keeping it lets a later redeploy reuse the same site/URL without re-linking. Remove it (`rm -rf .vercel .netlify`) only when this was a throwaway and the user won't redeploy. Surge leaves nothing behind.
 4. Mention `?print-pdf` still works on the live URL for anyone who wants a PDF (`references/export-pdf.md`).
