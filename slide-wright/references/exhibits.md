@@ -78,6 +78,10 @@ Draw with inline SVG and a `viewBox`, so it scales with the slide. Label values 
 
 Compute bar heights from the real numbers. Never invent data: if the user gave no figures, use a non-numeric exhibit or ask.
 
+## Metric panel
+
+2-4 figures, each with a label and a one-line context. For a hero number or one-word statement, `class="r-fit-text"` (core class) auto-scales it to the slide width: `<h1 class="r-fit-text">10×</h1>`. Use one word or a short number per line, not a sentence.
+
 ## Mockup
 
 The subject's own product or artifact drawn as clean shapes, not a screenshot: an app screen or dashboard tile, a document or report page, a device frame, a card or badge, a notification with a status pill. Draw what this deck is about, using the theme's surface and accent, one soft shadow at most, and realistic content taken from the user's material. Tilt or overlap two pieces at most.
