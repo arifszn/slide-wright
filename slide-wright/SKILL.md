@@ -22,7 +22,7 @@ Decks render with reveal.js loaded from a CDN, but that is an implementation det
 
 ## Editing a deck that already exists
 
-If the user points at an existing HTML deck, check whether it's built on reveal.js (look for the reveal.js `<link>`/`<script>` tags from a CDN). If it is — whether or not this skill built it — don't start over: read it, keep its theme, and make the change in place. The look is already approved, so skip the proposal and the gate. After editing, check that nothing overflows or overlaps.
+If the user points at an existing HTML deck, check whether it's built on reveal.js (look for the reveal.js `<link>`/`<script>` tags from a CDN). If it is — whether or not this skill built it — don't start over: read it, keep its theme, and make the change in place. The look is already approved, so skip the proposal and the gate. After editing, run `node <skill-dir>/scripts/check-deck.mjs <deck.html>` and fix every line it prints (`references/new-deck.md` has the details).
 
 No reference files are needed for an edit, unless you add a new exhibit type (read `references/exhibits.md`) or code or animation (read `references/code-slides.md` or `references/motion-recipes.md`).
 
