@@ -108,7 +108,13 @@ node slide-wright/scripts/export-pptx.mjs deck.html
 
 ## Export to PDF
 
-Just ask the agent to export the deck, and it walks you through it. To do it yourself: add `?print-pdf` to the deck URL, then open the print dialog (Cmd/Ctrl + P) and save as PDF. Choose Landscape, set margins to None, and turn on background graphics.
+Just ask the agent to export the deck, and it walks you through it:
+
+```
+/slide-wright Export my deck to PDF
+```
+
+To do it yourself: add `?print-pdf` to the deck URL, then open the print dialog (Cmd/Ctrl + P) and save as PDF. Choose Landscape, set margins to None, and turn on background graphics.
 
 ## Deploy to a live URL
 
