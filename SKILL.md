@@ -56,7 +56,7 @@ The preview has to read as two real slides from the finished deck, not a sample 
 
 ## Step 3 — Get a yes
 
-Stop and ask (use a structured prompt if the environment has one):
+Stop and ask. This is the only question in the message. If your environment has a structured question or choice prompt, use it with these three options. If not, write them as a plain list. Hold every other question (file names, extra slides, scope) until they approve.
 
 > "Here's the design direction — *[theme name]*. Does this look right, or want a different direction?"
 >
