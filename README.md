@@ -2,6 +2,8 @@
 
 <img src="https://github.com/user-attachments/assets/3e496913-753c-4761-873c-b7f6618a0b93" alt="slide-wright" />
 
+<a href="https://fazier.com" target="_blank"><img src="https://fazier.com/api/v1/public/badges/launch_badges.svg?badge_type=launched&theme=neutral" alt="Launched on Fazier" width="180" /></a>
+
 ## How it works
 
 1. **Tell it what you want.** A topic, rough notes, or a full outline — whatever you have.
