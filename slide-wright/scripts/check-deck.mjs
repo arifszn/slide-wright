@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 // Check a slide-wright deck in headless Chrome and print one line per defect.
 //
-//   node check-deck.mjs deck.html [--sheet sheet.png]
+//   node check-deck.mjs deck.html [more.html ...] [--sheet sheet.png]
 //
 // Per slide it reports: content outside the slide frame, clipped or scrolling text, overlapping
 // text blocks, text below the size floor, and web fonts that did not load. With --sheet it also
-// writes one contact-sheet PNG of all slides (fragments shown) for a single visual look.
+// writes one contact-sheet PNG of all slides (fragments shown, animations finished) for a single
+// visual look. Several decks go into one sheet, one deck per row block, in the order given.
 // Exit code 1 when any defect is found, 2 when the deck cannot be loaded.
-import { resolve } from 'node:path';
+import { resolve, basename } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { ensureDeps } from './lib/deps.mjs';
@@ -25,7 +26,6 @@ async function launch(chromium) {
 // Runs in the page for the current slide. Returns a list of defect strings.
 function inspectSlide(floor) {
   const cur = Reveal.getCurrentSlide();
-  cur.querySelectorAll('.fragment').forEach((f) => f.classList.add('visible'));
   const frame = cur.getBoundingClientRect();
   const label = (el) => (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/)[0] : el.tagName.toLowerCase());
   const out = [];
@@ -60,23 +60,29 @@ function inspectSlide(floor) {
 
 /**
  * @param {object} o
- * @param {string} o.input   path to the deck .html
+ * @param {string|string[]} o.input  path to the deck .html, or several
  * @param {string} [o.sheet] write a contact-sheet PNG here
  * @param {(page) => Promise<void>} [o.route] request-routing hook (tests serve the CDN offline)
- * @returns {Promise<{slides: number, defects: string[]}>} defects read "slide N: ..."
+ * @returns {Promise<{slides: number, defects: string[]}>} defects read "slide N: ...",
+ *   prefixed with the file name when several decks are checked
  */
 export async function checkDeck({ input, sheet, route }) {
   const req = ensureDeps();
   const { chromium } = req('playwright-core');
   const browser = await launch(chromium);
+  const inputs = [].concat(input);
   const defects = [];
+  const decks = []; // per deck: { shots, w, h }
+  let total = 0;
   try {
     const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+    for (const file of inputs) {
+    const tag = inputs.length > 1 ? `${basename(file)}: ` : '';
     const page = await ctx.newPage();
     if (route) await route(page);
-    await page.goto(pathToFileURL(resolve(input)).href, { waitUntil: 'load' });
+    await page.goto(pathToFileURL(resolve(file)).href, { waitUntil: 'load' });
     await page.waitForFunction(() => window.Reveal && Reveal.isReady && Reveal.isReady(), null, { timeout: 30000 }).catch(() => {
-      throw new Error('No ready reveal.js instance. Not a reveal.js deck, or the engine could not load from its CDN.');
+      throw new Error(tag + 'No ready reveal.js instance. Not a reveal.js deck, or the engine could not load from its CDN.');
     });
     const cfg = await page.evaluate(() => { const c = Reveal.getConfig(); return { w: c.width, h: c.height }; });
     await page.setViewportSize({ width: cfg.w, height: cfg.h });
@@ -93,18 +99,35 @@ export async function checkDeck({ input, sheet, route }) {
         const idx = Reveal.getIndices(s);
         Reveal.slide(idx.h, idx.v);
       }, i);
-      await page.waitForTimeout(150);
-      for (const d of await page.evaluate(inspectSlide, FLOOR_PX)) defects.push(`slide ${i + 1}: ${d}`);
+      // Show every build step and jump entrance animations to their end state, so the checks
+      // and the contact sheet see the finished slide, not a half-faded one.
+      await page.evaluate(async () => {
+        // Stepped code highlights are stacked clones of one block: leave those on their first step.
+        Reveal.getCurrentSlide().querySelectorAll('.fragment:not(pre > code)').forEach((f) => f.classList.add('visible'));
+        const frame = () => new Promise((r) => requestAnimationFrame(r));
+        await frame(); await frame();
+        document.getAnimations().forEach((x) => { try { x.finish(); } catch { /* infinite animation: leave */ } });
+        await frame();
+      });
+      for (const d of await page.evaluate(inspectSlide, FLOOR_PX)) defects.push(`${tag}slide ${i + 1}: ${d}`);
       if (sheet) shots.push((await page.screenshot({ type: 'jpeg', quality: 70 })).toString('base64'));
     }
+    decks.push({ shots, w: cfg.w, h: cfg.h });
+    total += n;
+    await page.close();
+    }
     if (sheet) {
-      const cols = 3, w = 640, h = Math.round((w * cfg.h) / cfg.w);
+      const w = 640, cols = Math.min(3, Math.max(...decks.map((d) => d.shots.length)));
+      const rows = decks.map((d) => {
+        const h = Math.round((w * d.h) / d.w);
+        return `<div style="display:grid;grid-template-columns:repeat(${cols},${w}px)">${d.shots.map((b) => `<img style="width:${w}px;height:${h}px" src="data:image/jpeg;base64,${b}">`).join('')}</div>`;
+      });
       const sp = await ctx.newPage();
-      await sp.setViewportSize({ width: cols * w, height: Math.ceil(n / cols) * h });
-      await sp.setContent(`<body style="margin:0;display:grid;grid-template-columns:repeat(${cols},${w}px)">${shots.map((b) => `<img style="width:${w}px;height:${h}px" src="data:image/jpeg;base64,${b}">`).join('')}</body>`);
+      await sp.setViewportSize({ width: cols * w, height: 360 });
+      await sp.setContent(`<body style="margin:0;background:#fff">${rows.join('')}</body>`);
       writeFileSync(resolve(sheet), await sp.screenshot({ fullPage: true }));
     }
-    return { slides: n, defects };
+    return { slides: total, defects };
   } finally {
     await browser.close();
   }
@@ -114,8 +137,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   const args = process.argv.slice(2);
   const sheetIdx = args.indexOf('--sheet');
   const sheet = sheetIdx >= 0 ? args[sheetIdx + 1] : null;
-  const input = args.find((a, i) => !a.startsWith('--') && !(sheetIdx >= 0 && i === sheetIdx + 1));
-  if (!input) { console.error('usage: node check-deck.mjs deck.html [--sheet sheet.png]'); process.exit(2); }
+  const input = args.filter((a, i) => !a.startsWith('--') && !(sheetIdx >= 0 && i === sheetIdx + 1));
+  if (!input.length) { console.error('usage: node check-deck.mjs deck.html [more.html ...] [--sheet sheet.png]'); process.exit(2); }
   try {
     const { slides, defects } = await checkDeck({ input, sheet });
     for (const d of defects) console.log(d);

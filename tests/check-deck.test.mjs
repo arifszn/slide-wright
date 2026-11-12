@@ -29,3 +29,23 @@ test('broken deck: reports off-frame and undersized text per slide', async () =>
   assert.ok(r.defects.some((d) => /^slide \d+: outside frame/.test(d)), r.defects.join('\n'));
   assert.ok(r.defects.some((d) => /below 18px/.test(d)), r.defects.join('\n'));
 });
+
+test('animated deck: entrance animations are finished before the checks run', async () => {
+  const css = '<style>@keyframes sw-in { from { transform: translateX(3000px); } } .reveal .slides section.present .action-title { animation: sw-in 20s backwards; }</style></head>';
+  const input = join(tmp, 'animated.html');
+  writeFileSync(input, readFileSync(join(here, 'fixtures/basic.html'), 'utf8').replace('</head>', css));
+  const r = await checkDeck({ input, route: offlineRoute() });
+  assert.deepEqual(r.defects, ['slide 6: clipped content: p']);
+});
+
+test('stepped code highlights are not reported as overlapping text', async () => {
+  const r = await checkDeck({ input: join(here, 'fixtures/code.html'), route: offlineRoute() });
+  assert.deepEqual(r.defects, []);
+});
+
+test('several decks: one sheet, defects carry the file name', async () => {
+  const sheet = join(tmp, 'both.png');
+  const r = await checkDeck({ input: [join(here, 'fixtures/code.html'), join(here, 'fixtures/basic.html')], sheet, route: offlineRoute() });
+  assert.deepEqual(r.defects, ['basic.html: slide 6: clipped content: p']);
+  assert.ok(existsSync(sheet));
+});
