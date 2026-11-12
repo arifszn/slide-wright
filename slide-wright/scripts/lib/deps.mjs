@@ -2,13 +2,14 @@
 // installs pinned packages into a per-user cache and loads them from there.
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
 export const PINNED = {
   pptxgenjs: '4.0.1',
   'playwright-core': '1.64.1',
+  jszip: '3.10.2',
 };
 
 export const CACHE_DIR =
@@ -20,8 +21,9 @@ export function ensureDeps(extra = {}) {
   const wanted = { ...PINNED, ...extra };
   mkdirSync(CACHE_DIR, { recursive: true });
   const req = createRequire(join(CACHE_DIR, 'noop.js'));
-  const missing = Object.entries(wanted).filter(([name]) => {
-    return !existsSync(join(CACHE_DIR, 'node_modules', name, 'package.json'));
+  // A cached copy at another version counts as missing, so a changed pin reaches existing installs.
+  const missing = Object.entries(wanted).filter(([name, version]) => {
+    try { return JSON.parse(readFileSync(join(CACHE_DIR, 'node_modules', name, 'package.json'), 'utf8')).version !== version; } catch { return true; }
   });
   if (missing.length) {
     const pkg = join(CACHE_DIR, 'package.json');

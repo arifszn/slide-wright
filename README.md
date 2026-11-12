@@ -94,7 +94,7 @@ A plain request without the name ("Make me a slide deck about...") also works, b
 
 ## Export to PowerPoint
 
-Ask the agent to export the deck as a PowerPoint file. Text comes out as editable text boxes with speaker notes; shapes, charts, and images are baked into each slide's background, so they look the same but are not editable. Fonts are not embedded, so on a machine without the deck's fonts PowerPoint substitutes similar ones. Use the PDF export when exact typography matters.
+Ask the agent to export the deck as a PowerPoint file. Text comes out as editable text boxes with speaker notes, and local videos are embedded; shapes, charts, and images are baked into each slide's background, so they look the same but are not editable. Fonts are not embedded, so on a machine without the deck's fonts PowerPoint substitutes similar ones. Use the PDF export when exact typography matters.
 
 ```
 /slide-wright Export my deck to PowerPoint

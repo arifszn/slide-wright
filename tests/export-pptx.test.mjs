@@ -9,7 +9,7 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { exportDeck } from '../slide-wright/scripts/export-pptx.mjs';
+import { exportDeck, skipSummary } from '../slide-wright/scripts/export-pptx.mjs';
 import { ensureDeps } from '../slide-wright/scripts/lib/deps.mjs';
 import { offlineRoute, TEST_DEPS } from './lib/offline.mjs';
 import { decode, ink } from './lib/pixels.mjs';
@@ -29,7 +29,7 @@ async function openPptx(file) {
   const zip = await JSZip.loadAsync(readFileSync(file));
   const text = (p) => zip.file(p).async('string');
   const slideNames = Object.keys(zip.files).filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a, b) => parseInt(a.match(/\d+/)[0]) - parseInt(b.match(/\d+/)[0]));
-  const slides = [];
+  const slides = [], relsAll = [];
   for (const name of slideNames) {
     const n = name.match(/slide(\d+)\.xml/)[1];
     const xml = await text(name);
@@ -47,8 +47,9 @@ async function openPptx(file) {
     const noteText = notesXml ? [...notesXml.replace(/<a:fld[\s\S]*?<\/a:fld>/g, '').matchAll(/<a:t(?: [^>]*)?>([^<]*)<\/a:t>/g)].map((m) => m[1]).join('\n') : '';
     const notes = noteText.trim() ? noteText : null;
     slides.push({ xml, runs, text: runs.join(' '), notes, bgPng });
+    relsAll.push(rels);
   }
-  return { zip, slides };
+  return { zip, slides, rels: relsAll };
 }
 
 
@@ -132,8 +133,9 @@ describe('basic deck', () => {
   test('text that cannot be placed faithfully stays in the image, never duplicated or lost', () => {
     const s5 = pptx.slides[4].text, s6 = pptx.slides[5].text;
     assert.ok(!/Q1|Q2|Q3/.test(s5), 'SVG text must not become a text box');
-    for (const s of ['Gradient headline', 'Rotated text', 'This sentence is far too long', 'Shadowed line']) assert.ok(!s6.includes(s), `"${s}" should stay in the raster`);
-    assert.ok(s6.includes('pill'));
+    for (const s of ['Gradient headline', 'Rotated text', 'This sentence is far too long', 'Shadowed line', 'pill']) assert.ok(!s6.includes(s), `"${s}" should stay in the raster`);
+    // the pill inherits the paragraph's text-shadow, which a text box cannot reproduce
+    assert.equal(m.slides[5].skippedText.filter((t) => t.startsWith('text-shadow:')).length, 2);
     // ...and it really is in the raster: the slide-6 background must still contain ink where those lines are
     const bg = decode(pptx.slides[5].bgPng);
     assert.ok(ink(bg, { x: 100, y: 60, w: 900, h: 120 }).count > 5000, 'gradient headline missing from raster');
@@ -315,9 +317,13 @@ describe('edge cases', () => {
     assert.ok(spcs.every((v) => v >= 1500), `implausibly small line spacing in XML: ${spcs}`);
   });
 
-  test('a paragraph with a painted inline chip stays in the raster, so the chip keeps its text', () => {
-    assert.ok(!m.slides[0].blocks.some((b) => b.runs.some((r) => r.text && r.text.includes('pill-chip'))));
-    assert.ok(m.slides[0].skippedText.some((t) => t.startsWith('inline-box: A padded')));
+  test('a flat inline chip becomes a highlighted run, padded to keep its width', () => {
+    const b = m.slides[0].blocks.find((x) => x.runs.some((r) => r.text === 'pill-chip'));
+    assert.ok(b, 'chip paragraph was not extracted');
+    assert.deepEqual(b.runs.map((r) => r.text), ['A padded ', '\u00a0', 'pill-chip', '\u00a0', ' stays in the image with its text']);
+    assert.deepEqual(b.runs.map((r) => r.style.highlight), [undefined, 'E8E8E8', 'E8E8E8', 'E8E8E8', undefined]);
+    assert.match(pptx.slides[0].xml, /<a:highlight><a:srgbClr val="E8E8E8"\/><\/a:highlight>/);
+    assert.ok(!m.slides[0].skippedText.length, `left in the picture: ${m.slides[0].skippedText}`);
   });
 
   test('one <a:pPr> per paragraph', () => {
@@ -351,6 +357,109 @@ describe('edge cases', () => {
   });
 });
 
+
+// ---- inline content, engine defaults, video ------------------------------------------------
+describe('inline content and video', () => {
+  let m, pptx, dbg;
+  const block = (i, start) => m.slides[i].blocks.find((b) => b.runs.some((r) => r.text && r.text.startsWith(start)));
+  before(async () => {
+    dbg = join(tmp, 'dbg-inline');
+    m = await exportDeck({ input: join(here, 'fixtures/inline.html'), output: join(tmp, 'inline.pptx'), debugDir: dbg, route: offlineRoute() });
+    pptx = await openPptx(m.output);
+  });
+
+  test('package is structurally valid with highlights, links and media', async () => {
+    assert.deepEqual(await validatePptx(readFileSync(m.output)), []);
+  });
+
+  test('a deck on the engine defaults (margin, centring) exports 1:1', () => {
+    assert.deepEqual([m.width, m.height], [1920, 1080]);
+    const png = decode(pptx.slides[0].bgPng);
+    assert.deepEqual([png.width, png.height], [1920, 1080]);
+  });
+
+  test('a title with a code chip is editable; the chip is a highlighted, non-breaking run', () => {
+    const b = block(0, 'Run ');
+    assert.ok(b, `title left in the picture: ${m.slides[0].skippedText}`);
+    assert.equal(b.runs.find((r) => r.text === 'npm\u00a0test').style.highlight, 'E8E8E8');
+    // translucent chip: the tint is flattened onto the white slide
+    assert.match(block(0, 'A tinted').runs.find((r) => r.text === 'soft\u00a0chip').style.highlight, /^E[56]E[56]E[56]$/);
+  });
+
+  test('the chip background leaves the raster with its text (no doubled box)', () => {
+    const bg = decode(join(dbg, 'slide-1.png'));
+    const b = block(0, 'Run ');
+    const r = ink(bg, { x: b.x, y: b.y, w: b.w, h: b.h }, 30); // 30: the chip is only a light grey
+    assert.ok(r.count / r.total < 0.002, `${r.count} chip pixels left in the raster`);
+  });
+
+  test('text a text box cannot reproduce stays in the picture, with the reason logged', () => {
+    const reasons = m.slides[0].skippedText.map((t) => t.split(':')[0]).sort();
+    assert.deepEqual(reasons, ['hidden-inline', 'inline-box', 'svg', 'text-shadow', 'vertical-text']);
+    for (const s of ['SECRETHIDDEN', 'Visible start', 'Shadowed only', 'Vertical', 'ring-chip', 'Diagram label']) assert.ok(!pptx.slides[0].text.includes(s), `"${s}" must not be a text box`);
+    assert.equal(skipSummary(m.slides[0].skippedText), '1 inline-box, 1 hidden-inline, 1 text-shadow, 1 vertical-text, 1 svg');
+  });
+
+  test('inline opacity, links and superscript map to run properties', () => {
+    const x = pptx.slides[0].xml;
+    assert.equal(block(0, 'Opaque start').runs.find((r) => r.text === 'faded span').style.alpha, 0.3);
+    assert.match(x, /<a:alpha val="30000"\/>/);
+    assert.match(x, /<a:rPr[^>]* u="none"[^>]*>(?:(?!<\/a:rPr>).)*<a:hlinkClick /);
+    assert.match(pptx.rels[0], /Target="https:\/\/example\.com\/docs\?a=1&amp;b=2" TargetMode="External"/);
+    const sup = block(0, 'Revenue grew').runs.find((r) => r.text === '1');
+    assert.equal(sup.style.script, 'super');
+    assert.equal(sup.style.px, 40, 'superscript keeps the base size: PowerPoint shrinks it itself');
+    assert.match(x, /baseline="30000"/);
+  });
+
+  test('author comes from the deck, and the library does not sign the file', async () => {
+    const core = await pptx.zip.file('docProps/core.xml').async('string');
+    const app = await pptx.zip.file('docProps/app.xml').async('string');
+    assert.match(core, /<dc:creator>Fixture Author<\/dc:creator>/);
+    assert.doesNotMatch(core + app, /PptxGenJS/);
+  });
+
+  test('a local video is embedded where it sits; a remote one stays a still', () => {
+    assert.deepEqual(m.slides[1].videos.map((v) => [v.embedded, v.reason]), [[true, ''], [false, 'not a local file']]);
+    const media = Object.keys(pptx.zip.files).filter((n) => /^ppt\/media\/.*\.mp4$/.test(n));
+    assert.equal(media.length, 1);
+    const x = pptx.slides[1].xml;
+    assert.equal((x.match(/<a:videoFile /g) || []).length, 1);
+    const [, offX, offY, cx, cy] = x.match(/<p:pic>[\s\S]*?<a:off x="(\d+)" y="(\d+)"\/><a:ext cx="(\d+)" cy="(\d+)"/).map(Number);
+    const emu = 12192000 / 1920; // EMU per deck px
+    const v = { x: offX / emu, y: offY / emu, w: cx / emu, h: cy / emu };
+    assert.ok(Math.abs(v.x - 120) < 1 && Math.abs(v.w - 640) < 1 && Math.abs(v.h - 360) < 1, JSON.stringify(v));
+  });
+
+  test('the still frame has no player controls', () => {
+    // the remote video never loads, so its box is flat black: any ink there is player chrome
+    const v = m.slides[1].videos[1];
+    for (const png of [decode(join(dbg, 'slide-2.ref.png')), decode(pptx.slides[1].bgPng)]) {
+      assert.equal(ink(png, { x: v.x + 2, y: v.y + 2, w: v.w - 4, h: v.h - 4 }, 30).count, 0, 'player controls in the picture');
+    }
+  });
+
+  test('renders in LibreOffice with text in place', { skip: !canRender && 'soffice/pdftoppm not available' }, () => {
+    renderCheck(m, dbg, 'inline');
+  });
+});
+
+describe('command line', () => {
+  const cli = join(here, '../slide-wright/scripts/export-pptx.mjs');
+  const run = (...args) => spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8' });
+  for (const [name, args, expected] of [
+    ['no input', [], /^usage:/],
+    ['non-numeric scale', ['deck.html', '--scale', 'abc'], /invalid --scale: abc/],
+    ['unknown option', ['deck.html', '--bogus'], /unknown option: --bogus/],
+    ['option without a value', ['deck.html', '-o'], /-o needs a value/],
+  ]) {
+    test(`rejects: ${name}`, () => {
+      const r = run(...args);
+      assert.equal(r.status, 2);
+      assert.match(r.stderr, expected);
+    });
+  }
+});
 
 // ---- the validator itself: it must flag each defect it claims to catch ---------------------
 describe('ooxml validator', () => {

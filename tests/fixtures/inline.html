@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Fixture Author" />
+<title>Inline Deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<style>
+  .reveal { font-family: Arial, sans-serif; color:#111; }
+  .reveal .slides section { background:#FFFFFF; text-align:left; }
+  .frame { padding:60px 120px; box-sizing:border-box; display:flex; flex-direction:column; gap:28px; }
+  .frame p { margin:0; font-size:40px; }
+  .reveal h2 { font-size:64px; font-weight:700; margin:0; }
+  code { font-family:'Courier New', monospace; font-size:.86em; padding:0 8px; background:#E8E8E8; border-radius:4px; white-space:nowrap; }
+  code.tint { background:rgba(0,0,0,.1); }
+  code.ring { border:2px solid #B00020; }
+  sup { vertical-align:super; font-size:.6em; }
+  .reveal a { color:#0B57D0; text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+  <!-- 1: the engine's default config (letterbox margin, vertical centring) on purpose -->
+  <section><div class="frame">
+    <h2>Run <code>npm test</code> before every merge</h2>
+    <p>A tinted <code class="tint">soft chip</code> on white</p>
+    <p>A bordered <code class="ring">ring-chip</code> stays in the image</p>
+    <p>Visible start <span style="visibility:hidden">SECRETHIDDEN</span> end</p>
+    <p>Opaque start <span style="opacity:.3">faded span</span> end</p>
+    <p style="text-shadow:4px 4px 0 #C00">Shadowed only line</p>
+    <p>Read <a href="https://example.com/docs?a=1&amp;b=2">the linked docs</a> first</p>
+    <p>Revenue grew 42%<sup>1</sup> this year</p>
+    <p style="writing-mode:vertical-rl; height:150px">Vertical</p>
+    <svg viewBox="0 0 400 60" width="400" height="60"><text x="0" y="40" font-size="30">Diagram label</text></svg>
+  </div></section>
+  <!-- 2: a local video (embedded) and a remote one (left as a still) -->
+  <section><div class="frame">
+    <h2>Video slide</h2>
+    <video src="clip.mp4" data-autoplay controls muted playsinline style="width:640px;height:360px;background:#000;display:block"></video>
+    <video src="https://example.com/remote.mp4" controls muted style="width:320px;height:180px;background:#000;display:block"></video>
+    <!-- enough text boxes that their shape ids reach the id pptxgenjs gives the video -->
+    <p>Caption one</p><p>Caption two</p><p>Caption three</p><p>Caption four</p><p>Caption five</p><p>Caption six</p>
+  </div></section>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>Reveal.initialize({ width:1920, height:1080 });</script>
+</body>
+</html>
