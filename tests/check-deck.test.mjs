@@ -30,8 +30,8 @@ test('broken deck: reports off-frame and undersized text per slide', async () =>
   assert.ok(r.defects.some((d) => /below 18px/.test(d)), r.defects.join('\n'));
 });
 
-test('animated deck: entrance animations are finished before the checks run', async () => {
-  const css = '<style>@keyframes sw-in { from { transform: translateX(3000px); } } .reveal .slides section.present .action-title { animation: sw-in 20s backwards; }</style></head>';
+test('animated deck: entrance animations are finished and looping ones stopped before the checks run', async () => {
+  const css = '<style>@keyframes sw-in { from { transform: translateX(3000px); } } .reveal .slides section.present .action-title { animation: sw-in 20s backwards; } .reveal .slides section.present .title-slide h1 { animation: sw-in 20s infinite alternate; }</style></head>';
   const input = join(tmp, 'animated.html');
   writeFileSync(input, readFileSync(join(here, 'fixtures/basic.html'), 'utf8').replace('</head>', css));
   const r = await checkDeck({ input, route: offlineRoute() });
