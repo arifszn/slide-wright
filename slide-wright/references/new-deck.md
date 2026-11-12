@@ -11,7 +11,7 @@ Take whatever the user gave (a one-line topic, messy notes, a full outline) and 
 - **Evidence**: the numbers, comparisons, and diagrams available or implied.
 - **The subject's own visual language**: the object or mechanism the audience already knows. It drives the signature (`design.md`) and the exhibits (`exhibits.md`).
 
-Then ask these two questions together, in one message, before designing anything. Use a structured choice prompt if your environment has one. Skip a question the request already answers ("give me three options", "no animation"). Add a third question only when you cannot go on without it: the angle, when the request is a single word; or a fact an exhibit cannot be drawn without (`exhibits.md`, "Numbers are drawn").
+Then ask these two questions together, in one message, before designing anything. Use a structured choice prompt if your environment has one. Skip a question the request already answers ("give me three options", "no animation"). Ask nothing else at this step: decide the audience and the angle yourself, even from a one-word request. A fact an exhibit needs (`exhibits.md`, "Numbers are drawn") waits until the look is approved; choose a preview content slide that does not depend on it.
 
 > **How many design directions do you want to compare?**
 > - One (fastest)
@@ -37,7 +37,7 @@ A preview reads as two real slides from the finished deck. Keep process language
 
 ## Step 3 — Get a yes
 
-Stop and ask. This is the only question in the message; hold every other question until they approve. Give each theme's name and its one-line reason.
+Stop and ask. This is the only question in the message; hold every other question until they approve. Give each theme's name and its one-line reason, and say in one line who you assumed the deck is for, so the user can correct it here.
 
 One direction:
 
@@ -63,7 +63,7 @@ Do not build the full deck before you have a yes.
 
 ## Step 4 — Build the deck
 
-Keep building in the approved `./<deck-slug>.html`. The two approved slides stay as they are; never regenerate them. Read `code-slides.md` before a code slide and `media.md` before images or video.
+Keep building in the approved `./<deck-slug>.html`. The two approved slides stay as they are; never regenerate them. Read `code-slides.md` before a code slide and `media.md` before images or video. If an exhibit needs a fact the user did not give, ask now, before building it.
 
 - Add slides with Edit at the `<!-- more slides -->` marker, one batch per edit. The file is never rewritten whole or read back after an edit.
 - Add each layout and exhibit class to the theme CSS once and reuse it; no per-slide inline styles.
