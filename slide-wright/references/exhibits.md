@@ -78,13 +78,20 @@ Draw with inline SVG and a `viewBox`, so it scales with the slide. Label values 
 
 Compute bar heights from the real numbers. Never invent data: if the user gave no figures, use a non-numeric exhibit or ask.
 
+## Numbers are drawn
+
+When the claim compares quantities, draw the difference to scale (bar lengths, a before-and-after pair, a share of a whole) and label it with the figure. A grid of numbers alone is a table, not an exhibit.
+
+- Only a change is known ("down 11%"): draw it against a baseline of 100. Do not invent the absolute values.
+- Compared figures are in different units (6 hours a week against 45 minutes a day): convert to one unit and show the working in the label or the source line. If the conversion needs a fact the user did not give, ask.
+
 ## Metric panel
 
 2-4 figures, each with a label and a one-line context. For a hero number or one-word statement, `class="r-fit-text"` (core class) auto-scales it to the slide width: `<h1 class="r-fit-text">10×</h1>`. Use one word or a short number per line, not a sentence.
 
 ## Mockup
 
-The subject's own product or artifact drawn as clean shapes, not a screenshot: an app screen or dashboard tile, a document or report page, a device frame, a card or badge, a notification with a status pill. Draw what this deck is about, using the theme's surface and accent, one soft shadow at most, and realistic content taken from the user's material. Tilt or overlap two pieces at most.
+The subject's own product or artifact drawn as clean shapes, not a screenshot: an app screen or dashboard tile, a document or report page, a device frame, a card or badge, a notification with a status pill. Draw what this deck is about, using the theme's surface and accent, and realistic content taken from the user's material. Tilt or overlap two pieces at most.
 
 ## Table
 
@@ -94,5 +101,5 @@ Real `<table>` markup. Header row in the label style, hairline row dividers, num
 
 - All exhibit colors, radii, and fonts come from `:root` variables.
 - Text inside exhibits stays at 22px or larger, labels at 18px or larger.
-- The exhibit fits inside `.body` with no clipping; shorten the content or split the slide when it does not.
+- The exhibit fills `.body` (give it `flex: 1` or a height of 100%) with no clipping; shorten the content or split the slide when it does not fit.
 - Flow labels stay inside their arrow column. Keep them short; allow wrapping rather than letting a label cover a step card.

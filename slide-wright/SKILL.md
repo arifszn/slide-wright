@@ -1,6 +1,6 @@
 ---
 name: slide-wright
-description: Create beautiful web presentations from a topic, rough notes, or an outline, and edit decks afterward — adding, removing, or revising slides. Generates a custom theme and a short two-slide preview, then builds the full deck only once the user confirms the direction; edits to an existing deck skip that flow and apply in place. Use when the user wants to make slides, a presentation, a talk deck, a pitch deck, or to add/remove/change a slide in one that already exists.
+description: Create beautiful web presentations from a topic, rough notes, or an outline, and edit decks afterward — adding, removing, or revising slides. Asks how many design directions to preview and whether to animate, shows a two-slide preview of each custom theme, then builds the full deck only once the user picks a direction; edits to an existing deck skip that flow and apply in place. Use when the user wants to make slides, a presentation, a talk deck, a pitch deck, or to add/remove/change a slide in one that already exists.
 ---
 
 # slide-wright
@@ -10,11 +10,11 @@ Turn a topic or rough notes into a boardroom-grade presentation: slides that rea
 
 ## The rule that defines this skill
 
-Propose the look before you build the deck. On the first pass you never produce a finished presentation. You generate a theme, build a two-slide preview in it, and stop until the user approves the direction. Only then do you build the rest.
+Propose the look before you build the deck. On the first pass you never produce a finished presentation. You ask how many design directions the user wants to compare and whether they want animation, build a two-slide preview of each direction, and stop until the user picks one. Only then do you build the rest.
 
-One proposal at a time, not a menu. If the user says no, throw the direction out and try a clearly different one. Every theme is invented for the deck in front of you; there is no library of presets.
+If the user says no, throw the directions out and try clearly different ones. Every theme is invented for the deck in front of you; there is no library of presets.
 
-**New deck: read `references/new-deck.md` first.** It holds Steps 1-4 (work out the deck, propose a look, get a yes, build) and the exact approval gate.
+**New deck: read `references/new-deck.md` first.** It holds Steps 1-4 (work out the deck and ask the two questions, propose the look, get a yes, build) and the exact approval gate.
 
 ## The engine (keep this internal)
 
@@ -37,15 +37,14 @@ If the deck is HTML but not on reveal.js (different engine, plain slides, etc.),
 
 ## Reference files
 
-Read these as you reach them, not all at once:
+Read each when you reach it, once; never all at once:
 
-- `references/new-deck.md` — Steps 1-4 for a new deck: work out the deck, propose a look, get a yes, build
-- `references/design-aesthetics.md` — what makes a deck look designed (Step 2)
-- `references/theme-generation.md` — the procedure for inventing a theme (Step 2)
-- `references/deck-template.md` — the HTML skeleton, layout, and engine setup (Steps 2 and 4)
-- `references/exhibits.md` — choosing and building the visual on each content slide (Steps 2 and 4)
+- `references/new-deck.md` — Steps 1-4 for a new deck
+- `references/design.md` — inventing a theme and what makes a deck look designed (Step 2)
+- `references/deck-template.md` — the HTML skeleton, layout, and engine setup (Step 2)
+- `references/exhibits.md` — choosing and building the visual on each content slide (Step 2)
+- `references/motion-recipes.md` — animation, when the user chose it (Step 2)
 - `references/code-slides.md` — code slides and their markup contract (Step 4)
-- `references/motion-recipes.md` — animation, when the user asks for it (Step 4)
 - `references/media.md` — images and video in slides (Step 4)
 - `references/export-pdf.md` — saving a deck as a PDF (Step 5)
 - `references/export-pptx.md` — exporting a deck to PowerPoint with editable text (Step 5)
