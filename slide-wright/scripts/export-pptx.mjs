@@ -114,7 +114,8 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
         Reveal.slide(h, v, 9999); // 9999 = past the last fragment, so every build step is shown
         await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
         await document.fonts.ready;
-        document.getAnimations().forEach((a) => { try { a.finish(); } catch { /* infinite animation: leave */ } });
+        // A looping animation has no end to jump to: cancel it, so the element sits at its resting style.
+        document.getAnimations().forEach((a) => { try { a.finish(); } catch { a.cancel(); } });
         await Promise.all([...s.querySelectorAll('img')].map((im) => (im.decode ? im.decode().catch(() => {}) : null)));
         // Videos: a still frame without player controls. The poster when there is one, else a frame
         // a few seconds in (the first frame is often black).

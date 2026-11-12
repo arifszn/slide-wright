@@ -106,7 +106,8 @@ export async function checkDeck({ input, sheet, route }) {
         Reveal.getCurrentSlide().querySelectorAll('.fragment:not(pre > code)').forEach((f) => f.classList.add('visible'));
         const frame = () => new Promise((r) => requestAnimationFrame(r));
         await frame(); await frame();
-        document.getAnimations().forEach((x) => { try { x.finish(); } catch { /* infinite animation: leave */ } });
+        // A looping animation has no end to jump to: cancel it, so the element sits at its resting style.
+        document.getAnimations().forEach((x) => { try { x.finish(); } catch { x.cancel(); } });
         await frame();
       });
       for (const d of await page.evaluate(inspectSlide, FLOOR_PX)) defects.push(`${tag}slide ${i + 1}: ${d}`);

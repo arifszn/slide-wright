@@ -5,7 +5,7 @@
 import { test, before, after, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -123,6 +123,18 @@ describe('basic deck', () => {
 
   test('all fragments are exported (final state)', () => {
     for (const s of ['Approve the hiring plan', 'Endorse the pricing change', 'Intro two enterprise buyers']) assert.ok(pptx.slides[7].text.includes(s), s);
+  });
+
+  test('animated deck: entrance animations finished, looping ones stopped, same result as the static deck', async () => {
+    const css = '<style>@keyframes sw-in { from { transform: translateX(600px); opacity: 0; } } .reveal .slides section.present .action-title { animation: sw-in 20s backwards; } .reveal .slides section.present .title-slide h1 { animation: sw-in 20s infinite alternate; } .reveal .slides section.present .step { animation: sw-in 20s infinite alternate; }</style></head>';
+    const input = join(tmp, 'animated.html');
+    writeFileSync(input, readFileSync(join(here, 'fixtures/basic.html'), 'utf8').replace('</head>', css));
+    const a = await exportDeck({ input, output: join(tmp, 'animated.pptx'), route: offlineRoute() });
+    const boxes = (x) => x.slides.map((sl) => sl.blocks.map((b) => [b.x, b.y, b.w, b.h, b.runs.map((r) => r.text).join('')]));
+    assert.deepEqual(boxes(a), boxes(m));
+    // the flow cards are drawn in the picture: they must be where the static deck has them
+    const bg = (await openPptx(a.output)).slides[1].bgPng;
+    assert.ok(bg.equals(pptx.slides[1].bgPng), 'slide 2 picture differs from the static deck');
   });
 
   test('plain code block: exported once', () => {
