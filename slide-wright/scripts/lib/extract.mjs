@@ -6,7 +6,7 @@
 // slide screenshot becomes a text-free background. Anything it cannot place
 // faithfully (SVG text, gradient text, shadowed text, transformed text, clipped
 // text, pseudo-element content) is deliberately left in the raster.
-export function extractSlide(idx) {
+export function extractSlide({ idx, portable = [], substitutes = {} }) {
   const sec = document.querySelector(`[data-sw-slide="${idx}"]`);
   // Coordinates are relative to the slide area, not the <section>: with `center: true` the
   // engine moves the section down and shrinks it to its content.
@@ -129,10 +129,19 @@ export function extractSlide(idx) {
   };
 
   const genericFont = { 'sans-serif': 'Arial', 'system-ui': 'Arial', 'ui-sans-serif': 'Arial', '-apple-system': 'Arial', serif: 'Times New Roman', 'ui-serif': 'Times New Roman', monospace: 'Courier New', 'ui-monospace': 'Courier New' };
+  const portableSet = new Set(portable.map((f) => f.toLowerCase()));
+  const loadedWeb = new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/^["']|["']$/g, '').toLowerCase()));
+  // Prefer the first family in the stack the recipient is likely to have (a portable system font or a
+  // web font the deck loaded), then a known non-portable font mapped to a portable one. Otherwise the first
+  // non-generic family.
   const fontFace = (ff) => {
     const fams = ff.split(',').map((f) => f.trim().replace(/^["']|["']$/g, ''));
-    const real = fams.find((f) => !(f.toLowerCase() in genericFont));
-    return real || genericFont[fams[0].toLowerCase()] || 'Arial';
+    const named = fams.filter((f) => !(f.toLowerCase() in genericFont));
+    const ok = named.find((f) => portableSet.has(f.toLowerCase()) || loadedWeb.has(f.toLowerCase()));
+    if (ok) return ok;
+    const mapped = named.find((f) => substitutes[f.toLowerCase()]);
+    if (mapped) return substitutes[mapped.toLowerCase()];
+    return named[0] || genericFont[fams[0].toLowerCase()] || 'Arial';
   };
 
   const emit = (el, cs, ctx) => {

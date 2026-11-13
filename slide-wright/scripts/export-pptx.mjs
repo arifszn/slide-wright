@@ -10,6 +10,7 @@ import { basename, dirname, extname, join, resolve } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 import { ensureDeps } from './lib/deps.mjs';
 import { extractSlide } from './lib/extract.mjs';
+import { PORTABLE_FONTS, FONT_SUBSTITUTES, isPortableFont } from './lib/fonts.mjs';
 import { finalizePackage } from './lib/package.mjs';
 
 const SLIDE_IN = 13.333; // slide width in inches; height follows the deck's aspect ratio
@@ -133,7 +134,7 @@ export async function exportDeck({ input, output, scale = 1, timeout = 30000, de
 
       const clip = { x: 0, y: 0, width: cfg.w, height: cfg.h };
       if (debugDir) await page.screenshot({ path: join(debugDir, `slide-${i + 1}.ref.png`), clip });
-      const data = await page.evaluate(extractSlide, i);
+      const data = await page.evaluate(extractSlide, { idx: i, portable: PORTABLE_FONTS, substitutes: FONT_SUBSTITUTES });
       if (Math.abs(data.scale - 1) > 0.01) throw new Error(`Slide ${i + 1} renders at scale ${data.scale.toFixed(3)}, expected 1. Is the viewport ${cfg.w}x${cfg.h}?`);
       const png = await page.screenshot({ clip });
       if (debugDir) writeFileSync(join(debugDir, `slide-${i + 1}.png`), png);
@@ -224,7 +225,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       console.log(m.output);
       const left = skipSummary(m.slides.flatMap((x) => x.skippedText));
       if (left) console.error(`Text left in the picture (not editable): ${left}.`);
+      const loaded = new Set((m.loadedFonts || []).map((f) => f.toLowerCase()));
+      const risky = m.fonts.filter((f) => !isPortableFont(f) && !loaded.has(f.toLowerCase()));
       console.error(`${m.slides.length} slides. Fonts used: ${m.fonts.join(', ') || '(none)'}. Viewers without these fonts installed will see substitutes.`);
+      if (risky.length) console.error(`Not standard system fonts: ${risky.join(', ')}. Put a portable font first in the CSS stack to avoid missing-font warnings.`);
     })
     .catch((e) => { console.error(e.message); process.exit(1); });
 }

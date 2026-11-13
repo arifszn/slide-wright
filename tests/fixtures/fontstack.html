@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Font Stack Deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<style>
+  .reveal .slides section { height: 1080px; overflow: hidden; background: #fff; color: #111; }
+  .frame { position:absolute; inset:0; padding:72px 120px; box-sizing:border-box; text-align:left; font-size:48px; }
+  .frame p { margin:0 0 40px; }
+  .a { font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .b { font-family: "Segoe UI", sans-serif; }
+  .c { font-family: Inter, Georgia, serif; }
+  .d { font-family: "Zzz Custom", sans-serif; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+  <section><div class="frame">
+    <p class="a">Mono stack</p>
+    <p class="b">System sans stack</p>
+    <p class="c">Web sans then portable serif</p>
+    <p class="d">Unknown custom font</p>
+  </div></section>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({ width:1920, height:1080, margin:0, center:false, controls:false, progress:false, hash:true, transition:'fade' });
+</script>
+</body>
+</html>

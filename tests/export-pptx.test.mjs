@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { exportDeck, skipSummary } from '../slide-wright/scripts/export-pptx.mjs';
+import { isPortableFont } from '../slide-wright/scripts/lib/fonts.mjs';
 import { ensureDeps } from '../slide-wright/scripts/lib/deps.mjs';
 import { offlineRoute, TEST_DEPS } from './lib/offline.mjs';
 import { decode, ink } from './lib/pixels.mjs';
@@ -255,6 +256,31 @@ describe('stepped code slide', () => {
   });
 });
 
+
+// ---- font portability ----------------------------------------------------------------
+describe('font stacks', () => {
+  let m, pptx;
+  before(async () => {
+    m = await exportDeck({ input: join(here, 'fixtures/fontstack.html'), output: join(tmp, 'fontstack.pptx'), route: offlineRoute() });
+    pptx = await openPptx(m.output);
+  });
+
+  test('picks a portable font from the stack or maps a system-only one', () => {
+    const face = (text) => {
+      const i = pptx.slides[0].xml.indexOf(text);
+      return pptx.slides[0].xml.slice(Math.max(0, i - 600), i).match(/typeface="([^"]+)"/g).pop().slice(10, -1);
+    };
+    assert.equal(face('Mono stack'), 'Menlo'); // "SF Mono", Menlo, ...
+    assert.equal(face('System sans stack'), 'Arial'); // "Segoe UI" -> Arial
+    assert.equal(face('Web sans then portable serif'), 'Georgia'); // Inter is not portable, Georgia is
+    assert.equal(face('Unknown custom font'), 'Zzz Custom'); // no portable choice: keep the first family
+  });
+
+  test('isPortableFont flags non-standard fonts', () => {
+    assert.ok(isPortableFont('menlo') && isPortableFont('Georgia'));
+    assert.ok(!isPortableFont('SF Mono') && !isPortableFont('Zzz Custom'));
+  });
+});
 
 // ---- real web fonts (needs network; skipped offline) -------------------------------------
 const online = await fetch('https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap', { signal: AbortSignal.timeout(8000) }).then((r) => r.ok, () => false);
