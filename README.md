@@ -52,7 +52,7 @@ Then ask for a deck:
 
 ## How it works
 
-![The same two slides of a Q3 board update shown in three design directions, Ledger, Signal and Grove, next to the agent's question "Which one should I build?" with Signal selected](assets/how-it-works.png)
+![Three steps: the prompt "/slide-wright Q3 board update for Corvid Labs, a B2B observability SaaS", the same two slides in three design directions with option 1 selected, and the full deck built in that direction](assets/how-it-works.png)
 
 1. **Describe the deck.** A topic, rough notes or a full outline.
 2. **Answer two questions.** How many design directions to compare, and whether the slides should animate.
