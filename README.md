@@ -129,11 +129,6 @@ https://raw.githubusercontent.com/arifszn/slide-wright/refs/heads/main/INSTALL.m
 
 To copy the skill by hand, [INSTALL.md](INSTALL.md) lists the skills folder for each agent.
 
-### Requirements
-
-- **A browser** to present the deck. The deck loads its slide engine and fonts from a CDN, so it needs an internet connection when opened.
-- **Node 18 or newer** for the layout check and the PowerPoint export. The layout check runs in Chrome. The exporter uses Chrome or Edge, or downloads Chromium on first run. If the layout check cannot run, the agent says it was skipped.
-
 ## FAQ
 
 **Does it use templates?** No. It designs each theme from the deck's subject and audience. When you reject the previews, it makes new directions that differ in palette, type and layout, not recolors of the same one.
