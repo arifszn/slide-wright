@@ -135,9 +135,7 @@ To copy the skill by hand, [INSTALL.md](INSTALL.md) lists the skills folder for 
 
 **Can I use my brand colors or fonts?** Yes. Put them in the prompt, as in "keep theme yellow" above, or ask it to adjust a preview.
 
-**Do I have to type `/slide-wright`?** No. "Make me a slide deck about..." also works. Apps with their own slide builder may route a plain request there instead, so naming the skill makes sure slide-wright handles it.
-
-**Does the deck work offline?** It needs a connection to load the slide engine and fonts. For an offline copy, export a PDF.
+**Does the deck work offline?** It needs a connection to load the slide engine and fonts. For an offline copy, export a PDF or PPTX.
 
 ## Contributing
 
