@@ -1,89 +1,90 @@
-# slide-wright
+<h1 align="center">slide-wright</h1>
 
-<img src="https://github.com/user-attachments/assets/3e496913-753c-4761-873c-b7f6618a0b93" alt="slide-wright" />
+<p align="center">Make presentations with your coding agent</p>
 
-## How it works
+<p align="center">
+  <a href="https://github.com/arifszn/slide-wright/releases"><img src="https://img.shields.io/github/v/release/arifszn/slide-wright" alt="Latest release"/></a>
+  <a href="https://github.com/arifszn/slide-wright/actions/workflows/test.yml"><img src="https://github.com/arifszn/slide-wright/actions/workflows/test.yml/badge.svg" alt="Tests"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/arifszn/slide-wright" alt="MIT license"/></a>
+</p>
 
-1. **Tell it what you want.** A topic, rough notes, or a full outline — whatever you have.
-2. **It asks two things.** How many design directions you want to compare, and whether you want animation.
-3. **It generates the themes.** A custom color palette, typography, and a 2-slide preview for each direction. It opens the previews for you.
-4. **You decide.** Pick one and it builds the whole deck. Want a different vibe? It generates fresh directions and shows new previews. Repeat until it's right.
-5. **You get your deck.** A polished, self-contained presentation. Export it to PDF or PowerPoint, or deploy it to a live URL for a link that works on any device.
+<p align="center">
+  <a href="#quick-start">Quick start</a>
+  ·
+  <a href="#examples">Examples</a>
+  ·
+  <a href="#export-and-share">Export and share</a>
+  ·
+  <a href="#installation">Installation</a>
+  ·
+  <a href="#faq">FAQ</a>
+</p>
+
+slide-wright is an agent skill that turns a topic, rough notes or an outline into a presentation. It designs a new theme for every deck and shows you two real slides in each direction before it builds the rest. You pick the look; it builds the full deck in that style.
+
+The result is one HTML file. Present it in a browser, export it to PowerPoint or PDF, or deploy it to a live URL. slide-wright works in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Antigravity and other agents that support the `SKILL.md` format.
 
 https://github.com/user-attachments/assets/911a77d8-fae4-48aa-81a0-594e675534c9
 
-## Examples
+## Quick start
 
-<table>
-<tr><th colspan="2"><i>"/slide-wright Create a Q3 board update for Corvid Labs, a B2B observability SaaS"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/f414f240-8cb1-4a91-b9a7-1366e8fc0c31" alt="Q3 board update example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/fbc65739-ca60-42e7-98d2-1f0d6b34f6bf" alt="Q3 board update example slide 2" /></td>
-</tr>
-</table>
+In Claude Code, add the marketplace and install the plugin:
 
-<table>
-<tr><th colspan="2"><i>"/slide-wright Generate a presentation for ClickHouse, keep theme yellow"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/6839eba2-a228-4324-8dc0-983e235991f7" alt="ClickHouse example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/e9208b1f-c813-4a0f-b4ef-b760c011981d" alt="ClickHouse example slide 2" /></td>
-</tr>
-</table>
-
-<table>
-<tr><th colspan="2"><i>"/slide-wright Create a presentation on MCP with this outline: [outline]"</i></th></tr>
-<tr>
-<td><img src="https://github.com/user-attachments/assets/645ec97e-e528-4299-a194-00dc18805f8f" alt="MCP example slide 1" /></td>
-<td><img src="https://github.com/user-attachments/assets/4c640b94-3e09-4bb0-b766-639f07b01d84" alt="MCP example slide 2" /></td>
-</tr>
-</table>
-
-## Installation
-
-### Claude Code (Plugin Marketplace)
-
-1. Register the marketplace:
-
-   ```bash
-   /plugin marketplace add arifszn/slide-wright
-   ```
-
-2. Install the plugin from this marketplace:
-
-   ```bash
-   /plugin install slide-wright
-   ```
-
-### Other agents (Codex, OpenCode, Antigravity, Gemini, Cursor, …)
-
-slide-wright is a standalone skill that works in any agent supporting the `SKILL.md` format. See **[INSTALL.md](INSTALL.md)** for per-agent skills paths.
-
-Just tell your agent to install it — paste:
-
-```
-Fetch and follow the install instructions from
-https://raw.githubusercontent.com/arifszn/slide-wright/refs/heads/main/INSTALL.md
+```bash
+/plugin marketplace add arifszn/slide-wright
 ```
 
-Or install it via npx:
+```bash
+/plugin install slide-wright
+```
+
+In any other agent:
 
 ```bash
 npx skills add arifszn/slide-wright
 ```
 
-## Usage
-
-After installing, invoke the skill by name with what you want:
+Then ask for a deck:
 
 ```
-/slide-wright Make me a slide deck about <your topic>
+/slide-wright Make me a deck about <your topic>
 ```
 
-It asks how many design directions to preview and whether to animate, then shows a short preview of each. Pick one and it generates the full deck. You can hand it rough notes or an outline instead of a topic, and ask it to revise the design or content anytime.
+## How it works
 
-A plain request without the name ("Make me a slide deck about...") also works, but apps with their own built-in slide builder may route it there instead. Naming the skill makes sure slide-wright handles it.
+![The same two slides of a Q3 board update shown in three design directions, Ledger, Signal and Grove, next to the agent's question "Which one should I build?" with Signal selected](assets/how-it-works.png)
 
-## Keyboard shortcuts
+1. **Describe the deck.** A topic, rough notes or a full outline.
+2. **Answer two questions.** How many design directions to compare, and whether the slides should animate.
+3. **Compare previews.** Each direction gets its own palette, type and layout, shown on the same two slides of your deck: the title slide and one content slide. The previews open in your browser.
+4. **Pick one.** It builds the full deck in that direction. If none fits, ask for new directions, or ask to adjust one ("warmer", "a bolder accent").
+5. **Use it.** Present it, change it later, export it or deploy it.
+
+## What you get
+
+- **A theme made for the deck**: palette, typography, layout and a visual motif taken from the subject. There is no template library.
+- **Slides that make a point**: each content slide states one claim and backs it with a chart, flow, timeline, comparison, architecture diagram or metric panel, drawn in the theme's colors.
+- **Speaker notes and a presenter view**, and animation if you choose it.
+- **A layout check**: a script flags text that overflows, overlaps, is clipped or is smaller than 18px, and fonts that did not load. The agent fixes each one before it hands the deck over.
+- **One self-contained HTML file**: no build step, and nothing to install to present it.
+
+## Examples
+
+![The prompt "Create a Q3 board update for Corvid Labs, a B2B observability SaaS" above two slides: a title slide with a Q3 scorecard, and a chart of revenue against plan](assets/example-corvid.png)
+
+![The prompt "Generate a presentation for ClickHouse, keep theme yellow" above two slides in black and yellow: a title slide, and a comparison of row-oriented and column-oriented storage](assets/example-clickhouse.png)
+
+![The prompt "Create a presentation on MCP with this outline: [outline]" above two slides: a title slide with a JSON-RPC request, and an architecture diagram of one host with three clients and servers](assets/example-mcp.png)
+
+## Change a deck later
+
+![The prompt "Add a pricing slide after slide 3" above a strip of five slides, where slide 4 is the new pricing slide in the same theme](assets/edit-later.png)
+
+Point the agent at a deck and ask for the change: a new slide, a rewrite, a different chart. It skips the preview step, since the look is already set, and runs the layout check again afterwards. This works on any deck built on reveal.js, including ones slide-wright did not make.
+
+## Present it
+
+Open the HTML file in a browser. Move with the arrow keys, the space bar or a swipe.
 
 | Key | Action |
 | --- | --- |
@@ -91,43 +92,63 @@ A plain request without the name ("Make me a slide deck about...") also works, b
 | Esc / O | Slide overview |
 | S | Speaker view with notes |
 | B / . | Pause to a black screen |
-| ? | Show the full list of keys |
+| ? | Show all keys |
 
-## Export to PowerPoint
+## Export and share
 
-Ask the agent to export the deck as a PowerPoint file. Text comes out as editable text boxes with speaker notes, and local videos are embedded; shapes, charts, and images are baked into each slide's background, so they look the same but are not editable. Fonts are not embedded, so on a machine without the deck's fonts PowerPoint substitutes similar ones. Use the PDF export when exact typography matters.
+![Three prompts, each above what it produces: "Export my deck to PowerPoint" above a PowerPoint window with the slide title selected as an editable text box, "Export my deck to PDF" above a stack of PDF pages, and "Deploy my deck to a live URL" above a browser showing the deck at a surge.sh address](assets/export.png)
 
-```
-/slide-wright Export my deck to PowerPoint
-```
+### PowerPoint
 
-Or run it yourself (needs Node 18+ and Chrome; dependencies install on first run):
+Ask the agent, or run the exporter yourself. Text comes out as editable text boxes, with the speaker notes, and local videos are embedded. Shapes, charts and images are part of each slide's background picture: they look the same but are not editable. Fonts are not embedded, so on a machine without the deck's fonts PowerPoint substitutes similar ones. Use the PDF when exact typography matters. Animations are exported in their final state.
+
+To run the exporter yourself (Node 18 or newer; it uses Chrome or Edge, and downloads Chromium on first run if neither is installed):
 
 ```bash
-node slide-wright/scripts/export-pptx.mjs deck.html
+node <skill-dir>/scripts/export-pptx.mjs deck.html
 ```
 
-## Export to PDF
+`<skill-dir>` is the installed `slide-wright` folder.
 
-Just ask the agent to export the deck, and it walks you through it:
+### PDF
 
-```
-/slide-wright Export my deck to PDF
-```
+The agent walks you through the browser's print dialog. To do it yourself, add `?print-pdf` to the deck's URL and open the print dialog (Cmd/Ctrl + P). Save as PDF with Landscape layout, margins set to None and background graphics on.
 
-To do it yourself: add `?print-pdf` to the deck URL, then open the print dialog (Cmd/Ctrl + P) and save as PDF. Choose Landscape, set margins to None, and turn on background graphics.
+### Live URL
 
-## Deploy to a live URL
+The agent offers Surge, Vercel and Netlify and returns the URL. Each host needs a one-time login that you run in your own terminal; the agent gives you the command. To do it yourself, save the deck as `index.html` in an empty folder and upload the folder to any static host, such as GitHub Pages, Cloudflare Pages or S3.
 
-The deck is a single self-contained HTML file, with the theme inline and the engine and fonts from a CDN, so there's no build step and no assets to bundle. Any static host will serve it.
+## Installation
 
-The simplest route is to **ask the agent to deploy it**. It offers Surge, Vercel, and Netlify, walks you through the login for whichever you pick, and hands back the live URL:
+[Quick start](#quick-start) covers the plugin and npx installs. You can also paste this to any agent that supports the `SKILL.md` format, such as Codex, OpenCode, Antigravity, Gemini CLI or Cursor:
 
 ```
-/slide-wright Deploy my deck to a live URL
+Fetch and follow the install instructions from
+https://raw.githubusercontent.com/arifszn/slide-wright/refs/heads/main/INSTALL.md
 ```
 
-To do it yourself, put the deck in an empty folder as `index.html` and push that folder to any static host: GitHub Pages, Cloudflare Pages, S3, or anywhere else that serves static files.
+To copy the skill by hand, [INSTALL.md](INSTALL.md) lists the skills folder for each agent.
+
+### Requirements
+
+- **A browser** to present the deck. The deck loads its slide engine and fonts from a CDN, so it needs an internet connection when opened.
+- **Node 18 or newer** for the layout check and the PowerPoint export. The layout check runs in Chrome. The exporter uses Chrome or Edge, or downloads Chromium on first run. If the layout check cannot run, the agent says it was skipped.
+
+## FAQ
+
+**Does it use templates?** No. It designs each theme from the deck's subject and audience. When you reject the previews, it makes new directions that differ in palette, type and layout, not recolors of the same one.
+
+**Can I use my brand colors or fonts?** Yes. Put them in the prompt, as in "keep theme yellow" above, or ask it to adjust a preview.
+
+**Do I have to type `/slide-wright`?** No. "Make me a slide deck about..." also works. Apps with their own slide builder may route a plain request there instead, so naming the skill makes sure slide-wright handles it.
+
+**Does the deck work offline?** It needs a connection to load the slide engine and fonts. For an offline copy, export a PDF.
+
+## Contributing
+
+Bug reports and pull requests are welcome. `npm test` runs the tests for the layout check and the PowerPoint exporter. After editing `slide-wright/SKILL.md`, run `tools/sync-root-skill.sh` to update the root copy; CI checks that they match.
+
+If slide-wright saved you time, [give it a star](https://github.com/arifszn/slide-wright). A star helps other people find it.
 
 ## License
 
