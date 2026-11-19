@@ -77,9 +77,9 @@ Then ask for a deck:
 
 ## Change a deck later
 
-![The prompt "Add a pricing slide after slide 3" above a strip of five slides, where slide 4 is the new pricing slide in the same theme](assets/edit-later.png)
-
 Point the agent at a deck and ask for the change: a new slide, a rewrite, a different chart. It skips the preview step, since the look is already set, and runs the layout check again afterwards. This works on any deck built on reveal.js, including ones slide-wright did not make.
+
+![The prompt "Add a pricing slide after slide 3" above a strip of five slides, where slide 4 is the new pricing slide in the same theme](assets/edit-later.png)
 
 ## Present it
 
