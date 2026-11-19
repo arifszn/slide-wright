@@ -24,7 +24,7 @@ slide-wright is an agent skill that turns a topic, rough notes or an outline int
 
 The result is one HTML file. Present it in a browser, export it to PowerPoint or PDF, or deploy it to a live URL. slide-wright works in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Antigravity and other agents that support the `SKILL.md` format.
 
-https://github.com/user-attachments/assets/911a77d8-fae4-48aa-81a0-594e675534c9
+<video src="https://github.com/user-attachments/assets/a5afabaf-1e9f-4d87-b0b2-d83be8b025d1" controls muted playsinline width="100%"></video>
 
 ## Quick start
 
