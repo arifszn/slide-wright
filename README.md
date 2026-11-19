@@ -69,11 +69,7 @@ Then ask for a deck:
 
 ## Examples
 
-![The prompt "Create a Q3 board update for Corvid Labs, a B2B observability SaaS" above two slides: a title slide with a Q3 scorecard, and a chart of revenue against plan](assets/example-corvid.png)
-
-![The prompt "Generate a presentation for ClickHouse, keep theme yellow" above two slides in black and yellow: a title slide, and a comparison of row-oriented and column-oriented storage](assets/example-clickhouse.png)
-
-![The prompt "Create a presentation on MCP with this outline: [outline]" above two slides: a title slide with a JSON-RPC request, and an architecture diagram of one host with three clients and servers](assets/example-mcp.png)
+![Three prompts, each in its own card above the title slide and one content slide it produced: "Create a Q3 board update for Corvid Labs, a B2B observability SaaS" with a scorecard title slide and a revenue chart; "Generate a presentation for ClickHouse, keep theme yellow" with black and yellow slides comparing row and column storage; "Create a presentation on MCP with this outline: [outline]" with a JSON-RPC title slide and an architecture diagram](assets/examples.png)
 
 ## Change a deck later
 
