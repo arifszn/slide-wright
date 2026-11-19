@@ -65,7 +65,6 @@ Then ask for a deck:
 - **A theme made for the deck**: palette, typography, layout and a visual motif taken from the subject. There is no template library.
 - **Slides that make a point**: each content slide states one claim and backs it with a chart, flow, timeline, comparison, architecture diagram or metric panel, drawn in the theme's colors.
 - **Speaker notes and a presenter view**, and animation if you choose it.
-- **A layout check**: a script flags text that overflows, overlaps, is clipped or is smaller than 18px, and fonts that did not load. The agent fixes each one before it hands the deck over.
 - **One self-contained HTML file**: no build step, and nothing to install to present it.
 
 ## Examples
