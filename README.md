@@ -24,7 +24,7 @@ slide-wright is an agent skill that turns a topic, rough notes or an outline int
 
 The result is one HTML file. Present it in a browser, export it to PowerPoint or PDF, or deploy it to a live URL. slide-wright works in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Antigravity and other agents that support the `SKILL.md` format.
 
-<video src="https://github.com/user-attachments/assets/a5afabaf-1e9f-4d87-b0b2-d83be8b025d1" controls muted playsinline width="100%"></video>
+<video src="https://github.com/user-attachments/assets/448f5eb9-9235-407b-989f-9c11f6ba0d48" controls muted playsinline width="100%"></video>
 
 ## Quick start
 
@@ -54,18 +54,16 @@ Then ask for a deck:
 
 ![Three steps: the prompt "/slide-wright Q3 board update for Corvid Labs, a B2B observability SaaS", the same two slides in three design directions with option 1 selected, and the full deck built in that direction](assets/how-it-works.png)
 
-1. **Describe the deck.** A topic, rough notes or a full outline.
-2. **Answer two questions.** How many design directions to compare, and whether the slides should animate.
-3. **Compare previews.** Each direction gets its own palette, type and layout, shown on the same two slides of your deck: the title slide and one content slide. The previews open in your browser.
-4. **Pick one.** It builds the full deck in that direction. If none fits, ask for new directions, or ask to adjust one ("warmer", "a bolder accent").
-5. **Use it.** Present it, change it later, export it or deploy it.
+1. **Describe the deck.** A topic, rough notes or a full outline. The agent then asks how many design directions to compare and whether the slides should animate.
+2. **Pick a direction.** Each direction gets its own palette, type and layout, shown on the same two slides of your deck: the title slide and one content slide. The previews open in your browser. If none fits, ask for new directions, or ask to adjust one ("warmer", "a bolder accent").
+3. **Get the full deck.** It builds the full deck in the direction you picked. Present it, change it later, export it or deploy it.
 
 ## What you get
 
 - **A theme made for the deck**: palette, typography, layout and a visual motif taken from the subject. There is no template library.
 - **Slides that make a point**: each content slide states one claim and backs it with a chart, flow, timeline, comparison, architecture diagram or metric panel, drawn in the theme's colors.
 - **Speaker notes and a presenter view**, and animation if you choose it.
-- **One self-contained HTML file**: no build step, and nothing to install to present it.
+- **One self-contained HTML file**: no build step, and nothing to install to present it. Export it to PowerPoint or PDF, or deploy it to a live URL.
 
 ## Examples
 
