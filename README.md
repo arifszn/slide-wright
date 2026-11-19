@@ -54,11 +54,9 @@ Then ask for a deck:
 
 ![Three steps: the prompt "/slide-wright Q3 board update for Corvid Labs, a B2B observability SaaS", the same two slides in three design directions with option 1 selected, and the full deck built in that direction](assets/how-it-works.png)
 
-1. **Describe the deck.** A topic, rough notes or a full outline.
-2. **Answer two questions.** How many design directions to compare, and whether the slides should animate.
-3. **Compare previews.** Each direction gets its own palette, type and layout, shown on the same two slides of your deck: the title slide and one content slide. The previews open in your browser.
-4. **Pick one.** It builds the full deck in that direction. If none fits, ask for new directions, or ask to adjust one ("warmer", "a bolder accent").
-5. **Use it.** Present it, change it later, export it or deploy it.
+1. **Describe the deck.** A topic, rough notes or a full outline. The agent then asks how many design directions to compare and whether the slides should animate.
+2. **Pick a direction.** Each direction gets its own palette, type and layout, shown on the same two slides of your deck: the title slide and one content slide. The previews open in your browser. If none fits, ask for new directions, or ask to adjust one ("warmer", "a bolder accent").
+3. **Get the full deck.** It builds the full deck in the direction you picked. Present it, change it later, export it or deploy it.
 
 ## What you get
 
