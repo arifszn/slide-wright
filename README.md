@@ -63,7 +63,7 @@ Then ask for a deck:
 - **A theme made for the deck**: palette, typography, layout and a visual motif taken from the subject. There is no template library.
 - **Slides that make a point**: each content slide states one claim and backs it with a chart, flow, timeline, comparison, architecture diagram or metric panel, drawn in the theme's colors.
 - **Speaker notes and a presenter view**, and animation if you choose it.
-- **One self-contained HTML file**: no build step, and nothing to install to present it.
+- **One self-contained HTML file**: no build step, and nothing to install to present it. Export it to PowerPoint or PDF, or deploy it to a live URL.
 
 ## Examples
 
