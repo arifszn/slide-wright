@@ -20,7 +20,7 @@
   <a href="#faq">FAQ</a>
 </p>
 
-slide-wright is an agent skill that turns a topic, rough notes or an outline into a presentation. It designs a new theme for every deck and shows you two real slides in each direction before it builds the rest. You pick the look; it builds the full deck in that style.
+slide-wright is an agent skill that turns a topic, rough notes or an outline into a presentation. It designs a new theme for every deck and shows you two real slides in each direction before it builds the rest.
 
 The result is one HTML file. Present it in a browser, export it to PowerPoint or PDF, or deploy it to a live URL. slide-wright works in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Antigravity and other agents that support the `SKILL.md` format.
 
@@ -120,7 +120,7 @@ The agent offers Surge, Vercel and Netlify and returns the URL. Each host needs 
 
 ## Installation
 
-[Quick start](#quick-start) covers the plugin and npx installs. You can also paste this to any agent that supports the `SKILL.md` format, such as Codex, OpenCode, Antigravity, Gemini CLI or Cursor:
+[Quick start](#quick-start) covers the plugin and npx installs. You can also paste this to any agent that supports the `SKILL.md` format:
 
 ```
 Fetch and follow the install instructions from
