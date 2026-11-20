@@ -49,3 +49,50 @@ test('several decks: one sheet, defects carry the file name', async () => {
   assert.deepEqual(r.defects, ['basic.html: slide 6: clipped content: p']);
   assert.ok(existsSync(sheet));
 });
+
+// The title slide of basic.html, with its signature replaced by `sig` (markup) and `css`.
+async function titleDefects(name, sig, css = '') {
+  const svg = /\s*<svg class="sig"[\s\S]*?<\/svg>/;
+  let html = readFileSync(join(here, 'fixtures/basic.html'), 'utf8');
+  assert.match(html, svg);
+  html = html.replace(svg, sig).replace('</head>', `<style>${css}</style></head>`);
+  const input = join(tmp, `${name}.html`);
+  writeFileSync(input, html);
+  const r = await checkDeck({ input, route: offlineRoute() });
+  return r.defects.filter((d) => d.startsWith('slide 1:'));
+}
+
+test('title slide: a headline on an empty surface is reported as a missing signature', async () => {
+  const d = await titleDefects('bare', '');
+  assert.equal(d.length, 1, d.join('\n'));
+  assert.match(d[0], /^slide 1: no signature on the title slide: its largest visual covers 0% of the slide/);
+});
+
+test('title slide: a hairline rule, a small logo, or a full-slide plain fill is not a signature', async () => {
+  for (const [name, sig, css] of [
+    ['rule', '<div class="rule"></div>', '.rule { width: 1400px; height: 120px; border-top: 2px solid var(--accent); }'],
+    ['logo', '<div class="logo"></div>', '.logo { width: 120px; height: 120px; background: var(--accent); border-radius: 50%; }'],
+    ['surface', '<div class="wash"></div>', '.wash { position: absolute; inset: 0; background: var(--ink); z-index: -1; }'],
+  ]) {
+    const d = await titleDefects(name, sig, css);
+    assert.equal(d.length, 1, `${name}: ${d.join('\n')}`);
+  }
+});
+
+test('title slide: a large shape, a CSS-drawn pseudo-element, a drawn table, or a background image is a signature', async () => {
+  const rows = Array.from({ length: 5 }, (_, i) => `<div class="row"><span>#40${i}</span></div>`).join('');
+  for (const [name, sig, css] of [
+    ['shape', '<div class="bar"></div>', '.bar { position: absolute; right: 0; top: 0; width: 300px; height: 1080px; background: var(--accent); }'],
+    ['pseudo', '<div class="ring"></div>', '.ring::after { content: ""; position: absolute; right: 160px; top: 260px; width: 420px; height: 420px; border: 6px solid var(--accent); border-radius: 50%; }'],
+    ['table', `<div class="ledger">${rows}</div>`, '.ledger { width: 1200px; } .row { height: 56px; border-bottom: 1px solid var(--line); font-size: 24px; }'],
+  ]) {
+    assert.deepEqual(await titleDefects(name, sig, css), [], name);
+  }
+  const html = readFileSync(join(here, 'fixtures/basic.html'), 'utf8')
+    .replace(/\s*<svg class="sig"[\s\S]*?<\/svg>/, '')
+    .replace('<section><div class="frame title-slide">', '<section data-background-gradient="linear-gradient(135deg, #12263A, #C2410C)"><div class="frame title-slide">');
+  const input = join(tmp, 'background.html');
+  writeFileSync(input, html);
+  const r = await checkDeck({ input, route: offlineRoute() });
+  assert.deepEqual(r.defects.filter((d) => d.startsWith('slide 1:')), []);
+});
