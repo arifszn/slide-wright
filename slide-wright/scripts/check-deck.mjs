@@ -4,7 +4,8 @@
 //   node check-deck.mjs deck.html [more.html ...] [--sheet sheet.png]
 //
 // Per slide it reports: content outside the slide frame, clipped or scrolling text, overlapping
-// text blocks, text below the size floor, and web fonts that did not load. With --sheet it also
+// text blocks, text below the size floor, and web fonts that did not load. On the title slide it
+// also reports a missing signature: no shape, image or SVG large enough to read. With --sheet it also
 // writes one contact-sheet PNG of all slides (fragments shown, animations finished) for a single
 // visual look. Several decks go into one sheet, one deck per row block, in the order given.
 // Exit code 1 when any defect is found, 2 when the deck cannot be loaded.
@@ -14,6 +15,7 @@ import { writeFileSync } from 'node:fs';
 import { ensureDeps } from './lib/deps.mjs';
 
 const FLOOR_PX = 18; // smallest text the skill allows (labels)
+const SIGNATURE_MIN = 0.04; // smallest share of the title slide the largest visual may cover
 
 async function launch(chromium) {
   let err;
@@ -24,7 +26,8 @@ async function launch(chromium) {
 }
 
 // Runs in the page for the current slide. Returns a list of defect strings.
-function inspectSlide(floor) {
+// `signatureMin` is set on the first slide only: the share of the slide the signature must cover.
+function inspectSlide({ floor, signatureMin }) {
   const cur = Reveal.getCurrentSlide();
   const frame = cur.getBoundingClientRect();
   const label = (el) => (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/)[0] : el.tagName.toLowerCase());
@@ -54,6 +57,67 @@ function inspectSlide(floor) {
       const h = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
       if (w > 4 && h > 4) out.push(`overlap: ${label(a.el)} "${a.el.textContent.trim().slice(0, 18)}" x ${label(b.el)} "${b.el.textContent.trim().slice(0, 18)}"`);
     }
+  }
+  // The title slide carries the signature, drawn large (design.md). Measure the largest visual
+  // outside the title block: an image, SVG, canvas or video, a box or pseudo-element that paints a
+  // fill, gradient or border, or a block of such parts (a drawn table, a grid). A plain fill over
+  // most of the slide is the surface, not a signature.
+  if (signatureMin && cur.querySelector('.title-slide, h1')) {
+    const heading = cur.querySelector('h1') || cur.querySelector('h2');
+    const area = frame.width * frame.height;
+    const inFrame = (r) => Math.max(0, Math.min(r.right, frame.right) - Math.max(r.left, frame.left)) * Math.max(0, Math.min(r.bottom, frame.bottom) - Math.max(r.top, frame.top));
+    const alpha = (c) => {
+      const m = /rgba?\(([^)]*)\)/.exec(c);
+      if (!m) return c === 'transparent' ? 0 : 1;
+      const p = m[1].split(/[\s,/]+/).filter(Boolean);
+      return p.length > 3 ? parseFloat(p[3]) : 1;
+    };
+    const SIDES = ['Top', 'Right', 'Bottom', 'Left'];
+    const border = (cs, side) => (alpha(cs[`border${side}Color`]) > 0 && cs[`border${side}Style`] !== 'none' ? parseFloat(cs[`border${side}Width`]) || 0 : 0);
+    const filled = (cs) => cs.backgroundImage !== 'none' || alpha(cs.backgroundColor) > 0;
+    const paints = (cs) => filled(cs) || SIDES.some((side) => border(cs, side) > 0);
+    // The area a box draws: all of it when filled or outlined on every side, else only its rules.
+    const drawnArea = (cs, w, h) => {
+      if (filled(cs) || SIDES.every((side) => border(cs, side) > 0)) return w * h;
+      return (border(cs, 'Top') + border(cs, 'Bottom')) * w + (border(cs, 'Left') + border(cs, 'Right')) * h;
+    };
+    const shown = (cs) => cs.visibility !== 'hidden' && cs.display !== 'none' && cs.opacity !== '0';
+    const MEDIA = /^(svg|img|canvas|video|picture|object|iframe)$/i;
+    const els = [...cur.querySelectorAll('*')].filter((el) => !el.ownerSVGElement && !el.closest('aside.notes') && el.checkVisibility({ opacityProperty: true, visibilityProperty: true }));
+    const drawn = new Set(els.filter((el) => MEDIA.test(el.tagName) || paints(getComputedStyle(el))));
+    const bg = Reveal.getSlideBackground(cur);
+    let best = bg && (bg.querySelector('img, video, iframe') || [bg, ...bg.querySelectorAll('*')].some((e) => getComputedStyle(e).backgroundImage !== 'none')) ? area : 0;
+    for (const el of els) {
+      if (heading && el.contains(heading)) continue;
+      const cs = getComputedStyle(el);
+      if (drawn.has(el)) {
+        const r = el.getBoundingClientRect();
+        const a = MEDIA.test(el.tagName) ? inFrame(r) : Math.min(inFrame(r), drawnArea(cs, r.width, r.height));
+        if (a < area * 0.9 || MEDIA.test(el.tagName) || cs.backgroundImage !== 'none') best = Math.max(best, a);
+      }
+      // A block of drawn parts counts as the sum of their areas, or, with three parts or more (the
+      // rows of a drawn table, a grid), as the box around them. An icon beside a caption does not
+      // grow to the caption's box.
+      let sum = 0, n = 0, l = Infinity, t = Infinity, rt = -Infinity, b = -Infinity;
+      for (const d of el.querySelectorAll('*')) {
+        if (!drawn.has(d) || (heading && d.contains(heading))) continue;
+        let up = d.parentElement;
+        while (up && up !== el && !drawn.has(up)) up = up.parentElement;
+        if (up !== el) continue;
+        const r = d.getBoundingClientRect();
+        sum += MEDIA.test(d.tagName) ? inFrame(r) : Math.min(inFrame(r), drawnArea(getComputedStyle(d), r.width, r.height));
+        n++; l = Math.min(l, r.left); t = Math.min(t, r.top); rt = Math.max(rt, r.right); b = Math.max(b, r.bottom);
+      }
+      const box = n >= 3 ? inFrame({ left: l, top: t, right: rt, bottom: b }) : 0;
+      best = Math.max(best, Math.min(Math.max(sum, box), area * 0.9));
+      for (const pseudo of ['::before', '::after']) {
+        const ps = getComputedStyle(el, pseudo);
+        if (ps.content === 'none' || !shown(ps) || !paints(ps)) continue;
+        const a = Math.min(drawnArea(ps, parseFloat(ps.width) || 0, parseFloat(ps.height) || 0), area);
+        if (a < area * 0.9 || ps.backgroundImage !== 'none') best = Math.max(best, a);
+      }
+    }
+    if (best < area * signatureMin) out.push(`no signature on the title slide: its largest visual covers ${Math.round((best / area) * 100)}% of the slide, draw the signature over at least ${Math.round(signatureMin * 100)}%`);
   }
   return [...new Set(out)];
 }
@@ -110,7 +174,7 @@ export async function checkDeck({ input, sheet, route }) {
         document.getAnimations().forEach((x) => { try { x.finish(); } catch { x.cancel(); } });
         await frame();
       });
-      for (const d of await page.evaluate(inspectSlide, FLOOR_PX)) defects.push(`${tag}slide ${i + 1}: ${d}`);
+      for (const d of await page.evaluate(inspectSlide, { floor: FLOOR_PX, signatureMin: i === 0 ? SIGNATURE_MIN : 0 })) defects.push(`${tag}slide ${i + 1}: ${d}`);
       if (sheet) shots.push((await page.screenshot({ type: 'jpeg', quality: 70 })).toString('base64'));
     }
     decks.push({ shots, w: cfg.w, h: cfg.h });
