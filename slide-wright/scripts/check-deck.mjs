@@ -117,7 +117,7 @@ function inspectSlide({ floor, signatureMin }) {
         if (a < area * 0.9 || ps.backgroundImage !== 'none') best = Math.max(best, a);
       }
     }
-    if (best < area * signatureMin) out.push(`no signature on the title slide: its largest visual covers ${Math.round((best / area) * 100)}% of the slide, draw the signature over at least ${Math.round(signatureMin * 100)}%`);
+    if (best < area * signatureMin) out.push(`no signature on the title slide: its largest visual covers ${Math.round((best / area) * 100)}% of the slide, draw the signature over at least ${Math.round(signatureMin * 100)}%, as a recognizable object or mark from the subject, not an abstract diagram`);
   }
   return [...new Set(out)];
 }
