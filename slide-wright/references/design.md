@@ -22,7 +22,7 @@ There is no theme library. Invent the theme for the deck in front of you, from i
 
 **Exhibit style.** How this theme draws: card radius, border or fill, shadow or none, arrow style, and how data series use the accent and the neutrals. Flat surfaces and hairline rules; at most one soft shadow. Every exhibit in the deck follows it.
 
-**Signature.** One visual idea taken from the subject that would identify the deck with its words removed: a route line for logistics, a ledger rule for finance, a contour for climate, a waveform for audio. Draw it in CSS or SVG. It appears large on the title slide and returns quietly on section breaks and in the way exhibits are drawn. One device, not a set of decorations.
+**Signature.** One visual idea taken from the subject that would identify the deck with its words removed: a route line for logistics, a ledger rule for finance, a contour for climate, a waveform for audio. It must be an object, mark or mechanism a viewer of the subject would recognize, not an abstract diagram of lines, boxes and circles that fits any topic; for a game, its own map, icon or interface element. Draw it in CSS or SVG. It appears large on the title slide and returns quietly on section breaks and in the way exhibits are drawn. One device, not a set of decorations.
 
 ## Every content slide is composed
 
